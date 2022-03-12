@@ -25,10 +25,12 @@ import {
 } from "firebase/auth";
 import { selectSellerData } from "../../feature/SellerSlice";
 import { useSelector } from "react-redux";
+import { auth } from "../../firebase";
 
 const loadingGif = "../assets/Gif/upload_ie_new.gif";
 const loaderGif = "../assets/Gif/loaderImage.gif";
 const LogoMini = "../assets/Gif/logo_mini.png";
+import { AsyncStorage } from "react-native";
 
 const Loader = () => {
   const route = useRoute();
@@ -41,7 +43,12 @@ const Loader = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         var user = userCredential.user;
-        navigation.navigate("SellerPages");
+        console.log(user)
+        AsyncStorage.getItem("loginInfo").then((value) => {
+          if (value == null) {
+            AsyncStorage.setItem("loginInfo", "sellerlogin");
+          }
+        });
       })
       .catch((error) => {
         var errorCode = error.code;
@@ -60,6 +67,7 @@ const Loader = () => {
             sellerdata[0].email.value,
             sellerdata[0].password.value
           );
+          navigation.navigate("SellerPages");
         }
       });
     console.log("Hello world");

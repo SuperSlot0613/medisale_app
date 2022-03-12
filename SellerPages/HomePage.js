@@ -21,8 +21,8 @@ const HomePage = () => {
   const document = useSelector(selectDocumentImage);
   const faceImage = useSelector(selectUserImage);
   console.log(sellerdata[0]);
-  console.log(document);
-  console.log(faceImage);
+  // console.log(document);
+  // console.log(faceImage);
 
   useEffect(() => {
     (async () => {
@@ -43,7 +43,7 @@ const HomePage = () => {
         DocumentImage: document,
         userImage: faceImage,
         location: location.coords,
-        photourl: "",
+        photourl: sellerdata[0].shopImage,
       });
     })();
   }, []);

@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { theme } from "../core/theme";
 import { Block } from "galio-framework";
@@ -32,6 +32,7 @@ import TextInput from "../components/TextInput";
 import { FancyAlert } from "react-native-expo-fancy-alerts";
 import { useDispatch } from "react-redux";
 import { ADD_TO_SELLER } from "../../feature/SellerSlice";
+import * as ImagePicker from "expo-image-picker";
 
 const SellerLogin = () => {
   const navigation = useNavigation();
@@ -41,6 +42,7 @@ const SellerLogin = () => {
   const [password, setPassword] = useState({ value: "", error: "" });
   const [date, setDate] = useState({ value: "", error: "" });
   const [phonenumber, setphonenumber] = useState({ value: "", error: "" });
+  const [shopImage, setshopImage] = useState(null);
 
   const [textalert, settextalert] = useState("");
   const [alertcolor, setalertcolor] = useState("");
@@ -49,7 +51,33 @@ const SellerLogin = () => {
     setVisible(!visible);
   }, [visible]);
 
+  useEffect(() => {
+    async () => {
+      if (Platform.OS !== "web") {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert("Sorry, we need camera roll permissions to make this work!");
+        }
+      }
+    };
+  }, []);
+
   const dispatch = useDispatch();
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    console.log(result);
+
+    if (!result.cancelled) {
+      setshopImage(result.uri);
+    }
+  };
 
   const onSignUpPressed = () => {
     console.log("Hello world");
@@ -68,7 +96,15 @@ const SellerLogin = () => {
       return;
     } else {
       dispatch(
-        ADD_TO_SELLER({ name, email, pannumber, date, phonenumber, password })
+        ADD_TO_SELLER({
+          name,
+          email,
+          pannumber,
+          date,
+          phonenumber,
+          password,
+          shopImage,
+        })
       );
       navigation.navigate("Instruction", {
         card: "true",
@@ -78,7 +114,7 @@ const SellerLogin = () => {
   };
 
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider >
       <ScrollView>
         <ImageBackground
           source={require("../assets/background_dot.png")}
@@ -204,6 +240,15 @@ const SellerLogin = () => {
                     setDate({ value: date, error: "" });
                   }}
                 />
+              </Block>
+              <Block middle>
+                <Button
+                  style={{ width: 300, marginTop: 30 }}
+                  mode="contained"
+                  onPress={() => pickImage()}
+                >
+                  Upload Your Shop Image
+                </Button>
               </Block>
               <Block middle>
                 <Button

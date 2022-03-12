@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Background from "../components/Background";
 import Logo from "../components/Logo";
 import Header from "../components/Header";
@@ -10,6 +10,8 @@ import { StyleSheet } from "react-native";
 import ArButton from "../../Component/ArButton";
 import Icon from "../../Component/Icon";
 import useAuth from "../../Hooks/useAuth";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../../firebase";
 
 export default function StartScreen({ navigation }) {
   const { signWithGoogleId } = useAuth();
@@ -72,7 +74,7 @@ export default function StartScreen({ navigation }) {
 const styles = StyleSheet.create({
   socialConnect: {
     backgroundColor: argonTheme.COLORS.WHITE,
-    borderColor: "#8898AA"
+    borderColor: "#8898AA",
   },
   socialButtons: {
     width: 120,
@@ -81,15 +83,15 @@ const styles = StyleSheet.create({
     shadowColor: argonTheme.COLORS.BLACK,
     shadowOffset: {
       width: 0,
-      height: 4
+      height: 4,
     },
     shadowRadius: 8,
     shadowOpacity: 0.1,
-    elevation: 1
+    elevation: 1,
   },
   socialTextButtons: {
     color: argonTheme.COLORS.PRIMARY,
     fontWeight: "800",
-    fontSize: 14
-  }
+    fontSize: 14,
+  },
 });

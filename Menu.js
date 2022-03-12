@@ -45,6 +45,7 @@ import DeliveryPage from "./Component/DeliveryPage";
 import UploadImage from "./Component/UploadImage";
 import AddNewAddress from "./Component/AddNewAddress";
 import Loader from "./src/components/Loader";
+import ProfilePage from "./SellerPages/ProfilePage";
 // import CardScan from "./src/screens/CardScan";
 
 const { width } = Dimensions.get("screen");
@@ -279,7 +280,7 @@ function TabNavigaytor() {
             cardStyle: { backgroundColor: "#F8F9FE" },
           }}
           name="Profile"
-          component={HomePage}
+          component={ProfilePage}
         />
         <Tab.Screen
           options={{

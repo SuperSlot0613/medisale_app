@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^12.0.5",
-    "@react-native-async-storage/async-storage": "^1.16.1",
+    "@react-native-async-storage/async-storage": "~1.15.0",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/bottom-tabs": "^6.1.0",
     "@react-navigation/drawer": "^6.2.0",
@@ -47,7 +47,7 @@
     "react-native-geolocation-service": "^5.3.0-beta.4",
     "react-native-gesture-handler": "~2.1.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
-    "react-native-maps": "^0.30.1",
+    "react-native-maps": "0.29.4",
     "react-native-onboarding-swiper": "^1.2.0",
     "react-native-paper": "^4.11.2",
     "react-native-payments": "^0.8.4",
@@ -63,7 +63,9 @@
     "react-native-web": "0.17.1",
     "react-redux": "^7.2.6",
     "redux-persist": "^6.0.0",
-    "request-promise": "^4.2.6"
+    "request-promise": "^4.2.6",
+    "tailwind-react-native-classnames": "^1.5.1",
+    "tailwind-rn": "^4.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

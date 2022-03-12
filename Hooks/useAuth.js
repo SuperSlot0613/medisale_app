@@ -19,6 +19,9 @@ import {
 import * as Location from "expo-location";
 import { auth, db } from "../firebase";
 import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
+import { useNavigation } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { ADD_TO_SELLER } from "../feature/SellerSlice";
 
 const config = {
   iosClientId:
@@ -34,6 +37,8 @@ const AuthContext = createContext({});
 export const AuthProvider = ({ children }) => {
   const [user, setuser] = useState(null);
   const [isFirstLaunch, setIsFirstLaunch] = useState(null);
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   useEffect(
     () =>
@@ -52,17 +57,26 @@ export const AuthProvider = ({ children }) => {
     () =>
       onAuthStateChanged(auth, async (user) => {
         if (user) {
-          //logged in
-          // console.log(user);
-          const docRef = doc(db, "userInfo", user.email);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
-            user.displayName = docSnap.data().name;
-            user.photoURL = docSnap.data().photourl;
-          }
-          // console.log(user);
-          setuser(user);
-          // console.log(user);
+          AsyncStorage.getItem("loginInfo").then(async (value) => {
+            if (value === "sellerlogin") {
+              const docRef = doc(db, "sellerInfo", user.email);
+              const docSnap = await getDoc(docRef);
+              if (docSnap.exists()) {
+                console.log(docSnap.data());
+                dispatch(ADD_TO_SELLER(docSnap.data()));
+                navigation.navigate("SellerPages");
+              }
+            } else {
+              const docRef = doc(db, "userInfo", user.email);
+              const docSnap = await getDoc(docRef);
+              if (docSnap.exists()) {
+                user.displayName = docSnap.data().name;
+                user.photoURL = docSnap.data().photourl;
+              }
+              setuser(user);
+              console.log(user);
+            }
+          });
         } else {
           setuser(null);
         }
@@ -94,9 +108,9 @@ export const AuthProvider = ({ children }) => {
       });
   };
 
-  const signWithEmailId = async({ email, password }) => {
-     signInWithEmailAndPassword(auth, email.value, password.value)
-      .then(async(userCredential) => {
+  const signWithEmailId = async ({ email, password }) => {
+    signInWithEmailAndPassword(auth, email.value, password.value)
+      .then(async (userCredential) => {
         var userinfo = userCredential.user;
         const docRef = doc(db, "userInfo", userinfo.email);
         const docSnap = await getDoc(docRef);
