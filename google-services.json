@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "896596955092",
+    "firebase_url": "https://medisale-app-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "medisale-app",
+    "storage_bucket": "medisale-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:896596955092:android:e63a9907ca4a7e29a99041",
+        "android_client_info": {
+          "package_name": "host.exp.exponent.medisale"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "896596955092-qo2rj29lhmj10mn0iieqom4u26006am0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "host.exp.exponent.medisale",
+            "certificate_hash": "c1b1c063cae12275330a33f070b4e4402e5683c6"
+          }
+        },
+        {
+          "client_id": "896596955092-h1scecbq7ka9iesrj57690ptsnlmjpdf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfUdSL9wrfGJsi99AkMN1YNvrgaeFB2UU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "896596955092-h1scecbq7ka9iesrj57690ptsnlmjpdf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "896596955092-8a0cn9s3ea93ffdtn89180055q2st73a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "host.exp.exponent.medisale"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
