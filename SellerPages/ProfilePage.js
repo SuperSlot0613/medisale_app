@@ -12,11 +12,19 @@ import tw from "tailwind-react-native-classnames";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { EMPTY_SELLER, selectSellerData } from "../feature/SellerSlice";
+import { Block } from "galio-framework";
+import Button from "../src/components/Button";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
 
 const ProfilePage = () => {
   const [image, setImage] = useState("");
-
+  const sellerInfo = useSelector(selectSellerData);
+  const [data, setdata] = useState(sellerInfo[0]);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -43,6 +51,18 @@ const ProfilePage = () => {
     }
   };
 
+  const signOutPage = () => {
+    signOut(auth)
+      .then(() => {
+        dispatch(EMPTY_SELLER());
+        navigation.replace("OptionLogin");
+      })
+      .catch((error) => {
+        // An error happened.
+        console.log(error);
+      });
+  };
+
   return (
     <View style={tw`flex-1 items-center justify-between`}>
       <View
@@ -57,83 +77,122 @@ const ProfilePage = () => {
             { zIndex: 10 },
           ]}
         >
-          {image === "" ? (
-            <Avatar
-              rounded
-              icon={{ name: "adduser", type: "antdesign" }}
-              size="xlarge"
-              activeOpacity={0.7}
-              containerStyle={{ position: "relative", zIndex: 10 }}
-              onPress={pickImage}
-            />
-          ) : (
-            <Avatar
-              rounded
-              source={{
-                uri: image,
-              }}
-              size="xlarge"
-              activeOpacity={0.7}
-              containerStyle={{ position: "relative", zIndex: 10 }}
-              onPress={pickImage}
-            />
-          )}
+          <Avatar
+            rounded
+            source={{
+              uri: data.userImage,
+            }}
+            size="xlarge"
+            activeOpacity={0.7}
+            containerStyle={{ position: "relative", zIndex: 10 }}
+            onPress={pickImage}
+          />
         </View>
       </View>
-      <View
+      <Block
+        card
         style={[
-          tw`flex-1 items-center justify-center`,
-          { width: "100%", height: "100%", zIndex: 5 },
+          tw`flex-1`,
+          {
+            width: "100%",
+            height: "100%",
+            zIndex: 5,
+            justifyContent: "space-between",
+          },
         ]}
       >
-        <View
-          style={[
-            tw`flex-col bg-gray-100`,
-            styles.shadowProp,
-            styles.card,
-            { width: "100%", height: "100%" },
-          ]}
-        >
-          <View
-            style={[
-              tw`flex-row m-2 mt-10 justify-between`,
-              { alignItems: "center" },
-            ]}
+        <Block row={false} style={[tw`mt-10 ml-2 justify-between`]}>
+          <TouchableOpacity>
+            <Text style={{ fontSize: 14, color: "orange" }}>
+              view User Info
+            </Text>
+          </TouchableOpacity>
+          <Block
+            row
+            style={{
+              marginTop: 15,
+              marginLeft: 10,
+              marginRight: 10,
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
           >
-            <TouchableOpacity>
-              <Text style={{ fontSize: 14, color: "orange" }}>
-                view User Info
-              </Text>
-            </TouchableOpacity>
-          </View>
-          {/* <FlatList
-            data={Data}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <View
-                style={[
-                  tw("flex-row items-center m-2 p-1"),
-                  {
-                    fontSize: 14,
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  },
-                ]}
-                Key={item.id}
-              >
-                <Text>{item.text1} :</Text> */}
-          {/* {item.text1 === "Email Id" || item.text1 === "Mobile No" ? (
-                  <TextInput value={item.text2} style={tw("text-blue-400")} />
-                ) : (
-                )} */}
-          {/* <Text style={[tw("text-blue-500 "), { width: "50%" }]}>
-                  {item.text2}
-                </Text>
-              </View>
-            )}
-          /> */}
-        </View>
-      </View>
+            <Text style={{ fontSize: 18, fontWeight: "400" }}>Name : </Text>
+            <Text style={{ fontSize: 16, fontWeight: "400" }}>{data.name}</Text>
+          </Block>
+          <Block
+            row
+            style={{
+              marginTop: 15,
+              marginLeft: 10,
+              marginRight: 10,
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ fontSize: 18, fontWeight: "400" }}>Email : </Text>
+            <Text style={{ fontSize: 16, fontWeight: "400" }}>
+              {data.email}
+            </Text>
+          </Block>
+          <Block
+            row
+            style={{
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginTop: 15,
+              marginLeft: 10,
+              marginRight: 10,
+            }}
+          >
+            <Text style={{ fontSize: 18, fontWeight: "400" }}>
+              Phone No. :{" "}
+            </Text>
+            <Text style={{ fontSize: 16, fontWeight: "400" }}>
+              {data.PhoneNumber}
+            </Text>
+          </Block>
+          <Block
+            row
+            style={{
+              marginTop: 15,
+              marginLeft: 10,
+              marginRight: 10,
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ fontSize: 18, fontWeight: "400" }}>Name : </Text>
+            <Text style={{ fontSize: 16, fontWeight: "400" }}>
+              {data.PanCard}
+            </Text>
+          </Block>
+          <Block
+            row
+            style={{
+              marginTop: 15,
+              marginLeft: 10,
+              marginRight: 10,
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ fontSize: 18, fontWeight: "400" }}>
+              Date Of Birth :{" "}
+            </Text>
+            <Text style={{ fontSize: 16, fontWeight: "400" }}>
+              {data.Dateofbirth}
+            </Text>
+          </Block>
+          <Button
+            style={{ width: 300, marginTop: 60, marginLeft: 22 }}
+            mode="contained"
+            onPress={() => signOutPage()}
+          >
+            LOG OUT
+          </Button>
+        </Block>
+      </Block>
     </View>
   );
 };

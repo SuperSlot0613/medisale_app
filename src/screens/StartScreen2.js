@@ -21,7 +21,11 @@ export default function StartScreen2({ navigation }) {
       <Paragraph>The easiest way to Buy Medicine.</Paragraph>
       <Button
         mode="contained"
-        onPress={() => navigation.navigate("LoginScreen")}
+        onPress={() =>
+          navigation.navigate("LoginScreen", {
+            seller: "true",
+          })
+        }
       >
         Login
       </Button>
@@ -72,7 +76,7 @@ export default function StartScreen2({ navigation }) {
 const styles = StyleSheet.create({
   socialConnect: {
     backgroundColor: argonTheme.COLORS.WHITE,
-    borderColor: "#8898AA"
+    borderColor: "#8898AA",
   },
   socialButtons: {
     width: 120,
@@ -81,15 +85,15 @@ const styles = StyleSheet.create({
     shadowColor: argonTheme.COLORS.BLACK,
     shadowOffset: {
       width: 0,
-      height: 4
+      height: 4,
     },
     shadowRadius: 8,
     shadowOpacity: 0.1,
-    elevation: 1
+    elevation: 1,
   },
   socialTextButtons: {
     color: argonTheme.COLORS.PRIMARY,
     fontWeight: "800",
-    fontSize: 14
-  }
+    fontSize: 14,
+  },
 });

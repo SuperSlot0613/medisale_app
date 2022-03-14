@@ -18,12 +18,12 @@ const OnboardingScreen = () => {
       // NextButtonComponent={Next}
       onSkip={() => {
         setIsFirstLaunch(false);
-        navigation.replace("Register");
+        navigation.replace("OptionLogin");
       }}
       onDone={() => {
         setIsFirstLaunch(false);
         console.log("onbordingScreen", isFirstLaunch);
-        navigation.replace("Register");
+        navigation.replace("OptionLogin");
       }}
       pages={[
         {

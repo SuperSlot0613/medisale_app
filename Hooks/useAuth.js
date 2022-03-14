@@ -123,7 +123,9 @@ export const AuthProvider = ({ children }) => {
       })
       .catch((error) => {
         const errorCode = error.code;
+        console.log(errorCode);
         const errorMessage = error.message;
+        console.log(errorMessage);
       });
   };
 

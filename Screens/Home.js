@@ -8,19 +8,18 @@ import {
   ScrollView,
   Dimensions,
   FlatList,
-  Button
+  Button,
+  Alert,
 } from "react-native";
 import Cards from "../Component/Cards";
 import NormalCard from "../Component/NormalCard";
 const { width } = Dimensions.get("screen");
 import { db } from "../firebase";
-import {
-  collection,
-  getDocs,
-} from "@firebase/firestore";
-import { selectValue } from "../feature/navSlice";
+import { collection, getDocs } from "@firebase/firestore";
+import { selectValue, setOrigin } from "../feature/navSlice";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
+import * as Location from "expo-location";
 
 const Home = () => {
   const [foodItem, setfoodItem] = useState([]);
@@ -34,38 +33,56 @@ const Home = () => {
   //   // console.log(foodItem[0].image);
   // }, []);
 
-  const data=[
-    { 
-      id:"1",
-      images:"https://st.depositphotos.com/3147737/4982/i/950/depositphotos_49827853-stock-photo-medu-vada-a-south-indian.jpg",
-      title:"Vada"
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        Alert.prompt("Permission to access location was denied");
+        return;
+      }
+      let location = await Location.getCurrentPositionAsync({});
+      dispatch(setOrigin(location.coords));
+    })();
+  }, []);
+
+  const data = [
+    {
+      id: "1",
+      images:
+        "https://st.depositphotos.com/3147737/4982/i/950/depositphotos_49827853-stock-photo-medu-vada-a-south-indian.jpg",
+      title: "Vada",
     },
-    { 
-      id:"2",
-      images:"https://st.depositphotos.com/3147737/4982/i/950/depositphotos_49827853-stock-photo-medu-vada-a-south-indian.jpg",
-      title:"Vada"
+    {
+      id: "2",
+      images:
+        "https://st.depositphotos.com/3147737/4982/i/950/depositphotos_49827853-stock-photo-medu-vada-a-south-indian.jpg",
+      title: "Vada",
     },
-    { 
-      id:"3",
-      images:"https://st.depositphotos.com/3147737/4982/i/950/depositphotos_49827853-stock-photo-medu-vada-a-south-indian.jpg",
-      title:"Vada"
+    {
+      id: "3",
+      images:
+        "https://st.depositphotos.com/3147737/4982/i/950/depositphotos_49827853-stock-photo-medu-vada-a-south-indian.jpg",
+      title: "Vada",
     },
-    { 
-      id:"4",
-      images:"https://st.depositphotos.com/3147737/4982/i/950/depositphotos_49827853-stock-photo-medu-vada-a-south-indian.jpg",
-      title:"Vada"
+    {
+      id: "4",
+      images:
+        "https://st.depositphotos.com/3147737/4982/i/950/depositphotos_49827853-stock-photo-medu-vada-a-south-indian.jpg",
+      title: "Vada",
     },
-    { 
-      id:"5",
-      images:"https://st.depositphotos.com/3147737/4982/i/950/depositphotos_49827853-stock-photo-medu-vada-a-south-indian.jpg",
-      title:"Vada"
+    {
+      id: "5",
+      images:
+        "https://st.depositphotos.com/3147737/4982/i/950/depositphotos_49827853-stock-photo-medu-vada-a-south-indian.jpg",
+      title: "Vada",
     },
-    { 
-      id:"6",
-      images:"https://st.depositphotos.com/3147737/4982/i/950/depositphotos_49827853-stock-photo-medu-vada-a-south-indian.jpg",
-      title:"Vada"
+    {
+      id: "6",
+      images:
+        "https://st.depositphotos.com/3147737/4982/i/950/depositphotos_49827853-stock-photo-medu-vada-a-south-indian.jpg",
+      title: "Vada",
     },
-  ]
+  ];
 
   const value = useSelector(selectValue);
 
@@ -80,7 +97,7 @@ const Home = () => {
           Eat What makes you Happy
         </Text> */}
         <Block flex row style={{ justifyContent: "space-evenly" }}>
-        {/* <FlatList
+          {/* <FlatList
           ItemSeparatorComponent={
             Platform.OS !== "android" &&
             (({ highlighted }) =>
@@ -141,22 +158,22 @@ export default Home;
 
 const styles = StyleSheet.create({
   home: {
-    width: width
+    width: width,
   },
   articles: {
     width: width - theme.SIZES.BASE,
     paddingVertical: theme.SIZES.BASE,
-    marginLeft: 8
+    marginLeft: 8,
   },
   scollcard: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   separator: {
     height: 1,
     width: "100%",
-    backgroundColor: "#ff0000"
-  }
+    backgroundColor: "#ff0000",
+  },
 });

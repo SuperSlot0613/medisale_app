@@ -59,10 +59,12 @@ function CustomDrawerContent({
     // console.log(result);
     if (!result.cancelled) {
       setImage(result.uri);
+      // console.log(image)
       const imageupdate = doc(db, "userInfo", user.email);
       await updateDoc(imageupdate, {
         photourl: image,
       });
+      // console.log(imageupdate)
     }
   };
 

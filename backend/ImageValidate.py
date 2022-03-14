@@ -11,6 +11,10 @@ def data_uri_to_cv2_img(uri):
     nparr = np.frombuffer(base64.b64decode(uri), np.uint8)
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     return img
+@app.route("/")
+def hello():
+    return "Hello World"
+
 
 @app.route('/imagechecker', methods = ['POST']) 
 def faceverification(): 

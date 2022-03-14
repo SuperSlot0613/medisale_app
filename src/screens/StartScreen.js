@@ -23,7 +23,11 @@ export default function StartScreen({ navigation }) {
       <Paragraph>The easiest way to Buy Medicine.</Paragraph>
       <Button
         mode="contained"
-        onPress={() => navigation.navigate("LoginScreen")}
+        onPress={() =>
+          navigation.navigate("LoginScreen", {
+            seller: "false",
+          })
+        }
       >
         Login
       </Button>
