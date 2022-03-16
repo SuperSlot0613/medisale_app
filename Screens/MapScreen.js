@@ -36,6 +36,11 @@ const MapScreen = () => {
   const [sellerdata, setsellerdata] = useState();
   const userloc = useSelector(selectOrigin);
 
+  useEffect(async () => {
+    const sellerInfo = await getDocs(collection(db, "sellerInfo"));
+    console.log(sellerInfo.data());
+  }, []);
+
   const initialMapState = {
     markers,
     region: {
@@ -50,13 +55,6 @@ const MapScreen = () => {
 
   let mapIndex = 0;
   let mapAnimation = new Animated.Value(0);
-
-  useEffect(async () => {
-    const sellerInfo = await getDocs(collection(db, "sellerInfo")).then(
-      (snapshot) => snapshot.docs.map((doc) => setsellerdata(doc.data()))
-    );
-    console.log(sellerdata);
-  }, []);
 
   useEffect(() => {
     mapAnimation.addListener(({ value }) => {

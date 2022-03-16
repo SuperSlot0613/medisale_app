@@ -62,20 +62,20 @@ export const AuthProvider = ({ children }) => {
               const docRef = doc(db, "sellerInfo", user.email);
               const docSnap = await getDoc(docRef);
               if (docSnap.exists()) {
-                console.log(docSnap.data());
+                // console.log("This User data",docSnap.data());
                 dispatch(ADD_TO_SELLER(docSnap.data()));
                 navigation.navigate("SellerPages");
               }
-            } else {
-              const docRef = doc(db, "userInfo", user.email);
-              const docSnap = await getDoc(docRef);
-              if (docSnap.exists()) {
-                user.displayName = docSnap.data().name;
-                user.photoURL = docSnap.data().photourl;
-              }
-              setuser(user);
-              console.log(user);
             }
+
+            const docRef = doc(db, "userInfo", user.email);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+              user.displayName = docSnap.data().name;
+              user.photoURL = docSnap.data().photourl;
+            }
+            setuser(user);
+            console.log(user);
           });
         } else {
           setuser(null);

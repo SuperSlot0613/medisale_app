@@ -17,21 +17,14 @@ const { width } = Dimensions.get("screen");
 import { db } from "../firebase";
 import { collection, getDocs } from "@firebase/firestore";
 import { selectValue, setOrigin } from "../feature/navSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
 
 const Home = () => {
   const [foodItem, setfoodItem] = useState([]);
   const navigation = useNavigation();
-
-  // useEffect(async () => {
-  //   const passes = await getDocs(collection(db, "fooditem")).then(snapshot =>
-  //     snapshot.docs.map(doc => setfoodItem(doc.data().item))
-  //   );
-  //   // console.log(foodItem);
-  //   // console.log(foodItem[0].image);
-  // }, []);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {

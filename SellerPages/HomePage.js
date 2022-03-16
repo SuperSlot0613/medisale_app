@@ -20,7 +20,7 @@ const HomePage = () => {
   const sellerdata = useSelector(selectSellerData);
   const document = useSelector(selectDocumentImage);
   const faceImage = useSelector(selectUserImage);
-  console.log(sellerdata[0]);
+  console.log("This is data homepage",sellerdata[0]);
   // console.log(document);
   // console.log(faceImage);
 

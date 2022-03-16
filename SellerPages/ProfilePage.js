@@ -17,7 +17,8 @@ import { EMPTY_SELLER, selectSellerData } from "../feature/SellerSlice";
 import { Block } from "galio-framework";
 import Button from "../src/components/Button";
 import { signOut } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
+import { doc, updateDoc } from "firebase/firestore";
 
 const ProfilePage = () => {
   const [image, setImage] = useState("");
@@ -25,6 +26,8 @@ const ProfilePage = () => {
   const [data, setdata] = useState(sellerInfo[0]);
   const navigation = useNavigation();
   const dispatch = useDispatch();
+
+  // console.log("This is Data Image",data);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -38,15 +41,9 @@ const ProfilePage = () => {
 
     if (!result.cancelled) {
       setImage(result.uri);
-      userImageSet(result.uri);
-      setDoc(doc(db, "registerUser", userDetails.id), {
-        id: userDetails.id,
-        Name: userDetails.Name,
-        email: userDetails.email,
-        password: userDetails.password,
-        mobile: userDetails.mobile,
-        image: result.uri,
-        timestamp: serverTimestamp(),
+      const imageupdate = doc(db, "sellerInfo", data.email);
+      await updateDoc(imageupdate, {
+        userImage: result.uri,
       });
     }
   };
