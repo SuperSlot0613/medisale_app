@@ -17,7 +17,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Fontisto from "react-native-vector-icons/Fontisto";
 
-import { markers, mapDarkStyle, mapStandardStyle } from "../model/mapData";
+import { mapDarkStyle, mapStandardStyle } from "../model/mapData";
 import StarRating from "../Component/StarRating";
 
 import { useTheme } from "@react-navigation/native";
@@ -25,6 +25,8 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import { useSelector } from "react-redux";
 import { selectOrigin } from "../feature/navSlice";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { GOOGLE_MAPS_APIKEY } from "@env";
 
 const { width, height } = Dimensions.get("window");
 const CARD_HEIGHT = 220;
@@ -33,19 +35,30 @@ const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
 const MapScreen = () => {
   const theme = useTheme();
-  const [sellerdata, setsellerdata] = useState();
+  const [markers, setmarkers] = useState([]);
   const userloc = useSelector(selectOrigin);
+  // console.log(userloc);
 
   useEffect(async () => {
     const sellerInfo = await getDocs(collection(db, "sellerInfo"));
-    console.log(sellerInfo.data());
+    setmarkers(
+      sellerInfo.docs.map((doc) => ({
+        id: doc.id,
+        data: doc.data(),
+      }))
+    );
+    // console.log(markers)
+    // markers.map((marker, index) => {
+    //   const location=marker.data.location
+    //   console.log(...location)
+    // });
   }, []);
 
   const initialMapState = {
-    markers,
     region: {
-      latitude: 22.62938671242907,
-      longitude: 88.4354486029795,
+      latitude: userloc.latitude,
+      longitude: userloc.longitude,
+      altitude: userloc.altitude,
       latitudeDelta: 0.04864195044303443,
       longitudeDelta: 0.040142817690068,
     },
@@ -59,8 +72,8 @@ const MapScreen = () => {
   useEffect(() => {
     mapAnimation.addListener(({ value }) => {
       let index = Math.floor(value / CARD_WIDTH + 0.3);
-      if (index >= state.markers.length) {
-        index = state.markers.length - 1;
+      if (index >= markers.length) {
+        index = markers.length - 1;
       }
       if (index <= 0) {
         index = 0;
@@ -71,10 +84,12 @@ const MapScreen = () => {
       const regionTimeout = setTimeout(() => {
         if (mapIndex !== index) {
           mapIndex = index;
-          const { coordinate } = state.markers[index];
+          const location = markers[index].data.location;
+          // console.log("UseEffect value", location);
           _map.current.animateToRegion(
             {
-              ...coordinate,
+              latitude: location.latitude,
+              longitude: location.longitude,
               latitudeDelta: state.region.latitudeDelta,
               longitudeDelta: state.region.longitudeDelta,
             },
@@ -85,7 +100,7 @@ const MapScreen = () => {
     });
   });
 
-  const interpolations = state.markers.map((marker, index) => {
+  const interpolations = markers.map((marker, index) => {
     const inputRange = [
       (index - 1) * CARD_WIDTH,
       index * CARD_WIDTH,
@@ -125,7 +140,7 @@ const MapScreen = () => {
         mapType="hybrid"
         // customMapStyle={theme.dark ? mapDarkStyle : mapStandardStyle}
       >
-        {state.markers.map((marker, index) => {
+        {markers.map((marker, index) => {
           const scaleStyle = {
             transform: [
               {
@@ -134,30 +149,58 @@ const MapScreen = () => {
             ],
           };
           return (
-            <MapView.Marker
-              key={index}
-              coordinate={marker.coordinate}
-              onPress={(e) => onMarkerPress(e)}
-            >
-              <Animated.View style={[styles.markerWrap]}>
-                <Animated.Image
-                  source={require("../assets/map_marker.png")}
-                  style={[styles.marker, scaleStyle]}
-                  resizeMode="cover"
-                />
-              </Animated.View>
-            </MapView.Marker>
+            <>
+              <MapView.Marker
+                key={index}
+                coordinate={marker.data.location}
+                onPress={(e) => onMarkerPress(e)}
+              >
+                <Animated.View style={[styles.markerWrap]}>
+                  <Animated.Image
+                    source={require("../assets/map_marker.png")}
+                    style={[styles.marker, scaleStyle]}
+                    resizeMode="cover"
+                  />
+                </Animated.View>
+              </MapView.Marker>
+            </>
           );
         })}
+        <MapView.Marker coordinate={userloc}>
+          <Animated.View style={[styles.markerWrap]}>
+            <Animated.Image
+              source={require("../assets/map_marker.png")}
+              style={[styles.marker]}
+              resizeMode="cover"
+            />
+          </Animated.View>
+        </MapView.Marker>
       </MapView>
       <View style={styles.searchBox}>
-        <TextInput
-          placeholder="Search here"
-          placeholderTextColor="#000"
-          autoCapitalize="none"
-          style={{ flex: 1, padding: 0 }}
+        <GooglePlacesAutocomplete
+          placeholder="Search Your Location"
+          nearbyPlacesAPI="GooglePlacesSearch"
+          query={{
+            key: GOOGLE_MAPS_APIKEY,
+            language: "en",
+          }}
+          enableHighAccuracyLocation={true}
+          minLength={2}
+          enablePoweredByContainer={false}
+          style={{
+            container: {
+              flex: 0,
+            },
+            textInput: {
+              fontSize: 18,
+            },
+          }}
+          onPress={(data, details = null) => {
+            console.log(data, details);
+          }}
+          fetchDetails={true}
+          debounce={400}
         />
-        <Ionicons name="ios-search" size={20} />
       </View>
       {/* <ScrollView
         horizontal
@@ -214,20 +257,20 @@ const MapScreen = () => {
           { useNativeDriver: true }
         )}
       >
-        {state.markers.map((marker, index) => (
+        {markers.map((marker, index) => (
           <View style={styles.card} key={index}>
             <Image
-              source={marker.image}
+              source={{ uri: marker.data.photourl }}
               style={styles.cardImage}
               resizeMode="cover"
             />
             <View style={styles.textContent}>
               <Text numberOfLines={1} style={styles.cardtitle}>
-                {marker.title}
+                {marker.data.name}
               </Text>
-              <StarRating ratings={marker.rating} reviews={marker.reviews} />
+              {/* <StarRating ratings={marker.rating} reviews={marker.reviews} /> */}
               <Text numberOfLines={1} style={styles.cardDescription}>
-                {marker.description}
+                {marker.data.email}
               </Text>
               <View style={styles.button}>
                 <TouchableOpacity
@@ -272,9 +315,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#fff",
     width: "90%",
+    alignItems: "center",
     alignSelf: "center",
     borderRadius: 5,
-    padding: 10,
     shadowColor: "#ccc",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.5,

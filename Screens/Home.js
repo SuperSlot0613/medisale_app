@@ -34,6 +34,7 @@ const Home = () => {
         return;
       }
       let location = await Location.getCurrentPositionAsync({});
+      console.log(location);
       dispatch(setOrigin(location.coords));
     })();
   }, []);
