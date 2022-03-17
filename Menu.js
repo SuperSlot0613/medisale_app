@@ -46,6 +46,9 @@ import UploadImage from "./Component/UploadImage";
 import AddNewAddress from "./Component/AddNewAddress";
 import Loader from "./src/components/Loader";
 import ProfilePage from "./SellerPages/ProfilePage";
+import { useSelector } from "react-redux";
+import { selectDestination, selectOrigin } from "./feature/navSlice";
+import MapViewDirection from "./Screens/MapViewDirection";
 // import CardScan from "./src/screens/CardScan";
 
 const { width } = Dimensions.get("screen");
@@ -55,6 +58,9 @@ const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
 
 function HomeStack(props) {
+  const origin = useSelector(selectOrigin);
+  const destination = useSelector(selectDestination);
+
   return (
     <Stack.Navigator mode="card" headerMode="screen">
       <Stack.Screen
@@ -144,12 +150,22 @@ function HomeStack(props) {
         name="Image Upload"
         component={UploadImage}
       />
+      {/* {origin && destination && (
+        <MapViewD
+      )} */}
       <Stack.Screen
         name="MapScreen"
         options={{
           headerShown: false,
         }}
         component={MapScreen}
+      />
+      <Stack.Screen
+        name="MapViwDirection"
+        options={{
+          headerShown: false,
+        }}
+        component={MapViewDirection}
       />
     </Stack.Navigator>
   );

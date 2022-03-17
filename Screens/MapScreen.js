@@ -20,16 +20,18 @@ import Fontisto from "react-native-vector-icons/Fontisto";
 import { mapDarkStyle, mapStandardStyle } from "../model/mapData";
 import StarRating from "../Component/StarRating";
 
-import { useTheme } from "@react-navigation/native";
+import { useNavigation, useTheme } from "@react-navigation/native";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
-import { useSelector } from "react-redux";
-import { selectOrigin } from "../feature/navSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectOrigin, setDestination } from "../feature/navSlice";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { GOOGLE_MAPS_APIKEY } from "@env";
+import useAuth from "../Hooks/useAuth";
+import Button from "../src/components/Button";
 
 const { width, height } = Dimensions.get("window");
-const CARD_HEIGHT = 220;
+const CARD_HEIGHT = 230;
 const CARD_WIDTH = width * 0.8;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
@@ -37,6 +39,9 @@ const MapScreen = () => {
   const theme = useTheme();
   const [markers, setmarkers] = useState([]);
   const userloc = useSelector(selectOrigin);
+  const { user } = useAuth();
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
   // console.log(userloc);
 
   useEffect(async () => {
@@ -47,11 +52,6 @@ const MapScreen = () => {
         data: doc.data(),
       }))
     );
-    // console.log(markers)
-    // markers.map((marker, index) => {
-    //   const location=marker.data.location
-    //   console.log(...location)
-    // });
   }, []);
 
   const initialMapState = {
@@ -59,8 +59,8 @@ const MapScreen = () => {
       latitude: userloc.latitude,
       longitude: userloc.longitude,
       altitude: userloc.altitude,
-      latitudeDelta: 0.04864195044303443,
-      longitudeDelta: 0.040142817690068,
+      latitudeDelta: 0.005,
+      longitudeDelta: 0.005,
     },
   };
 
@@ -140,7 +140,7 @@ const MapScreen = () => {
         mapType="hybrid"
         // customMapStyle={theme.dark ? mapDarkStyle : mapStandardStyle}
       >
-        {markers.map((marker, index) => {
+        {markers?.map((marker, index) => {
           const scaleStyle = {
             transform: [
               {
@@ -149,28 +149,31 @@ const MapScreen = () => {
             ],
           };
           return (
-            <>
-              <MapView.Marker
-                key={index}
-                coordinate={marker.data.location}
-                onPress={(e) => onMarkerPress(e)}
-              >
-                <Animated.View style={[styles.markerWrap]}>
-                  <Animated.Image
-                    source={require("../assets/map_marker.png")}
-                    style={[styles.marker, scaleStyle]}
-                    resizeMode="cover"
-                  />
-                </Animated.View>
-              </MapView.Marker>
-            </>
+            <MapView.Marker
+              key={index}
+              coordinate={marker.data.location}
+              onPress={(e) => onMarkerPress(e)}
+            >
+              <Animated.View style={[styles.markerWrap]}>
+                <Animated.Image
+                  source={require("../assets/map_marker.png")}
+                  style={[styles.marker, scaleStyle]}
+                  resizeMode="cover"
+                />
+              </Animated.View>
+            </MapView.Marker>
           );
         })}
-        <MapView.Marker coordinate={userloc}>
+        <MapView.Marker
+          title={user.displayName}
+          description={user.email}
+          coordinate={userloc}
+          identifier="Origin"
+        >
           <Animated.View style={[styles.markerWrap]}>
             <Animated.Image
-              source={require("../assets/map_marker.png")}
-              style={[styles.marker]}
+              source={require("../assets/user_marker.png")}
+              style={[styles.marker,{height:45,width:40}]}
               resizeMode="cover"
             />
           </Animated.View>
@@ -273,27 +276,16 @@ const MapScreen = () => {
                 {marker.data.email}
               </Text>
               <View style={styles.button}>
-                <TouchableOpacity
-                  onPress={() => {}}
-                  style={[
-                    styles.signIn,
-                    {
-                      borderColor: "#FF6347",
-                      borderWidth: 1,
-                    },
-                  ]}
+                <Button
+                  style={{ height:45}}
+                  mode="contained"
+                  onPress={() => {
+                    dispatch(setDestination(marker));
+                    navigation.navigate("MapViwDirection");
+                  }}
                 >
-                  <Text
-                    style={[
-                      styles.textSign,
-                      {
-                        color: "#FF6347",
-                      },
-                    ]}
-                  >
-                    Order Now
-                  </Text>
-                </TouchableOpacity>
+                  Order
+                </Button>
               </View>
             </View>
           </View>
@@ -402,7 +394,7 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: "center",
-    marginTop: 5,
+    marginTop: 2,
   },
   signIn: {
     width: "100%",
