@@ -88,9 +88,14 @@ const ItemDetails = () => {
   ];
 
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider style={{ backgroundColor: "#E0F7FA" }}>
       <ScrollView style={{ flex: 1, height: "100%" }}>
-        <Block flex={1} card row={false} style={[styles.card, styles.shadow]}>
+        <Block
+          flex={1}
+          card
+          row={false}
+          style={[styles.card, styles.shadow, { backgroundColor: "#E0F7FA" }]}
+        >
           <TouchableOpacity>
             <Block style={styles.imageContainer}>
               <Image

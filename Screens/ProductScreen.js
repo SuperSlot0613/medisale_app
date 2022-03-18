@@ -75,5 +75,6 @@ const styles = StyleSheet.create({
     width: width - theme.SIZES.BASE,
     paddingVertical: theme.SIZES.BASE,
     marginLeft: 8,
+    backgroundColor:"#E0F7FA"
   }
 });

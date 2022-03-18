@@ -10,6 +10,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Block } from "galio-framework";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import Button from "../src/components/Button";
 
 const DeliveryPage = () => {
   const navigation = useNavigation();
@@ -53,86 +54,28 @@ const DeliveryPage = () => {
                 margin: 20,
               }}
             >
-              <TouchableOpacity
-                style={{ width: "100%", marginBottom: 15 }}
+              <Button
+                style={{ height: 45, width: "100%", borderRadius: 10 }}
+                mode="contained"
                 onPress={() => navigation.navigate("Image Upload")}
               >
-                <Block
-                  style={[
-                    {
-                      width: 300,
-                      height: 50,
-                      backgroundColor: "#0c707d",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      borderRadius: 10,
-                    },
-                    styles.shadow,
-                  ]}
-                >
-                  <Text
-                    style={{
-                      color: "white",
-                      fontWeight: "600",
-                      fontSize: 22,
-                    }}
-                  >
-                    Deliver to this address
-                  </Text>
-                </Block>
-              </TouchableOpacity>
-              <TouchableOpacity style={{ width: "100%", marginBottom: 15 }}>
-                <Block
-                  card
-                  style={[
-                    {
-                      width: 300,
-                      height: 40,
-                      backgroundColor: "white",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      borderRadius: 10,
-                    },
-                    styles.shadow,
-                  ]}
-                >
-                  <Text
-                    style={{
-                      color: "black",
-                      fontWeight: "500",
-                      fontSize: 18,
-                    }}
-                  >
-                    Edit Address
-                  </Text>
-                </Block>
-              </TouchableOpacity>
-              <TouchableOpacity style={{ width: "100%", marginBottom: 22 }}>
-                <Block
-                  card
-                  style={[
-                    {
-                      width: 300,
-                      height: 40,
-                      backgroundColor: "white",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      borderRadius: 10,
-                    },
-                    styles.shadow,
-                  ]}
-                >
-                  <Text
-                    style={{
-                      color: "black",
-                      fontWeight: "500",
-                      fontSize: 18,
-                    }}
-                  >
-                    Add Delivery Instruction
-                  </Text>
-                </Block>
-              </TouchableOpacity>
+                Deliver To Address
+              </Button>
+              <Button
+                style={{ height: 45, width: "100%", borderRadius: 10 }}
+                mode="contained"
+                onPress={() => {
+                  navigation.navigate("Delivery");
+                }}
+              >
+                Edit Address
+              </Button>
+              <Button
+                style={{ height: 45, width: "100%", borderRadius: 10 }}
+                mode="contained"
+              >
+                Add Delivery Instruction
+              </Button>
             </Block>
           </TouchableWithoutFeedback>
         </Block>

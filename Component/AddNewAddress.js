@@ -14,7 +14,12 @@ import { useNavigation } from "@react-navigation/native";
 import Button from "../src/components/Button";
 const { width, height } = Dimensions.get("screen");
 import { useSelector, useDispatch } from "react-redux";
-import { selectUserdata, ADD_TO_BASKET } from "../feature/navSlice";
+import {
+  selectUserdata,
+  ADD_TO_BASKET,
+  ADD_TO_USERDATA,
+  ADD_NEW_ADDRESS,
+} from "../feature/navSlice";
 
 const AddNewAddress = () => {
   const navigation = useNavigation();
@@ -31,7 +36,8 @@ const AddNewAddress = () => {
   });
 
   const handleData = () => {
-    dispatch(ADD_TO_BASKET(userData));
+    console.log(userData);
+    dispatch(ADD_NEW_ADDRESS(userData));
   };
 
   return (
@@ -47,8 +53,6 @@ const AddNewAddress = () => {
                 onChangeText={(text) =>
                   setuserData({ ...userData, name: text })
                 }
-                // error={!!name.error}
-                // errorText={name.error}
               />
             </Block>
             <Block width={width * 0.8} style={{ marginBottom: 5 }}>
@@ -127,9 +131,9 @@ const AddNewAddress = () => {
             </Block>
             <Block middle>
               <Button
-                style={{ width: 290, marginTop: 30 }}
+                style={{ width: 290, marginTop: 10 }}
                 mode="contained"
-                onPress={() => onSignUpPressed()}
+                onPress={() => handleData()}
               >
                 Add Address
               </Button>

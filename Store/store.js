@@ -11,7 +11,7 @@ const persistConfig = {
 };
 
 const persistConfig1 = {
-  key: "root",
+  key: "root1",
   storage: AsyncStorage,
   whitelist: ["navInfo"],
 };

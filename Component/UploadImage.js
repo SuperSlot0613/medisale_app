@@ -15,6 +15,9 @@ import Button from "../src/components/Button";
 import { useRef } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
+import { setPrescription } from "../feature/navSlice";
+import { useNavigation } from "@react-navigation/native";
 
 const UploadImage = () => {
   const cameraRef = useRef(null);
@@ -23,6 +26,8 @@ const UploadImage = () => {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [showCamera, setshowCamera] = useState(false);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   useEffect(() => {
     (async () => {
@@ -51,17 +56,8 @@ const UploadImage = () => {
 
     if (!result.cancelled) {
       setImage(result.uri);
+      dispatch(setPrescription(result.uri));
       toggleBottomNavigationView();
-      //   userImageSet(result.uri);
-      //   setDoc(doc(db, "registerUser", userDetails.id), {
-      //     id: userDetails.id,
-      //     Name: userDetails.Name,
-      //     email: userDetails.email,
-      //     password: userDetails.password,
-      //     mobile: userDetails.mobile,
-      //     image: result.uri,
-      //     timestamp: serverTimestamp(),
-      //   });
     }
   };
 
@@ -112,7 +108,7 @@ const UploadImage = () => {
                   const r = await takePhoto();
                   if (!r.cancelled) {
                     setImage(r.uri);
-                    console.log(r.uri);
+                    dispatch(setPrescription(r.uri));
                   }
                   setshowCamera(false);
                 }}
@@ -143,11 +139,17 @@ const UploadImage = () => {
               Upload Image Of Prescription Of Medicien
             </Text>
             <Button
-              onPress={toggleBottomNavigationView}
+              onPress={() => {
+                if (image === null) {
+                  toggleBottomNavigationView();
+                } else {
+                  navigation.navigate("YourWishList");
+                }
+              }}
               style={{ width: 300 }}
               mode="contained"
             >
-              Upload Image
+              {image === null ? "Upload Image" : "Next Step"}
             </Button>
           </View>
         )}
@@ -167,8 +169,8 @@ const UploadImage = () => {
               style={{ width: 300 }}
               mode="contained"
               onPress={() => {
+                toggleBottomNavigationView();
                 setshowCamera(true);
-                toggleBottomNavigationView;
               }}
             >
               Take A Image

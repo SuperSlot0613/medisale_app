@@ -9,7 +9,7 @@ import CustomDrawerContent from "./Screens/CustomDrawerContent";
 import Header from "./Component/Header";
 import tabs from "./constants/tabs";
 import Orders from "./Screens/Orders";
-import WishList from "./Screens/WishList";
+import MyCart from "./Screens/MyCart";
 import Elements from "./Screens/Elements";
 import Register from "./Screens/Register";
 import useAuth from "./Hooks/useAuth";
@@ -422,7 +422,7 @@ const Menu = () => {
               headerTransparent: true,
             }}
             name="YourWishList"
-            component={WishList}
+            component={MyCart}
           />
           <Drawer.Screen
             options={{

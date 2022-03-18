@@ -18,12 +18,14 @@ import useAuth from "../Hooks/useAuth";
 import MapViewDirections from "react-native-maps-directions";
 import { GOOGLE_MAPS_APIKEY } from "@env";
 import Button from "../src/components/Button";
+import { useNavigation } from "@react-navigation/native";
 
 const MapViewDirection = () => {
   const origin = useSelector(selectOrigin);
   const destination = useSelector(selectDestination);
   const { user } = useAuth();
   const mapRef = useRef();
+  const navigation = useNavigation();
   console.log(destination);
   useEffect(() => {
     if (!origin || !destination) return;
@@ -44,7 +46,7 @@ const MapViewDirection = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container,{backgroundColor:"#E0F7FA"}]}>
       <MapView
         ref={mapRef}
         initialRegion={initialMapState.region}
@@ -104,11 +106,10 @@ const MapViewDirection = () => {
       </MapView>
       <View style={styles.button}>
         <Button
-          style={{ height: 45 }}
+          style={{ height: 45, width: "90%" }}
           mode="contained"
           onPress={() => {
-            dispatch(setDestination(marker));
-            navigation.navigate("MapViwDirection");
+            navigation.navigate("Delivery");
           }}
         >
           Order
@@ -123,7 +124,7 @@ export default MapViewDirection;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: "column",
   },
   markerWrap: {
     alignItems: "center",

@@ -153,11 +153,13 @@ export default Home;
 const styles = StyleSheet.create({
   home: {
     width: width,
+    backgroundColor:"#E0F7FA"
   },
   articles: {
     width: width - theme.SIZES.BASE,
     paddingVertical: theme.SIZES.BASE,
     marginLeft: 8,
+    backgroundColor:"#E0F7FA"
   },
   scollcard: {
     display: "flex",
