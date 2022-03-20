@@ -9,18 +9,21 @@ LogBox.ignoreLogs(["Warning: ..."]);
 import { Provider } from "react-redux";
 import { store, persistor } from "./Store/store";
 import { PersistGate } from "redux-persist/integration/react";
+import { StripeProvider } from "@stripe/stripe-react-native";
 
 const App = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <NavigationContainer>
-          <SafeAreaProvider>
-            <AuthProvider>
-              <Menu />
-            </AuthProvider>
-          </SafeAreaProvider>
-        </NavigationContainer>
+        <StripeProvider publishableKey="pk_test_51J1XdTSDeAiXyTkgBNUMtGq6tvOz0yxAUMjoYKr0CXfSmzZjrUm1eA77irtXUpldQcor1V6k39PCVcj0hMJdU2IJ00mmMY9knC">
+          <NavigationContainer>
+            <SafeAreaProvider>
+              <AuthProvider>
+                <Menu />
+              </AuthProvider>
+            </SafeAreaProvider>
+          </NavigationContainer>
+        </StripeProvider>
       </PersistGate>
     </Provider>
   );

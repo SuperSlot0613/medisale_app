@@ -8,55 +8,47 @@ app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 // var multer = require("multer");
 var request = require("request-promise");
 var cors = require("cors");
+const shortid = require("shortid");
+const Stripe = require("stripe");
 app.use(cors());
 
 const port = 3003;
+const PUBLISHABLE_KEY =
+  "pk_test_51J1XdTSDeAiXyTkgBNUMtGq6tvOz0yxAUMjoYKr0CXfSmzZjrUm1eA77irtXUpldQcor1V6k39PCVcj0hMJdU2IJ00mmMY9knC";
+const SECRET_KEY =
+  "sk_test_51J1XdTSDeAiXyTkgWpfIqWKDqz1JyibgpS9KEswETt3dNDy0ETlGcRlzqx9wBnoCTeLKvtf56cj17K3rkLKYvNYd004fkTwYYW";
+const stripe = Stripe(SECRET_KEY, { apiVersion: "2020-08-27" });
 
-// var storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, "uploads");
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, file.fieldname + "-" + Date.now());
-//   },
-// });
+app.post("/payments", async (req, res) => {
+  try {
+    const paymentIntent = await stripe.paymentIntents.create({
+      description: "Software development services",
+      shipping: {
+        name: "Jenny Rosen",
+        address: {
+          line1: "510 Townsend St",
+          postal_code: "98140",
+          city: "San Francisco",
+          state: "CA",
+          country: "INR",
+        },
+      },
+      amount: 1099,
+      currency: "usd",
+      payment_method_types: ["card"],
+    });
+    console.log(paymentIntent);
 
-// var upload = multer({ storage: storage });
+    const clientSecret = paymentIntent.client_secret;
 
-// app.post("/faceregister", async (req, res) => {
-//   var base64Str = await req.body;
-//   base64Data = base64Str.imageUrl;
-//   var path = "./Knowimages/";
-//   var optionalObj = { fileName: `${base64Str.name}`, type: "png" };
-
-//   base64ToImage(base64Data, path, optionalObj);
-
-//   var imageInfo = base64ToImage(base64Data, path, optionalObj);
-//   // console.log(imageInfo)
-
-//   res.send(imageInfo);
-// });
-
-// app.post("/facelogin", async (req, res) => {
-//   var base64Str = await req.body;
-//   // console.log(base64Str.imageUrl);
-//   base64Data = base64Str.imageUrl;
-//   var path = "./Uknowimages/";
-//   var optionalObj = { fileName: `image`, type: "png" };
-
-//   base64ToImage(base64Data, path, optionalObj);
-
-//   var imageInfo = base64ToImage(base64Data, path, optionalObj);
-
-//   var process = spawn("python", ["./Login.py", false]);
-
-//   process.stdout.on("data", function (data) {
-//     var mystr = data.toString();
-//     var myjson = JSON.parse(mystr);
-//     console.log(myjson);
-//     res.send(myjson);
-//   });
-// });
+    res.json({
+      clientSecret: clientSecret,
+    });
+  } catch (e) {
+    console.log(e.message);
+    res.json({ error: e.message });
+  }
+});
 
 app.post("/facevalidation", async (req, res) => {
   console.log("API IS CALL");
