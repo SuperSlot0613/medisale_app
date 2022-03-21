@@ -27,8 +27,6 @@ const ProfilePage = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  // console.log("This is Data Image",data);
-
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -77,7 +75,7 @@ const ProfilePage = () => {
           <Avatar
             rounded
             source={{
-              uri: data.userImage,
+              uri: data?.userImage,
             }}
             size="xlarge"
             activeOpacity={0.7}

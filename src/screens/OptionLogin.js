@@ -23,7 +23,11 @@ const OptionLogin = () => {
       <Text>or</Text>
       <Button
         mode="contained"
-        onPress={() => navigation.navigate("StartScreen2")}
+        onPress={() =>
+          navigation.navigate("StartScreen2", {
+            seller: "true",
+          })
+        }
       >
         Login as Seller
       </Button>

@@ -74,7 +74,7 @@ const MyCart = ({ navigation }) => {
       console.log(e);
     }
 
-    // ToastAndroid.show("Items will be Deliverd SOON!", ToastAndroid.SHORT);
+    ToastAndroid.show("Items will be Deliverd SOON!", ToastAndroid.SHORT);
 
     // navigation.navigate("Home");
   };

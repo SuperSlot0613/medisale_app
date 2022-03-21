@@ -16,6 +16,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 import { useDispatch } from "react-redux";
 import { ADD_TO_SELLER } from "../../feature/SellerSlice";
+import { AsyncStorage } from "react-native";
 
 export default function LoginScreen() {
   const route = useRoute();
@@ -41,15 +42,20 @@ export default function LoginScreen() {
   };
 
   const signWithEmailIdSeller = async ({ email, password }) => {
+    console.log("This is seller login method");
+    await AsyncStorage.getItem("loginInfo").then((value) => {
+      if (value == null) {
+        AsyncStorage.setItem("loginInfo", "sellerlogin");
+      }
+    });
     signInWithEmailAndPassword(auth, email.value, password.value)
       .then(async (userCredential) => {
         var userinfo = userCredential.user;
         const docRef = doc(db, "userInfo", email);
         const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          dispatch(ADD_TO_SELLER(docSnap.data()));
-          navigation.navigate("SellerPages");
-        }
+        console.log("This is login screen data", docSnap.data());
+        dispatch(ADD_TO_SELLER(docSnap.data()));
+        navigation.navigate("SellerPages");
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -94,6 +100,7 @@ export default function LoginScreen() {
         mode="contained"
         onPress={() => {
           if (seller === "true") {
+            console.log("Login screen", seller);
             signWithEmailIdSeller({ email, password });
           } else {
             signWithEmailId({ email, password });
