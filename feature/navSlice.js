@@ -8,7 +8,7 @@ const initialState = {
   basket: [],
   userData: [],
   userNewAddress: null,
-  prescription:null
+  prescription: null,
 };
 
 export const navSlice = createSlice({
@@ -37,13 +37,20 @@ export const navSlice = createSlice({
       };
     },
     ADD_TO_BASKET: (state, action) => {
-      const zIndex = state.basket.findIndex(
+      let zIndex = state.basket.findIndex(
         (basketItem) => basketItem.id == action.payload.id
       );
-      return {
-        ...state,
-        basket: [...state.basket, action.payload],
-      };
+      let updatedCartList = [...state.basket];
+      if (zIndex >= 0) {
+        console.log(zIndex);
+        updatedCartList[zIndex].quantity += 1;
+      } else {
+        updatedCartList = updatedCartList.concat(action.payload);
+        return {
+          ...state,
+          basket: updatedCartList,
+        };
+      }
     },
     EMPTY_BASKET: (state) => {
       return {
@@ -109,7 +116,7 @@ export const {
   ADD_TO_USERDATA,
   ADD_NEW_ADDRESS,
   INCREASE_ITEM_QUANTITY,
-  DECREASE_ITEM_QUANTITY
+  DECREASE_ITEM_QUANTITY,
 } = navSlice.actions;
 
 export const selectValue = (state) => state.nav.value;

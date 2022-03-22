@@ -3,7 +3,7 @@ import {
   StyleSheet,
   Dimensions,
   Image,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
 } from "react-native";
 import { Block, Text, theme } from "galio-framework";
 import PropTypes from "prop-types";
@@ -15,13 +15,15 @@ const ProductCard = ({
   name,
   description,
   horizontal,
+  quantity,
+  category,
   count,
   veg,
   price,
   style,
   imageStyle,
   image,
-  id
+  id,
 }) => {
   const navigation = useNavigation();
   const imageStyles = [styles.horizontalImage, imageStyle];
@@ -29,26 +31,27 @@ const ProductCard = ({
   const imgContainer = [
     styles.imageContainer,
     horizontal ? styles.horizontalStyles : styles.verticalStyles,
-    styles.shadow
+    styles.shadow,
   ];
   return (
     <Block row={horizontal} card flex style={cardContainer}>
       <TouchableOpacity
         onPress={() =>
           navigation.navigate("ItemDetails", {
-            // id:id,
+            id: id,
             name: name,
             description: description,
             price: price,
             image: image,
-            // count: count,
-            // veg: veg
-          })}
+            quantity: quantity,
+            category:category
+          })
+        }
       >
         <Block flex style={imgContainer}>
           <Image
             source={{
-              uri: image
+              uri: image,
             }}
             style={imageStyles}
             resizeMode="stretch"
@@ -61,7 +64,10 @@ const ProductCard = ({
             <Text size={20} style={styles.cardTitle}>
               {name}
             </Text>
-            <Text size={16} style={{ color: "gray", fontWeight: "600" }}>
+            <Text
+              size={14}
+              style={{ color: "gray", fontWeight: "600", alignItems: "center" }}
+            >
               {description}
             </Text>
           </Block>
@@ -87,7 +93,7 @@ const ProductCard = ({
                 borderRadius: 2,
                 marginLeft: 50,
                 textAlign: "center",
-                marginTop: 5
+                marginTop: 5,
               }}
             >
               ⭐4.1
@@ -111,46 +117,46 @@ const styles = StyleSheet.create({
     margin: 5,
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   cardTitle: {
     flex: 1,
     flexWrap: "wrap",
     paddingBottom: 6,
-    fontWeight: "700"
+    fontWeight: "700",
   },
   cardDescription: {
     padding: theme.SIZES.BASE / 2,
-    alignItems: "center"
+    alignItems: "center",
   },
   imageContainer: {
     borderRadius: 3,
     // elevation: 1,
     overflow: "hidden",
     alignItems: "center",
-    width: "100%"
+    width: "100%",
   },
   image: {
-    borderRadius: 10
+    borderRadius: 10,
   },
   horizontalImage: {
     marginTop: 15,
     height: 150,
-    width: "80%"
+    width: "80%",
   },
   horizontalStyles: {
     borderTopRightRadius: 3,
-    borderBottomRightRadius: 3
+    borderBottomRightRadius: 3,
   },
   verticalStyles: {
     borderBottomRightRadius: 3,
-    borderBottomLeftRadius: 3
+    borderBottomLeftRadius: 3,
   },
   shadow: {
     shadowColor: theme.COLORS.BLACK,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 6,
     shadowOpacity: 0.1,
-    elevation: 2
-  }
+    elevation: 2,
+  },
 });

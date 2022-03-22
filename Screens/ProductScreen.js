@@ -6,7 +6,7 @@ import {
   View,
   ScrollView,
   FlatList,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import { db } from "../firebase";
 import { collection, getDocs } from "@firebase/firestore";
@@ -17,13 +17,18 @@ const { width } = Dimensions.get("screen");
 
 const ProductScreen = () => {
   const route = useRoute();
-  const {title,title1,image,price } = route.params;
-  const [productList, setproductList] = useState([{
-    image:image,
-    price:price,
-    name:title,
-    description:title1,
-  }]);
+  const { id, title, description, image, price, quantity,category } = route.params;
+  const [productList, setproductList] = useState([
+    {
+      id: id,
+      image: image,
+      price: price,
+      name: title,
+      quantity: quantity,
+      description: description,
+      category:category
+    },
+  ]);
 
   // useEffect(async () => {
   //   const passes = await getDocs(collection(db, "filteritems")).then(snapshot =>
@@ -44,24 +49,26 @@ const ProductScreen = () => {
           numColumns={2}
           ItemSeparatorComponent={
             Platform.OS !== "android" &&
-            (({ highlighted }) =>
+            (({ highlighted }) => (
               <View
                 style={[style.separator, highlighted && { marginLeft: 0 }]}
-              />)
+              />
+            ))
           }
           data={productList}
-          renderItem={({ item, index }) =>
+          renderItem={({ item, index }) => (
             <ProductCard
               Key={index}
-              // id={item.id}
+              id={item.id}
               name={item.name}
               description={item.description}
               image={item.image}
               price={item.price}
-              // count={item.count}
-              // veg={item.veg}
+              quantity={item.quantity}
+              category={item.category}
               horizontal={true}
-            />}
+            />
+          )}
         />
       </Block>
     </ScrollView>
@@ -75,6 +82,6 @@ const styles = StyleSheet.create({
     width: width - theme.SIZES.BASE,
     paddingVertical: theme.SIZES.BASE,
     marginLeft: 8,
-    backgroundColor:"#E0F7FA"
-  }
+    backgroundColor: "#E0F7FA",
+  },
 });

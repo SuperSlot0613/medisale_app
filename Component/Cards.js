@@ -3,7 +3,7 @@ import {
   StyleSheet,
   Dimensions,
   Image,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
 } from "react-native";
 import { Block, Text, theme } from "galio-framework";
 import PropTypes from "prop-types";
@@ -18,32 +18,37 @@ const Cards = ({
   price,
   full,
   id,
+  quantity,
+  category,
   style,
   imageStyle,
-  image
+  image,
 }) => {
   const navigation = useNavigation();
   const imageStyles = [
     full ? styles.fullImage : styles.horizontalImage,
-    imageStyle
+    imageStyle,
   ];
   const cardContainer = [styles.card, styles.shadow, style];
   const imgContainer = [
     styles.imageContainer,
     horizontal ? styles.horizontalStyles : styles.verticalStyles,
-    styles.shadow
+    styles.shadow,
   ];
   return (
     <Block row={horizontal} card flex style={cardContainer}>
       <TouchableOpacity
         onPress={() =>
           navigation.navigate("ProductScreen", {
-            // id: id,
-            title:title,
-            title1:title2,
-            image:image,
-            price:price,
-          })}
+            id: id,
+            title: title,
+            description: title2,
+            quantity:quantity,
+            image: image,
+            price: price,
+            category:category
+          })
+        }
       >
         <Block flex style={imgContainer}>
           <Image
@@ -59,7 +64,7 @@ const Cards = ({
             <Text size={20} style={styles.cardTitle}>
               {title}
             </Text>
-            <Text size={16} style={{ color: "gray", fontWeight: "600" }}>
+            <Text size={14} style={{ color: "gray", fontWeight: "600" }}>
               {title2}
             </Text>
           </Block>
@@ -75,7 +80,7 @@ const Cards = ({
                 borderRadius: 2,
                 marginLeft: 50,
                 textAlign: "center",
-                marginBottom:5,
+                marginBottom: 5,
               }}
             >
               ⭐4.1
@@ -96,7 +101,7 @@ const Cards = ({
             borderTopColor: "gray",
             width: 300,
             marginLeft: 10,
-            alignItems: "center"
+            alignItems: "center",
           }}
         >
           <Text
@@ -104,7 +109,7 @@ const Cards = ({
               color: "gray",
               fontWeight: "600",
               fontSize: 14,
-              margin: 8
+              margin: 8,
             }}
           >
             ✨🎉6050+ orders from here recently
@@ -126,45 +131,45 @@ const styles = StyleSheet.create({
     margin: 10,
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   cardTitle: {
     flex: 1,
     flexWrap: "wrap",
     paddingBottom: 6,
-    fontWeight: "700"
+    fontWeight: "700",
   },
   cardDescription: {
-    padding: theme.SIZES.BASE / 2
+    padding: theme.SIZES.BASE / 2,
   },
   imageContainer: {
     borderRadius: 3,
     // elevation: 1,
-    overflow: "hidden"
+    overflow: "hidden",
   },
   image: {
-    borderRadius: 3
+    borderRadius: 3,
   },
   horizontalImage: {
     height: 170,
-    width: "auto"
+    width: "auto",
   },
   horizontalStyles: {
     borderTopRightRadius: 3,
-    borderBottomRightRadius: 3
+    borderBottomRightRadius: 3,
   },
   verticalStyles: {
     borderBottomRightRadius: 3,
-    borderBottomLeftRadius: 3
+    borderBottomLeftRadius: 3,
   },
   fullImage: {
-    height: 150
+    height: 150,
   },
   shadow: {
     shadowColor: theme.COLORS.BLACK,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
     shadowOpacity: 0.1,
-    elevation: 2
-  }
+    elevation: 2,
+  },
 });

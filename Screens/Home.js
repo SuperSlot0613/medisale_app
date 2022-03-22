@@ -117,10 +117,13 @@ const Home = () => {
       </Block>
       <Block flex row={false}>
         <Cards
-          title="I Love Icecream Re"
-          title2="Venella,Chocolate"
-          image="https://images.unsplash.com/photo-1516559828984-fb3b99548b21?ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80"
-          price="250"
+          id={123}
+          title="Antimalarial medication"
+          title2="Antimalarial medications or simply antimalarials are a type of antiparasitic chemical agent that can be used to treat or to prevent malaria"
+          image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-zS9wMtJg7hQ-zE3NG23opYNS3tgSbRtdPA&usqp=CAU"
+          price={250}
+          quantity={1}
+          category="Antimalaria"
           horizontal={true}
         />
         {/* <FlatList
@@ -153,13 +156,13 @@ export default Home;
 const styles = StyleSheet.create({
   home: {
     width: width,
-    backgroundColor:"#E0F7FA"
+    backgroundColor: "#E0F7FA",
   },
   articles: {
     width: width - theme.SIZES.BASE,
     paddingVertical: theme.SIZES.BASE,
     marginLeft: 8,
-    backgroundColor:"#E0F7FA"
+    backgroundColor: "#E0F7FA",
   },
   scollcard: {
     display: "flex",

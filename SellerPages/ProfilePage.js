@@ -19,6 +19,7 @@ import Button from "../src/components/Button";
 import { signOut } from "firebase/auth";
 import { auth, db } from "../firebase";
 import { doc, updateDoc } from "firebase/firestore";
+import { AsyncStorage } from "react-native";
 
 const ProfilePage = () => {
   const [image, setImage] = useState("");
@@ -46,7 +47,12 @@ const ProfilePage = () => {
     }
   };
 
-  const signOutPage = () => {
+  const signOutPage = async () => {
+    await AsyncStorage.getItem("loginInfo").then((value) => {
+      if (value == "sellerlogin") {
+        AsyncStorage.setItem("loginInfo", null);
+      }
+    });
     signOut(auth)
       .then(() => {
         dispatch(EMPTY_SELLER());

@@ -19,7 +19,7 @@ import OfferCard from "./OfferCard";
 
 const ItemDetails = () => {
   const route = useRoute();
-  const { name, price, description, image } = route.params;
+  const { name, price, description, image, quantity, id,category } = route.params;
   const [itemcount, setitemcount] = useState(1);
   const [extrachess, setextrachess] = useState(0);
   const [Onion, setOnion] = useState(0);
@@ -127,13 +127,19 @@ const ItemDetails = () => {
             >
               <Block flex row={false} style={{ alignItems: "center" }}>
                 <Text
-                  style={{ color: "black", fontWeight: "600", fontSize: 36 }}
+                  style={{ color: "black", fontWeight: "600", fontSize: 32 }}
                 >
                   {name}
                 </Text>
                 <Text
-                  size={18}
-                  style={{ color: "gray", fontWeight: "600", marginTop: 15 }}
+                  size={14}
+                  style={{
+                    flex:1,
+                    color: "gray",
+                    fontWeight: "600",
+                    marginTop: 15,
+                    alignItems: "center",
+                  }}
                 >
                   {description}
                 </Text>
@@ -243,7 +249,22 @@ const ItemDetails = () => {
                   </Text>
                 </Block>
               </TouchableOpacity>
-              <TouchableOpacity style={{ width: "100%", marginBottom: 22 }}>
+              <TouchableOpacity
+                style={{ width: "100%", marginBottom: 22 }}
+                onPress={() =>
+                  dispatch(
+                    ADD_TO_BASKET({
+                      name,
+                      price,
+                      description,
+                      image,
+                      quantity,
+                      id,
+                      category
+                    })
+                  )
+                }
+              >
                 <Block
                   style={[
                     {

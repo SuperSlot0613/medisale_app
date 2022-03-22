@@ -15,22 +15,26 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { CardField, useConfirmPayment } from "@stripe/stripe-react-native";
 import axios from "axios";
 import stripe from "tipsi-stripe";
+import { useDispatch, useSelector } from "react-redux";
+import { ADD_TO_BASKET, selectBasket } from "../feature/navSlice";
 
 const MyCart = ({ navigation }) => {
+  const basket = useSelector(selectBasket);
   const [product, setProduct] = useState(Items);
   const [total, setTotal] = useState(null);
   const [cardDetails, setCardDetails] = useState();
   const { confirmPayment, loading } = useConfirmPayment();
   const [token, settoken] = useState();
+  // console.log("Database Product", product);
 
   useEffect(() => {
-    getTotal(product);
+    getTotal(basket);
   }, []);
 
   const getTotal = (productData) => {
     let total = 0;
     for (let index = 0; index < productData.length; index++) {
-      let productPrice = productData[index].productPrice;
+      let productPrice = productData[index].price;
       total = total + productPrice;
     }
     setTotal(total);
@@ -83,9 +87,9 @@ const MyCart = ({ navigation }) => {
     return (
       <TouchableOpacity
         key={data.id}
-        onPress={() =>
-          navigation.navigate("ProductInfo", { productID: data.id })
-        }
+        // onPress={() =>
+        //   navigation.navigate("ProductInfo", { productID: data.id })
+        // }
         style={{
           width: "100%",
           height: 100,
@@ -107,11 +111,12 @@ const MyCart = ({ navigation }) => {
           }}
         >
           <Image
-            source={data.productImage}
+            source={{uri:data.image}}
             style={{
-              width: "100%",
-              height: "100%",
-              resizeMode: "contain",
+              width: 100,
+              height: 100,
+              borderRadius:10,
+              resizeMode: "cover",
             }}
           />
         </View>
@@ -132,7 +137,7 @@ const MyCart = ({ navigation }) => {
                 letterSpacing: 1,
               }}
             >
-              {data.productName}
+              {data.name}
             </Text>
             <View
               style={{
@@ -150,11 +155,11 @@ const MyCart = ({ navigation }) => {
                   marginRight: 4,
                 }}
               >
-                &#8377;{data.productPrice}
+                &#8377;{data.price}
               </Text>
               <Text>
                 (~&#8377;
-                {data.productPrice + data.productPrice / 20})
+                {data.price + data.price / 20})
               </Text>
             </View>
           </View>
@@ -209,7 +214,7 @@ const MyCart = ({ navigation }) => {
                 />
               </View>
             </View>
-            <TouchableOpacity onPress={() => removeItemFromCart(data.id)}>
+            <TouchableOpacity>
               <MaterialCommunityIcons
                 name="delete-outline"
                 style={{
@@ -286,7 +291,7 @@ const MyCart = ({ navigation }) => {
             My Cart
           </Text>
           <View style={{ paddingHorizontal: 16 }}>
-            {product ? product.map(renderProducts) : null}
+            {basket ? basket.map(renderProducts) : null}
           </View>
           <View>
             <View
