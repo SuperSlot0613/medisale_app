@@ -67,7 +67,8 @@ export const AuthProvider = ({ children }) => {
                 dispatch(ADD_TO_SELLER(docSnap.data()));
                 navigation.navigate("SellerPages");
               }
-            } else if (value === null) {
+            } 
+            // else if (value === null) {
               console.log("This is asyncStorage", value);
               const docRef = doc(db, "userInfo", user.email);
               const docSnap = await getDoc(docRef);
@@ -77,7 +78,7 @@ export const AuthProvider = ({ children }) => {
               }
               setuser(user);
               console.log("This is user auth function", user);
-            }
+            // }
           });
         } else {
           setuser(null);

@@ -16,7 +16,14 @@ import { CardField, useConfirmPayment } from "@stripe/stripe-react-native";
 import axios from "axios";
 import stripe from "tipsi-stripe";
 import { useDispatch, useSelector } from "react-redux";
-import { ADD_TO_BASKET, selectBasket } from "../feature/navSlice";
+import {
+  ADD_TO_BASKET,
+  selectBasket,
+  DECREASE_ITEM_QUANTITY,
+  INCREASE_ITEM_QUANTITY,
+  REMOVE_FROM_BASKET,
+} from "../feature/navSlice";
+import { Block, theme } from "galio-framework";
 
 const MyCart = ({ navigation }) => {
   const basket = useSelector(selectBasket);
@@ -25,17 +32,20 @@ const MyCart = ({ navigation }) => {
   const [cardDetails, setCardDetails] = useState();
   const { confirmPayment, loading } = useConfirmPayment();
   const [token, settoken] = useState();
-  // console.log("Database Product", product);
+  const dispatch = useDispatch();
+
+  console.log("Basket value", basket);
 
   useEffect(() => {
     getTotal(basket);
-  }, []);
+  }, [basket]);
 
   const getTotal = (productData) => {
     let total = 0;
     for (let index = 0; index < productData.length; index++) {
       let productPrice = productData[index].price;
-      total = total + productPrice;
+      let quantity = productData[index].quantity;
+      total = total + productPrice * quantity;
     }
     setTotal(total);
   };
@@ -85,7 +95,7 @@ const MyCart = ({ navigation }) => {
 
   const renderProducts = (data, index) => {
     return (
-      <TouchableOpacity
+      <Block
         key={data.id}
         // onPress={() =>
         //   navigation.navigate("ProductInfo", { productID: data.id })
@@ -111,11 +121,11 @@ const MyCart = ({ navigation }) => {
           }}
         >
           <Image
-            source={{uri:data.image}}
+            source={{ uri: data.image }}
             style={{
               width: 100,
               height: 100,
-              borderRadius:10,
+              borderRadius: 10,
               resizeMode: "cover",
             }}
           />
@@ -176,45 +186,61 @@ const MyCart = ({ navigation }) => {
                 alignItems: "center",
               }}
             >
-              <View
-                style={{
-                  borderRadius: 100,
-                  marginRight: 20,
-                  padding: 4,
-                  borderWidth: 1,
-                  borderColor: COLOURS.backgroundMedium,
-                  opacity: 0.5,
-                }}
+              <TouchableOpacity
+                onPress={() => dispatch(DECREASE_ITEM_QUANTITY())}
               >
-                <MaterialCommunityIcons
-                  name="minus"
+                <View
                   style={{
-                    fontSize: 16,
-                    color: COLOURS.backgroundDark,
+                    borderRadius: 100,
+                    marginRight: 20,
+                    padding: 4,
+                    borderWidth: 1,
+                    borderColor: COLOURS.backgroundMedium,
+                    opacity: 0.5,
                   }}
-                />
-              </View>
-              <Text>1</Text>
-              <View
-                style={{
-                  borderRadius: 100,
-                  marginLeft: 20,
-                  padding: 4,
-                  borderWidth: 1,
-                  borderColor: COLOURS.backgroundMedium,
-                  opacity: 0.5,
-                }}
+                >
+                  <MaterialCommunityIcons
+                    name="minus"
+                    style={{
+                      fontSize: 16,
+                      color: COLOURS.backgroundDark,
+                    }}
+                  />
+                </View>
+              </TouchableOpacity>
+              <Text>{data.quantity}</Text>
+              <TouchableOpacity
+                onPress={() => dispatch(INCREASE_ITEM_QUANTITY())}
               >
-                <MaterialCommunityIcons
-                  name="plus"
+                <View
                   style={{
-                    fontSize: 16,
-                    color: COLOURS.backgroundDark,
+                    borderRadius: 100,
+                    marginLeft: 20,
+                    padding: 4,
+                    borderWidth: 1,
+                    borderColor: COLOURS.backgroundMedium,
+                    opacity: 0.5,
                   }}
-                />
-              </View>
+                >
+                  <MaterialCommunityIcons
+                    name="plus"
+                    style={{
+                      fontSize: 16,
+                      color: COLOURS.backgroundDark,
+                    }}
+                  />
+                </View>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                dispatch(REMOVE_FROM_BASKET(data.id));
+                ToastAndroid.show(
+                  "Items Deleted From Basket",
+                  ToastAndroid.SHORT
+                )
+              }}
+            >
               <MaterialCommunityIcons
                 name="delete-outline"
                 style={{
@@ -228,7 +254,7 @@ const MyCart = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </View>
-      </TouchableOpacity>
+      </Block>
     );
   };
 

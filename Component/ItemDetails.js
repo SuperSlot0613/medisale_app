@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
   FlatList,
+  ToastAndroid,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -19,7 +20,8 @@ import OfferCard from "./OfferCard";
 
 const ItemDetails = () => {
   const route = useRoute();
-  const { name, price, description, image, quantity, id,category } = route.params;
+  const { name, price, description, image, quantity, id, category } =
+    route.params;
   const [itemcount, setitemcount] = useState(1);
   const [extrachess, setextrachess] = useState(0);
   const [Onion, setOnion] = useState(0);
@@ -134,7 +136,7 @@ const ItemDetails = () => {
                 <Text
                   size={14}
                   style={{
-                    flex:1,
+                    flex: 1,
                     color: "gray",
                     fontWeight: "600",
                     marginTop: 15,
@@ -251,7 +253,7 @@ const ItemDetails = () => {
               </TouchableOpacity>
               <TouchableOpacity
                 style={{ width: "100%", marginBottom: 22 }}
-                onPress={() =>
+                onPress={() => {
                   dispatch(
                     ADD_TO_BASKET({
                       name,
@@ -260,10 +262,14 @@ const ItemDetails = () => {
                       image,
                       quantity,
                       id,
-                      category
+                      category,
                     })
-                  )
-                }
+                  );
+                  ToastAndroid.show(
+                    "Items Added To Basket",
+                    ToastAndroid.SHORT
+                  );
+                }}
               >
                 <Block
                   style={[

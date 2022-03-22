@@ -83,10 +83,6 @@ export const navSlice = createSlice({
         (object) => object.Id === action.Id
       );
       updatedCartList[index].quantity += 1;
-      return {
-        ...state,
-        basket: updatedCartList,
-      };
     },
     DECREASE_ITEM_QUANTITY: (state, action) => {
       let updatedCartList = [...state.basket];
@@ -96,11 +92,12 @@ export const navSlice = createSlice({
       let quantity = updatedCartList[index].quantity;
       if (quantity > 1) {
         updatedCartList[index].quantity -= 1;
+      } else {
+        return {
+          ...state,
+          basket: updatedCartList,
+        };
       }
-      return {
-        ...state,
-        basket: updatedCartList,
-      };
     },
   },
 });
