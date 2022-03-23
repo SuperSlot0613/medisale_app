@@ -143,7 +143,7 @@ const UploadImage = () => {
                 if (image === null) {
                   toggleBottomNavigationView();
                 } else {
-                  navigation.navigate("YourWishList");
+                  navigation.navigate("Payment");
                 }
               }}
               style={{ width: 300 }}

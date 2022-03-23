@@ -225,7 +225,24 @@ const ItemDetails = () => {
             >
               <TouchableOpacity
                 style={{ width: "100%", marginBottom: 15 }}
-                onPress={() => navigation.navigate("MapScreen")}
+                onPress={() => {
+                  dispatch(
+                    ADD_TO_BASKET({
+                      name,
+                      price,
+                      description,
+                      image,
+                      quantity,
+                      id,
+                      category,
+                    })
+                  );
+                  ToastAndroid.show(
+                    "Items Added To Basket",
+                    ToastAndroid.SHORT
+                  );
+                  navigation.navigate("YourWishList");
+                }}
               >
                 <Block
                   style={[

@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { CardField, useConfirmPayment } from "@stripe/stripe-react-native";
+import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ADD_TO_BASKET,
@@ -20,9 +22,11 @@ import {
 } from "../feature/navSlice";
 import { Block, theme } from "galio-framework";
 
-const MyCart = ({ navigation }) => {
+const Payment = ({ navigation }) => {
   const basket = useSelector(selectBasket);
   const [total, setTotal] = useState(null);
+  const [cardDetails, setCardDetails] = useState();
+  const { confirmPayment, loading } = useConfirmPayment();
   const dispatch = useDispatch();
 
   console.log("Basket value", basket);
@@ -39,6 +43,49 @@ const MyCart = ({ navigation }) => {
       total = total + productPrice * quantity;
     }
     setTotal(total);
+  };
+
+  const checkOut = async () => {
+    console.log(cardDetails);
+    if (!cardDetails?.complete) {
+      Alert.alert("Please enter Complete card details and Email");
+      return;
+    }
+    const billingDetails = {
+      email: "saurabh@gmail.com",
+    };
+    try {
+      const response = await axios("http://192.168.1.14:3003/payments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(response.data);
+      const { clientSecret, error } = await response.data;
+      //2. confirm the payment
+      if (error) {
+        console.log("Unable to process payment");
+      } else {
+        const { paymentIntent, error } = await confirmPayment(clientSecret, {
+          type: "Card",
+          billingDetails: billingDetails,
+        });
+        if (error) {
+          console.log(error.message);
+          alert(`Payment Confirmation Error ${error.message}`);
+        } else if (paymentIntent) {
+          alert("Payment Successful");
+          console.log("Payment successful ", paymentIntent);
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
+    ToastAndroid.show("Items will be Deliverd SOON!", ToastAndroid.SHORT);
+
+    // navigation.navigate("Home");
   };
 
   const renderProducts = (data, index) => {
@@ -143,16 +190,15 @@ const MyCart = ({ navigation }) => {
                     marginRight: 20,
                     padding: 4,
                     borderWidth: 1,
-                    borderColor: "gray",
+                    borderColor: "black",
                     opacity: 0.5,
-                    backgroundColor: "#f5f5f5",
                   }}
                 >
                   <MaterialCommunityIcons
                     name="minus"
                     style={{
                       fontSize: 16,
-                      color:"black",
+                      color: "black",
                     }}
                   />
                 </View>
@@ -167,9 +213,8 @@ const MyCart = ({ navigation }) => {
                     marginLeft: 20,
                     padding: 4,
                     borderWidth: 1,
-                    borderColor: "gray",
+                    borderColor: "black",
                     opacity: 0.5,
-                    backgroundColor: "#f5f5f5",
                   }}
                 >
                   <MaterialCommunityIcons
@@ -188,7 +233,7 @@ const MyCart = ({ navigation }) => {
                 ToastAndroid.show(
                   "Items Deleted From Basket",
                   ToastAndroid.SHORT
-                );
+                )
               }}
             >
               <MaterialCommunityIcons
@@ -237,7 +282,7 @@ const MyCart = ({ navigation }) => {
                   fontSize: 18,
                   color: "black",
                   padding: 12,
-                  backgroundColor: "whitesmoke",
+                  backgroundColor: "#f5f5f5",
                   borderRadius: 12,
                 }}
               />
@@ -270,6 +315,118 @@ const MyCart = ({ navigation }) => {
             {basket ? basket.map(renderProducts) : null}
           </View>
           <View>
+            <View
+              style={{
+                paddingHorizontal: 16,
+                marginVertical: 10,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: "black",
+                  fontWeight: "500",
+                  letterSpacing: 1,
+                  marginBottom: 20,
+                }}
+              >
+                Delivery Location
+              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    width: "80%",
+                    alignItems: "center",
+                  }}
+                >
+                  <View
+                    style={{
+                      color: "blue",
+                      backgroundColor: "#f5f5f5",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: 12,
+                      borderRadius: 10,
+                      marginRight: 18,
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      name="truck-delivery-outline"
+                      style={{
+                        fontSize: 18,
+                        color: "blue",
+                      }}
+                    />
+                  </View>
+                  <View>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        color: "black",
+                        fontWeight: "500",
+                      }}
+                    >
+                      2 Petre Melikishvili St.
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        color: "black",
+                        fontWeight: "400",
+                        lineHeight: 20,
+                        opacity: 0.5,
+                      }}
+                    >
+                      0162, Tbilisi
+                    </Text>
+                  </View>
+                </View>
+                <MaterialCommunityIcons
+                  name="chevron-right"
+                  style={{ fontSize: 22, color: "black" }}
+                />
+              </View>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "space-evenly",
+                paddingHorizontal: 5,
+                marginVertical: 5,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: "black",
+                  fontWeight: "500",
+                  letterSpacing: 1,
+                  marginBottom: 20,
+                }}
+              >
+                Payment Method
+              </Text>
+              <View style={styles.container}>
+                <CardField
+                  postalCodeEnabled={false}
+                  placeholder={{
+                    number: "4242 4242 4242 4242",
+                  }}
+                  cardStyle={styles.card}
+                  style={styles.cardContainer}
+                  onCardChange={(cardDetails) => {
+                    setCardDetails(cardDetails);
+                  }}
+                />
+              </View>
+            </View>
             <View
               style={{
                 paddingHorizontal: 16,
@@ -391,7 +548,7 @@ const MyCart = ({ navigation }) => {
           }}
         >
           <TouchableOpacity
-            onPress={() => navigation.navigate("MapScreen")}
+            onPress={() => (total != 0 ? checkOut() : null)}
             style={{
               width: "86%",
               height: "90%",
@@ -400,6 +557,7 @@ const MyCart = ({ navigation }) => {
               justifyContent: "center",
               alignItems: "center",
             }}
+            disabled={loading}
           >
             <Text
               style={{
@@ -410,7 +568,7 @@ const MyCart = ({ navigation }) => {
                 textTransform: "uppercase",
               }}
             >
-              Next Step (&#8377;{total + total / 20} )
+              CHECKOUT (&#8377;{total + total / 20} )
             </Text>
           </TouchableOpacity>
         </View>
@@ -419,7 +577,7 @@ const MyCart = ({ navigation }) => {
   );
 };
 
-export default MyCart;
+export default Payment;
 
 const styles = StyleSheet.create({
   container: {

@@ -31,7 +31,7 @@ function CustomDrawerContent({
   ...rest
 }) {
   const { user } = useAuth();
-  const [image, setImage] = useState(user?.photoURL ? user.photoURL : "");
+  const [image, setImage] = useState(user.photoURL);
   const screens = [
     "Home",
     "Your Account",
@@ -39,6 +39,7 @@ function CustomDrawerContent({
     "Your Orders",
     "Your Wish List",
     "Buy Again",
+    "Chat",
     "Log Out",
   ];
 

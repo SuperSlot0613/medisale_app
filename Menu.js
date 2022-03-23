@@ -49,6 +49,8 @@ import ProfilePage from "./SellerPages/ProfilePage";
 import { useSelector } from "react-redux";
 import { selectDestination, selectOrigin } from "./feature/navSlice";
 import MapViewDirection from "./Screens/MapViewDirection";
+import Payment from "./Screens/Payment";
+import ChatScreen from "./Screens/ChatScreen";
 // import CardScan from "./src/screens/CardScan";
 
 const { width } = Dimensions.get("screen");
@@ -439,6 +441,38 @@ const Menu = () => {
             }}
             name="BuyAgain"
             component={BuyScreen}
+          />
+          <Drawer.Screen
+            options={{
+              header: ({ navigation, scene }) => (
+                <Header
+                  black
+                  title="Payment"
+                  navigation={navigation}
+                  scene={scene}
+                />
+              ),
+              cardStyle: { backgroundColor: "#FFFFFF" },
+              headerTransparent: true,
+            }}
+            name="Payment"
+            component={Payment}
+          />
+          <Drawer.Screen
+            options={{
+              header: ({ navigation, scene }) => (
+                <Header
+                  black
+                  title="Chat"
+                  navigation={navigation}
+                  scene={scene}
+                />
+              ),
+              cardStyle: { backgroundColor: "#FFFFFF" },
+              headerTransparent: true,
+            }}
+            name="Chat"
+            component={ChatScreen}
           />
         </>
       ) : (

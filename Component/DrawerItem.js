@@ -11,7 +11,7 @@ import {
   AntDesign,
   SimpleLineIcons,
   Fontisto,
-  MaterialCommunityIcons
+  MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import useAuth from "../Hooks/useAuth";
 
@@ -76,6 +76,14 @@ const DrawerItem = (props) => {
             color={focused ? "white" : argonTheme.COLORS.WARNING}
           />
         );
+      case "Chat":
+        return (
+          <AntDesign
+            name="message1"
+            size={24}
+            color={focused ? "white" : argonTheme.COLORS.WARNING}
+          />
+        );
       case "Log Out":
         return <AntDesign name="logout" size={24} color="black" />;
       default:
@@ -88,7 +96,7 @@ const DrawerItem = (props) => {
 
   const containerStyles = [
     styles.defaultStyle,
-    focused ? [styles.activeStyle, styles.shadow] : null
+    focused ? [styles.activeStyle, styles.shadow] : null,
   ];
 
   return (
@@ -123,21 +131,21 @@ const DrawerItem = (props) => {
 const styles = StyleSheet.create({
   defaultStyle: {
     paddingVertical: 16,
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
   },
   activeStyle: {
     backgroundColor: argonTheme.COLORS.ACTIVE,
-    borderRadius: 4
+    borderRadius: 4,
   },
   shadow: {
     shadowColor: theme.COLORS.BLACK,
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowRadius: 8,
-    shadowOpacity: 0.1
-  }
+    shadowOpacity: 0.1,
+  },
 });
 
 export default DrawerItem;

@@ -22,6 +22,7 @@ const thumbMeasure = (width - 48 - 32) / 3;
 const Profile = () => {
   const navigation = useNavigation();
   const { user } = useAuth();
+  console.log(user.photoURL)
 
   return (
     <Block flex style={styles.profile}>
@@ -38,11 +39,9 @@ const Profile = () => {
             <Block flex style={styles.profileCard}>
               <Block middle style={styles.avatarContainer}>
                 <Image
-                  source={{
-                    uri: user.photoURL
-                  }}
+                  source={{uri: user.photoURL}}
                   style={[styles.avatar]}
-                  resizeMode={"cover"}
+                  resizeMode="cover"
                 />
               </Block>
               <Block style={styles.info}>
@@ -210,10 +209,11 @@ const styles = StyleSheet.create({
     marginTop: -80
   },
   avatar: {
+    backgroundColor:"#efefefef",
     width: 144,
-    height: 154,
+    height: 144,
     borderRadius: 62,
-    borderWidth: 0
+    borderWidth: 5
   },
   nameInfo: {
     marginTop: 35
