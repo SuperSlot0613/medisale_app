@@ -22,11 +22,10 @@ import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
 
 const Home = () => {
-  const [foodItem, setfoodItem] = useState([]);
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useEffect(async () => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {

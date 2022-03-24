@@ -16,8 +16,6 @@ import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Fontisto from "react-native-vector-icons/Fontisto";
-
-import { mapDarkStyle, mapStandardStyle } from "../model/mapData";
 import StarRating from "../Component/StarRating";
 
 import { useNavigation, useTheme } from "@react-navigation/native";
@@ -29,6 +27,7 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import { GOOGLE_MAPS_APIKEY } from "@env";
 import useAuth from "../Hooks/useAuth";
 import Button from "../src/components/Button";
+import { Block } from "galio-framework";
 
 const { width, height } = Dimensions.get("window");
 const CARD_HEIGHT = 230;
@@ -137,7 +136,7 @@ const MapScreen = () => {
         initialRegion={state.region}
         style={styles.container}
         provider={PROVIDER_GOOGLE}
-        mapType="hybrid"
+        mapType="standard"
         // customMapStyle={theme.dark ? mapDarkStyle : mapStandardStyle}
       >
         {markers?.map((marker, index) => {
@@ -173,7 +172,7 @@ const MapScreen = () => {
           <Animated.View style={[styles.markerWrap]}>
             <Animated.Image
               source={require("../assets/user_marker.png")}
-              style={[styles.marker,{height:45,width:40}]}
+              style={[styles.marker, { height: 45, width: 40 }]}
               resizeMode="cover"
             />
           </Animated.View>
@@ -272,12 +271,15 @@ const MapScreen = () => {
                 {marker.data.name}
               </Text>
               {/* <StarRating ratings={marker.rating} reviews={marker.reviews} /> */}
-              <Text numberOfLines={1} style={styles.cardDescription}>
-                {marker.data.email}
-              </Text>
+              <Block row={true} style={{justifyContent:"space-between"}}>
+                <Text numberOfLines={1} style={styles.cardDescription}>
+                  {marker.data.email}
+                </Text>
+                <StarRating props={4} />
+              </Block>
               <View style={styles.button}>
                 <Button
-                  style={{ height:45}}
+                  style={{ height: 45 }}
                   mode="contained"
                   onPress={() => {
                     dispatch(setDestination(marker));

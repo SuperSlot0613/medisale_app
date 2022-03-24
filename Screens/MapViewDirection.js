@@ -26,7 +26,7 @@ const MapViewDirection = () => {
   const { user } = useAuth();
   const mapRef = useRef();
   const navigation = useNavigation();
-  console.log(destination);
+  // console.log(destination);
   useEffect(() => {
     if (!origin || !destination) return;
 
@@ -52,8 +52,7 @@ const MapViewDirection = () => {
         initialRegion={initialMapState.region}
         style={styles.container}
         provider={PROVIDER_GOOGLE}
-        mapType="hybrid"
-        // customMapStyle={theme.dark ? mapDarkStyle : mapStandardStyle}
+        mapType="standard"
       >
         {origin && destination && (
           <MapViewDirections
