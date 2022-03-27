@@ -7,10 +7,15 @@ import {
   Image,
   ToastAndroid,
   StyleSheet,
+  Alert,
 } from "react-native";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { CardField, useConfirmPayment } from "@stripe/stripe-react-native";
+import {
+  CardField,
+  useConfirmPayment,
+  CardForm,
+} from "@stripe/stripe-react-native";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -19,17 +24,21 @@ import {
   DECREASE_ITEM_QUANTITY,
   INCREASE_ITEM_QUANTITY,
   REMOVE_FROM_BASKET,
+  selectUserAddress,
 } from "../feature/navSlice";
 import { Block, theme } from "galio-framework";
+import useAuth from "../Hooks/useAuth";
 
 const Payment = ({ navigation }) => {
+  const { user } = useAuth();
   const basket = useSelector(selectBasket);
+  const userAddress = useSelector(selectUserAddress);
   const [total, setTotal] = useState(null);
   const [cardDetails, setCardDetails] = useState();
   const { confirmPayment, loading } = useConfirmPayment();
   const dispatch = useDispatch();
 
-  console.log("Basket value", basket);
+  // console.log("userAddress", userAddress);
 
   useEffect(() => {
     getTotal(basket);
@@ -51,33 +60,30 @@ const Payment = ({ navigation }) => {
       Alert.alert("Please enter Complete card details and Email");
       return;
     }
-    const billingDetails = {
-      email: "saurabh@gmail.com",
-    };
+    // const billingDetails = {
+    //   email: "saurabh@gmail.com",
+    // };
     try {
-      const response = await axios("http://192.168.1.14:3003/payments", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const response = await axios.post("http://192.168.1.14:3003/payments", {
+        userAddress,
+        total,
       });
-      console.log(response.data);
-      const { clientSecret, error } = await response.data;
-      //2. confirm the payment
-      if (error) {
-        console.log("Unable to process payment");
-      } else {
-        const { paymentIntent, error } = await confirmPayment(clientSecret, {
+      console.log("this is response data", response.data.clientSecret);
+      const clientSecret = await response.data.clientSecret;
+
+      const { paymentIntent, error } = await confirmPayment(
+        clientSecret.secret_id,
+        {
           type: "Card",
-          billingDetails: billingDetails,
-        });
-        if (error) {
-          console.log(error.message);
-          alert(`Payment Confirmation Error ${error.message}`);
-        } else if (paymentIntent) {
-          alert("Payment Successful");
-          console.log("Payment successful ", paymentIntent);
+          billingDetails: clientSecret.shipping,
         }
+      );
+      if (error) {
+        console.log("This is errors", error.message);
+        Alert(`Payment Confirmation Error ${error.message}`);
+      } else if (paymentIntent) {
+        Alert("Payment Successful");
+        console.log("Payment successful ", paymentIntent);
       }
     } catch (e) {
       console.log(e);
@@ -233,7 +239,7 @@ const Payment = ({ navigation }) => {
                 ToastAndroid.show(
                   "Items Deleted From Basket",
                   ToastAndroid.SHORT
-                )
+                );
               }}
             >
               <MaterialCommunityIcons
@@ -414,7 +420,16 @@ const Payment = ({ navigation }) => {
                 Payment Method
               </Text>
               <View style={styles.container}>
-                <CardField
+                <CardForm
+                  style={[{ height: 180 }]}
+                  cardStyle={styles.card}
+                  onFormComplete={(cardDetails)=>{
+                    // console.log(cardDetails)
+                    setCardDetails(cardDetails);
+                  }}
+                  accessibilityLiveRegion="assertive"
+                />
+                {/* <CardField
                   postalCodeEnabled={false}
                   placeholder={{
                     number: "4242 4242 4242 4242",
@@ -424,7 +439,7 @@ const Payment = ({ navigation }) => {
                   onCardChange={(cardDetails) => {
                     setCardDetails(cardDetails);
                   }}
-                />
+                /> */}
               </View>
             </View>
             <View
@@ -582,7 +597,8 @@ export default Payment;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    height: "100%",
+    justifyContent: "space-between",
   },
   input: {
     backgroundColor: "#efefefef",

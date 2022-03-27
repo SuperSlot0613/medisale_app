@@ -123,6 +123,7 @@ export const selectPrescription = (state) => state.nav.prescription;
 export const selectTravelTime = (state) => state.nav.travelTimeformation;
 export const selectBasket = (state) => state.nav.basket;
 export const selectUserdata = (state) => state.nav.userData;
+export const selectUserAddress = (state) => state.nav.userNewAddress;
 
 export const getBasketTotal = (basket) =>
   basket?.reduce((price, item) => parseInt(item.price) + price, 0);

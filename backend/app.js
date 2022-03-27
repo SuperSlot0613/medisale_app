@@ -20,26 +20,32 @@ const SECRET_KEY =
 const stripe = Stripe(SECRET_KEY, { apiVersion: "2020-08-27" });
 
 app.post("/payments", async (req, res) => {
+  console.log(req.body)
   try {
     const paymentIntent = await stripe.paymentIntents.create({
       description: "Software development services",
       shipping: {
-        name: "Jenny Rosen",
+        name: req.body.userAddress.name,
         address: {
-          line1: "510 Townsend St",
-          postal_code: "98140",
-          city: "San Francisco",
-          state: "CA",
+          line1: req.body.userAddress.address,
+          postal_code: req.body.userAddress.pincode,
+          city: req.body.userAddress.city,
+          state: req.body.userAddress.state,
           country: "INR",
         },
+        phone:req.body.userAddress.phoneno,
       },
-      amount: 1099,
-      currency: "usd",
+      amount: req.body.total*100,
+      currency: "inr",
       payment_method_types: ["card"],
+
     });
     console.log(paymentIntent);
 
-    const clientSecret = paymentIntent.client_secret;
+    const clientSecret ={
+      shipping: paymentIntent.shipping,
+      secret_id: paymentIntent.client_secret,
+    }
 
     res.json({
       clientSecret: clientSecret,
