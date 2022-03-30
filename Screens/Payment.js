@@ -28,6 +28,7 @@ import {
 } from "../feature/navSlice";
 import { Block, theme } from "galio-framework";
 import useAuth from "../Hooks/useAuth";
+import PaymentCard from "../Component/PaymentCard";
 
 const Payment = ({ navigation }) => {
   const { user } = useAuth();
@@ -37,6 +38,7 @@ const Payment = ({ navigation }) => {
   const [cardDetails, setCardDetails] = useState();
   const { confirmPayment, loading } = useConfirmPayment();
   const dispatch = useDispatch();
+  const [isloading, setisloading] = useState(false);
 
   // console.log("userAddress", userAddress);
 
@@ -259,337 +261,363 @@ const Payment = ({ navigation }) => {
     );
   };
 
-  return (
-    <SafeAreaProvider>
-      <View
-        style={{
-          width: "100%",
-          height: "100%",
-          backgroundColor: "white",
-          position: "relative",
-          marginTop: 20,
-        }}
-      >
-        <ScrollView>
-          <View
-            style={{
-              width: "100%",
-              flexDirection: "row",
-              paddingTop: 16,
-              paddingHorizontal: 16,
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <MaterialCommunityIcons
-                name="chevron-left"
-                style={{
-                  fontSize: 18,
-                  color: "black",
-                  padding: 12,
-                  backgroundColor: "#f5f5f5",
-                  borderRadius: 12,
-                }}
-              />
-            </TouchableOpacity>
-            <Text
-              style={{
-                fontSize: 14,
-                color: "black",
-                fontWeight: "400",
-              }}
-            >
-              Order Details
-            </Text>
-            <View></View>
-          </View>
-          <Text
-            style={{
-              fontSize: 20,
-              color: "black",
-              fontWeight: "500",
-              letterSpacing: 1,
-              paddingTop: 20,
-              paddingLeft: 16,
-              marginBottom: 10,
-            }}
-          >
-            My Cart
-          </Text>
-          <View style={{ paddingHorizontal: 16 }}>
-            {basket ? basket.map(renderProducts) : null}
-          </View>
-          <View>
+  const onPaymentSuccess = (paymentIntent) => {
+    console.log("Payment Done");
+    console.log(paymentIntent);
+  };
+
+  const onPaymentFailed = () => {
+    setisloading(false);
+    Alert("Payment cancelled", "Payment IS Failed Due to Cancelled By User");
+  };
+
+  const onPaymentCancel = () => {
+    setisloading(false);
+    Alert("Payment cancelled", "Payment IS Failed Due to Cancelled By User");
+  };
+
+  if (isloading) {
+    return (
+      <PaymentCard
+        onPaymentSuccess={onPaymentSuccess}
+        onPaymentFailed={onPaymentFailed}
+        onPaymentCancel={onPaymentCancel}
+        amount={total}
+      />
+    );
+  } else {
+    return (
+      <SafeAreaProvider>
+        <View
+          style={{
+            width: "100%",
+            height: "100%",
+            backgroundColor: "white",
+            position: "relative",
+            marginTop: 20,
+          }}
+        >
+          <ScrollView>
             <View
               style={{
+                width: "100%",
+                flexDirection: "row",
+                paddingTop: 16,
                 paddingHorizontal: 16,
-                marginVertical: 10,
+                justifyContent: "space-between",
+                alignItems: "center",
               }}
             >
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <MaterialCommunityIcons
+                  name="chevron-left"
+                  style={{
+                    fontSize: 18,
+                    color: "black",
+                    padding: 12,
+                    backgroundColor: "#f5f5f5",
+                    borderRadius: 12,
+                  }}
+                />
+              </TouchableOpacity>
               <Text
                 style={{
-                  fontSize: 16,
+                  fontSize: 14,
                   color: "black",
-                  fontWeight: "500",
-                  letterSpacing: 1,
-                  marginBottom: 20,
+                  fontWeight: "400",
                 }}
               >
-                Delivery Location
+                Order Details
               </Text>
+              <View></View>
+            </View>
+            <Text
+              style={{
+                fontSize: 20,
+                color: "black",
+                fontWeight: "500",
+                letterSpacing: 1,
+                paddingTop: 20,
+                paddingLeft: 16,
+                marginBottom: 10,
+              }}
+            >
+              My Cart
+            </Text>
+            <View style={{ paddingHorizontal: 16 }}>
+              {basket ? basket.map(renderProducts) : null}
+            </View>
+            <View>
               <View
                 style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
+                  paddingHorizontal: 16,
+                  marginVertical: 10,
                 }}
               >
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: "black",
+                    fontWeight: "500",
+                    letterSpacing: 1,
+                    marginBottom: 20,
+                  }}
+                >
+                  Delivery Location
+                </Text>
                 <View
                   style={{
                     flexDirection: "row",
-                    width: "80%",
                     alignItems: "center",
+                    justifyContent: "space-between",
                   }}
                 >
                   <View
                     style={{
-                      color: "blue",
-                      backgroundColor: "#f5f5f5",
+                      flexDirection: "row",
+                      width: "80%",
                       alignItems: "center",
-                      justifyContent: "center",
-                      padding: 12,
-                      borderRadius: 10,
-                      marginRight: 18,
                     }}
                   >
-                    <MaterialCommunityIcons
-                      name="truck-delivery-outline"
+                    <View
                       style={{
-                        fontSize: 18,
                         color: "blue",
-                      }}
-                    />
-                  </View>
-                  <View>
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        color: "black",
-                        fontWeight: "500",
+                        backgroundColor: "#f5f5f5",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: 12,
+                        borderRadius: 10,
+                        marginRight: 18,
                       }}
                     >
-                      2 Petre Melikishvili St.
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        color: "black",
-                        fontWeight: "400",
-                        lineHeight: 20,
-                        opacity: 0.5,
-                      }}
-                    >
-                      0162, Tbilisi
-                    </Text>
+                      <MaterialCommunityIcons
+                        name="truck-delivery-outline"
+                        style={{
+                          fontSize: 18,
+                          color: "blue",
+                        }}
+                      />
+                    </View>
+                    <View>
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          color: "black",
+                          fontWeight: "500",
+                        }}
+                      >
+                        2 Petre Melikishvili St.
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: "black",
+                          fontWeight: "400",
+                          lineHeight: 20,
+                          opacity: 0.5,
+                        }}
+                      >
+                        0162, Tbilisi
+                      </Text>
+                    </View>
                   </View>
+                  <MaterialCommunityIcons
+                    name="chevron-right"
+                    style={{ fontSize: 22, color: "black" }}
+                  />
                 </View>
-                <MaterialCommunityIcons
-                  name="chevron-right"
-                  style={{ fontSize: 22, color: "black" }}
-                />
-              </View>
-            </View>
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "space-evenly",
-                paddingHorizontal: 5,
-                marginVertical: 5,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: "black",
-                  fontWeight: "500",
-                  letterSpacing: 1,
-                  marginBottom: 20,
-                }}
-              >
-                Payment Method
-              </Text>
-              <View style={styles.container}>
-                <CardForm
-                  style={[{ height: 180 }]}
-                  cardStyle={styles.card}
-                  onFormComplete={(cardDetails)=>{
-                    // console.log(cardDetails)
-                    setCardDetails(cardDetails);
-                  }}
-                  accessibilityLiveRegion="assertive"
-                />
-                {/* <CardField
-                  postalCodeEnabled={false}
-                  placeholder={{
-                    number: "4242 4242 4242 4242",
-                  }}
-                  cardStyle={styles.card}
-                  style={styles.cardContainer}
-                  onCardChange={(cardDetails) => {
-                    setCardDetails(cardDetails);
-                  }}
-                /> */}
-              </View>
-            </View>
-            <View
-              style={{
-                paddingHorizontal: 16,
-                marginTop: 40,
-                marginBottom: 80,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: "black",
-                  fontWeight: "500",
-                  letterSpacing: 1,
-                  marginBottom: 20,
-                }}
-              >
-                Order Info
-              </Text>
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginBottom: 8,
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontWeight: "400",
-                    maxWidth: "80%",
-                    color: "black",
-                    opacity: 0.5,
-                  }}
-                >
-                  Subtotal
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontWeight: "400",
-                    color: "black",
-                    opacity: 0.8,
-                  }}
-                >
-                  &#8377;{total}.00
-                </Text>
               </View>
               <View
                 style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginBottom: 22,
+                  flex: 1,
+                  justifyContent: "space-evenly",
+                  paddingHorizontal: 5,
+                  marginVertical: 5,
                 }}
               >
                 <Text
                   style={{
-                    fontSize: 12,
-                    fontWeight: "400",
-                    maxWidth: "80%",
+                    fontSize: 16,
                     color: "black",
-                    opacity: 0.5,
-                  }}
-                >
-                  Shipping Tax
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontWeight: "400",
-                    color: "black",
-                    opacity: 0.8,
-                  }}
-                >
-                  &#8377;{total / 20}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 12,
-                    fontWeight: "400",
-                    maxWidth: "80%",
-                    color: "black",
-                    opacity: 0.5,
-                  }}
-                >
-                  Total
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 18,
                     fontWeight: "500",
-                    color: "black",
+                    letterSpacing: 1,
+                    marginBottom: 20,
                   }}
                 >
-                  &#8377;{total + total / 20}
+                  Payment Method
                 </Text>
+                <View style={styles.container}>
+                  <CardForm
+                    style={[{ height: 180 }]}
+                    cardStyle={styles.card}
+                    onFormComplete={(cardDetails) => {
+                      // console.log(cardDetails)
+                      setCardDetails(cardDetails);
+                    }}
+                    accessibilityLiveRegion="assertive"
+                  />
+                  {/* <CardField
+                    postalCodeEnabled={false}
+                    placeholder={{
+                      number: "4242 4242 4242 4242",
+                    }}
+                    cardStyle={styles.card}
+                    style={styles.cardContainer}
+                    onCardChange={(cardDetails) => {
+                      setCardDetails(cardDetails);
+                    }}
+                  /> */}
+                </View>
+              </View>
+              <View
+                style={{
+                  paddingHorizontal: 16,
+                  marginTop: 40,
+                  marginBottom: 80,
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: "black",
+                    fontWeight: "500",
+                    letterSpacing: 1,
+                    marginBottom: 20,
+                  }}
+                >
+                  Order Info
+                </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginBottom: 8,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      fontWeight: "400",
+                      maxWidth: "80%",
+                      color: "black",
+                      opacity: 0.5,
+                    }}
+                  >
+                    Subtotal
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      fontWeight: "400",
+                      color: "black",
+                      opacity: 0.8,
+                    }}
+                  >
+                    &#8377;{total}.00
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginBottom: 22,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      fontWeight: "400",
+                      maxWidth: "80%",
+                      color: "black",
+                      opacity: 0.5,
+                    }}
+                  >
+                    Shipping Tax
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      fontWeight: "400",
+                      color: "black",
+                      opacity: 0.8,
+                    }}
+                  >
+                    &#8377;{total / 20}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 12,
+                      fontWeight: "400",
+                      maxWidth: "80%",
+                      color: "black",
+                      opacity: 0.5,
+                    }}
+                  >
+                    Total
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: "500",
+                      color: "black",
+                    }}
+                  >
+                    &#8377;{total + total / 20}
+                  </Text>
+                </View>
               </View>
             </View>
-          </View>
-        </ScrollView>
+          </ScrollView>
 
-        <View
-          style={{
-            position: "absolute",
-            bottom: 20,
-            height: "8%",
-            width: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => (total != 0 ? checkOut() : null)}
+          <View
             style={{
-              width: "86%",
-              height: "90%",
-              backgroundColor: "blue",
-              borderRadius: 20,
+              position: "absolute",
+              bottom: 20,
+              height: "8%",
+              width: "100%",
               justifyContent: "center",
               alignItems: "center",
             }}
-            disabled={loading}
           >
-            <Text
+            <TouchableOpacity
+              onPress={() => (total != 0 ? checkOut() : null)}
               style={{
-                fontSize: 12,
-                fontWeight: "500",
-                letterSpacing: 1,
-                color: "white",
-                textTransform: "uppercase",
+                width: "86%",
+                height: "90%",
+                backgroundColor: "blue",
+                borderRadius: 20,
+                justifyContent: "center",
+                alignItems: "center",
               }}
+              disabled={loading}
             >
-              CHECKOUT (&#8377;{total + total / 20} )
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontWeight: "500",
+                  letterSpacing: 1,
+                  color: "white",
+                  textTransform: "uppercase",
+                }}
+              >
+                CHECKOUT (&#8377;{total + total / 20} )
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </SafeAreaProvider>
-  );
+      </SafeAreaProvider>
+    );
+  }
 };
 
 export default Payment;

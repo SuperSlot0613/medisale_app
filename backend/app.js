@@ -20,7 +20,7 @@ const SECRET_KEY =
 const stripe = Stripe(SECRET_KEY, { apiVersion: "2020-08-27" });
 
 app.post("/payments", async (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   try {
     const paymentIntent = await stripe.paymentIntents.create({
       description: "Software development services",
@@ -33,19 +33,18 @@ app.post("/payments", async (req, res) => {
           state: req.body.userAddress.state,
           country: "INR",
         },
-        phone:req.body.userAddress.phoneno,
+        phone: req.body.userAddress.phoneno,
       },
-      amount: req.body.total*100,
+      amount: req.body.total * 100,
       currency: "inr",
       payment_method_types: ["card"],
-
     });
     console.log(paymentIntent);
 
-    const clientSecret ={
+    const clientSecret = {
       shipping: paymentIntent.shipping,
       secret_id: paymentIntent.client_secret,
-    }
+    };
 
     res.json({
       clientSecret: clientSecret,
@@ -54,6 +53,20 @@ app.post("/payments", async (req, res) => {
     console.log(e.message);
     res.json({ error: e.message });
   }
+});
+
+app.post("/create-payment-intent", async (req, res) => {
+  const { amount, currency } = req.body;
+
+  const payableAmount = parseInt(amount) * 100;
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: payableAmount,
+    currency: currency, // put your currency
+  });
+
+  res.send({
+    clientSecret: paymentIntent.client_secret,
+  });
 });
 
 app.post("/facevalidation", async (req, res) => {
