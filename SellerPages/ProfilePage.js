@@ -48,11 +48,6 @@ const ProfilePage = () => {
   };
 
   const signOutPage = async () => {
-    await AsyncStorage.getItem("loginInfo").then((value) => {
-      if (value == "sellerlogin") {
-        AsyncStorage.setItem("loginInfo", null);
-      }
-    });
     signOut(auth)
       .then(() => {
         dispatch(EMPTY_SELLER());

@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, Text, View, TextInput } from "react-native";
 import React, { useState } from "react";
 import Button from "../src/components/Button";
 import {
@@ -7,42 +7,54 @@ import {
   CardField,
   CardFieldInput,
 } from "@stripe/stripe-react-native";
-import axios from "axios"
+import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
 
-const PaymentCard = ({ amount,onPaymentCancel,onPaymentFailed,onPaymentSuccess }) => {
+const PaymentCard = ({ amount }) => {
   const [Name, setName] = useState("");
 
   const { confirmPayment, loading } = useConfirmPayment();
+  const navigation=useNavigation()
 
+  const onPaymentSuccess = (paymentIntent) => {
+    console.log("Payment Done");
+    console.log(paymentIntent);
+  };
 
-  const initPayment = () => {
-      const response =await axios.post('',{
-          amount:amount,
-          currency:'inr',
-          paymentMethod:'card'
-      })
-      if(response.data){
-          console.log(response.data)
-          const clientSecret=response.data.clientSecret
-          const billingDetails={
-              Name
-          }
-          const {error, paymentIntent}=await confirmPayment(clientSecret,{
-              type:'Card',
-              billingDetails
-          })
-          if(error){
-              console.log(error.message)
-              onPaymentFailed()
-          }else{
-              console.log("Payment Successful")
-              onPaymentSuccess(paymentIntent)
-          }
-      }else{
-        onPaymentFailed()
+  const onPaymentFailed = () => {
+    Alert("Payment cancelled", "Payment IS Failed Due to Cancelled By User");
+  };
+
+  const onPaymentCancel = () => {
+    Alert("Payment cancelled", "Payment IS Failed Due to Cancelled By User");
+  };
+
+  const initPayment = async () => {
+    const response = await axios.post("http://192.168.1.14:3003/payments", {
+      amount: amount,
+      currency: "inr",
+      paymentMethod: "card",
+    });
+    if (response.data) {
+      console.log(response.data);
+      const clientSecret = response.data.clientSecret;
+      const billingDetails = {
+        name: Name,
+      };
+      const { error, paymentIntent } = await confirmPayment(clientSecret, {
+        type: "Card",
+        billingDetails,
+      });
+      if (error) {
+        console.log(error.message);
+        onPaymentFailed();
+      } else {
+        console.log("Payment Successful");
+        onPaymentSuccess(paymentIntent);
       }
-
-
+    } else {
+      onPaymentFailed();
+    }
   };
 
   return (
@@ -60,12 +72,11 @@ const PaymentCard = ({ amount,onPaymentCancel,onPaymentFailed,onPaymentSuccess }
         </View>
       </View>
       <View style={styles.body}>
-        <View style={{ marginTop: 60, marginBottom: 30 }}>
+        <View style={{ marginTop: 30 }}>
           <View
             style={{
               paddingHorizontal: 16,
-              marginTop: 40,
-              marginBottom: 80,
+              marginBottom: 30,
             }}
           >
             <Text
@@ -185,21 +196,27 @@ const PaymentCard = ({ amount,onPaymentCancel,onPaymentFailed,onPaymentSuccess }
             onFocus={(focusField) => {
               console.log("Focus On", focusField);
             }}
-            cardStyle={inputStyles}
             style={styles.CardField}
           />
         </View>
-        <Button onPress={onPaymentCancel()} disabled={loading} style={{ height: 45 }} mode="contained">
-          Cancel Payment
-        </Button>
-        <Button
-          disabled={loading}
-          onPress={initPayment}
-          style={{ height: 45 }}
-          mode="contained"
-        >
-          Pay Now
-        </Button>
+        <View style={{flex:1,alignItems: "center"}}>
+          <Button
+            onPress={() => onPaymentCancel()}
+            disabled={loading}
+            style={{ height: 45, width: "90%" }}
+            mode="contained"
+          >
+            Cancel Payment
+          </Button>
+          <Button
+            disabled={loading}
+            onPress={() => initPayment()}
+            style={{ height: 45, width: "90%" }}
+            mode="contained"
+          >
+            Pay Now
+          </Button>
+        </View>
       </View>
       <View></View>
     </View>
@@ -211,11 +228,10 @@ export default PaymentCard;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F2F2F2",
+    backgroundColor: "white",
   },
   navigation: {
     flex: 1,
-    marginTop: 43,
   },
   body: {
     flex: 9.5,
@@ -226,9 +242,10 @@ const styles = StyleSheet.create({
   },
   creditCard: {
     backgroundColor: "#fff",
-    marginLeft: 20,
-    marginRight: 20,
-    padding: 12,
+    marginLeft: 10,
+    marginRight: 10,
+    padding: 10,
+    width:"95%",
     borderRadius: 20,
     marginTop: 20,
     marginBottom: 50,
@@ -239,6 +256,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 50,
     marginVertical: 30,
+    fontSize:14,
   },
   input: {
     height: 44,
@@ -247,13 +265,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     marginBottom: 20,
   },
-});
-
-const inputStyles = (CardFieldInput.Styles = {
-  borderWidth: 0,
-  backgroundColor: "#fff",
-  borderColor: "#000",
-  borderRadius: 8,
-  fontSize: 16,
-  placeholder: "#999",
+  CardFielddesi: {
+    borderWidth: 0,
+    backgroundColor: "white",
+    borderColor: "#000",
+    borderRadius: 8,
+    fontSize: 14,
+    justifyContent: "space-between"
+  },
 });

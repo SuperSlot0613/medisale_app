@@ -261,27 +261,10 @@ const Payment = ({ navigation }) => {
     );
   };
 
-  const onPaymentSuccess = (paymentIntent) => {
-    console.log("Payment Done");
-    console.log(paymentIntent);
-  };
-
-  const onPaymentFailed = () => {
-    setisloading(false);
-    Alert("Payment cancelled", "Payment IS Failed Due to Cancelled By User");
-  };
-
-  const onPaymentCancel = () => {
-    setisloading(false);
-    Alert("Payment cancelled", "Payment IS Failed Due to Cancelled By User");
-  };
 
   if (isloading) {
     return (
       <PaymentCard
-        onPaymentSuccess={onPaymentSuccess}
-        onPaymentFailed={onPaymentFailed}
-        onPaymentCancel={onPaymentCancel}
         amount={total}
       />
     );
@@ -590,7 +573,7 @@ const Payment = ({ navigation }) => {
             }}
           >
             <TouchableOpacity
-              onPress={() => (total != 0 ? checkOut() : null)}
+              onPress={() => (total != 0 ? setisloading(true) : null)}
               style={{
                 width: "86%",
                 height: "90%",

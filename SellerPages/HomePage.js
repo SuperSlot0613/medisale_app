@@ -16,8 +16,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Block, theme } from "galio-framework";
 import Button from "../src/components/Button";
 
-console.disableYellowBox = true;
-
 const HomePage = () => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
