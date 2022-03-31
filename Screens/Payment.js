@@ -28,21 +28,22 @@ import {
   selectDestination,
   setOrigin,
   selectOrigin,
-  selectPrescription
+  selectPrescription,
 } from "../feature/navSlice";
 import { Block, theme } from "galio-framework";
 import useAuth from "../Hooks/useAuth";
 import PaymentCard from "../Component/PaymentCard";
-import {db} from "../firebase";
-import { doc, setDoc ,serverTimestamp,} from "firebase/firestore";
+import { db } from "../firebase";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import generateId from "../Component/generatrId";
 
 const Payment = ({ navigation }) => {
   const { user } = useAuth();
   const basket = useSelector(selectBasket);
   const sellerDestination = useSelector(selectDestination);
   const userAddress = useSelector(selectUserAddress);
-  const userloaction=useSelector(selectOrigin)
-  const prescription=useSelector(selectPrescription)
+  const userloaction = useSelector(selectOrigin);
+  const prescription = useSelector(selectPrescription);
   const [total, setTotal] = useState(null);
   const [cardDetails, setCardDetails] = useState();
   const { confirmPayment, loading } = useConfirmPayment();
@@ -281,38 +282,76 @@ const Payment = ({ navigation }) => {
 
   const onPaymentSuccess = (paymentIntent, phonenumber) => {
     setisloading(false);
-    setDoc(doc(db, "sellerInfo",sellerDestination.id,"orders",user.email), {
-      usersInfo:{
-        name:user.displayName,
-        email:user.email,
-        phone:phonenumber,
-        userloaction:userloaction,
-        address:addressdata
+    setDoc(doc(db, "sellerInfo", sellerDestination.id, "orders", user.email), {
+      usersInfo: {
+        name: user.displayName,
+        email: user.email,
+        phone: phonenumber,
+        userloaction: userloaction,
+        address: addressdata,
       },
-      basket:basket,
-      payment:{
-        paymentId:paymentIntent.id,
-        amount:paymentIntent.amount/100,
-        clientSecret: paymentIntent.clientSecret
+      basket: basket,
+      payment: {
+        paymentId: paymentIntent.id,
+        amount: paymentIntent.amount / 100,
+        clientSecret: paymentIntent.clientSecret,
       },
-      prescription:prescription,
+      prescription: prescription,
       timestamp: serverTimestamp(),
     });
 
-    setDoc(doc(db, "userInfo",user.email,"orders",sellerDestination.id), {
-      sellerInfo:{
-        name:sellerDestination.data.name,
-        email:sellerDestination.data.email,
-        phone:sellerDestination.data.PhoneNumber,
-        userloaction:sellerDestination.data.location,
+    setDoc(doc(db, "userInfo", user.email, "orders", sellerDestination.id), {
+      sellerInfo: {
+        name: sellerDestination.data.name,
+        email: sellerDestination.data.email,
+        phone: sellerDestination.data.PhoneNumber,
+        userloaction: sellerDestination.data.location,
       },
-      basket:basket,
-      payment:{
-        paymentId:paymentIntent.id,
-        amount:paymentIntent.amount/100,
-        clientSecret: paymentIntent.clientSecret
+      basket: basket,
+      payment: {
+        paymentId: paymentIntent.id,
+        amount: paymentIntent.amount / 100,
+        clientSecret: paymentIntent.clientSecret,
       },
-      prescription:prescription,
+      prescription: prescription,
+      timestamp: serverTimestamp(),
+    });
+
+    setDoc(
+      doc(db, "sellerInfo", sellerDestination.id, "chatUser", user.email),
+      {
+        name: user.displayName,
+        email: user.email,
+        phone: phonenumber,
+        userloaction: userloaction,
+        address: addressdata,
+      }
+    );
+
+    setDoc(doc(db, "userInfo", user.email, "chatUser", sellerDestination.id), {
+      name: sellerDestination.data.name,
+      email: sellerDestination.data.email,
+      phone: sellerDestination.data.PhoneNumber,
+      userloaction: sellerDestination.data.location,
+    });
+
+    setDoc(doc(db, "messaging", generateId(user.email, sellerDestination.id)), {
+      users: {
+        [user.email]: {
+          name: user.displayName,
+          email: user.email,
+          phone: phonenumber,
+          userloaction: userloaction,
+          address: addressdata,
+        },
+        [sellerDestination.id]: {
+          name: sellerDestination.data.name,
+          email: sellerDestination.data.email,
+          phone: sellerDestination.data.PhoneNumber,
+          userloaction: sellerDestination.data.location,
+        },
+      },
+      usersMatched: [user.email, sellerDestination.id],
       timestamp: serverTimestamp(),
     });
 

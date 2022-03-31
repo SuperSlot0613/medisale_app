@@ -51,6 +51,7 @@ import { selectDestination, selectOrigin } from "./feature/navSlice";
 import MapViewDirection from "./Screens/MapViewDirection";
 import Payment from "./Screens/Payment";
 import ChatScreen from "./Screens/ChatScreen";
+import MessageScreen from "./Screens/MessageScreen";
 // import CardScan from "./src/screens/CardScan";
 
 const { width } = Dimensions.get("screen");
@@ -161,6 +162,13 @@ function HomeStack(props) {
           headerShown: false,
         }}
         component={MapScreen}
+      />
+       <Stack.Screen
+        name="Messages"
+        options={{
+          headerShown: true,
+        }}
+        component={MessageScreen}
       />
       <Stack.Screen
         name="MapViwDirection"

@@ -16,11 +16,7 @@ const App = () => {
       <PersistGate loading={null} persistor={persistor}>
         <StripeProvider
           publishableKey="pk_test_51J1XdTSDeAiXyTkgBNUMtGq6tvOz0yxAUMjoYKr0CXfSmzZjrUm1eA77irtXUpldQcor1V6k39PCVcj0hMJdU2IJ00mmMY9knC"
-          // merchantIdentifier="expo.host.medisale"
-          // threeDSecureParams={{
-          //   backgroundColor: "#fff",
-          //   timeout: 3,
-          // }}
+          merchantIdentifier="expo.host.medisale"
         >
           <NavigationContainer>
             <SafeAreaProvider>
