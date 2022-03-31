@@ -5,15 +5,29 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Block } from "galio-framework";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Button from "../src/components/Button";
+import { selectUserAddress } from "../feature/navSlice";
+import { useSelector } from "react-redux";
+import useAuth from "../Hooks/useAuth";
 
 const DeliveryPage = () => {
+  const address = useSelector(selectUserAddress);
+  const { user } = useAuth();
+  const [addressdata, setaddressdata] = useState("");
   const navigation = useNavigation();
+
+  useEffect(() => {
+    for (let item of address) {
+      let address = `${item.name}, ${item.street}, ${item.district}, ${item.city},${item.postalCode},${item.region}  `;
+
+      setaddressdata(address);
+    }
+  }, []);
 
   return (
     <SafeAreaProvider style={{ backgroundColor: "#E0F7FA" }}>
@@ -33,11 +47,10 @@ const DeliveryPage = () => {
           <Block flex style={{ marginTop: 20, marginLeft: 50, width: "80%" }}>
             <Text style={{ fontSize: 22, color: "gray" }}>RECENTLY USED</Text>
             <Text style={{ fontSize: 20, fontWeight: "700", marginTop: 5 }}>
-              Saurabh Yadav
+              {user.displayName}
             </Text>
             <Text style={{ fontSize: 18, marginTop: 5, fontWeight: "400" }}>
-              room no:2, Subhash Chawl, Laxminagar Akurli Road, Damunagar,
-              Kandivali East Mumbai, Maharashtra,400101, India
+              {addressdata}
             </Text>
             <Text style={{ fontSize: 16, marginTop: 5, fontWeight: "400" }}>
               Phone Number : 9082502271

@@ -16,7 +16,7 @@ import NormalCard from "../Component/NormalCard";
 const { width } = Dimensions.get("screen");
 import { db } from "../firebase";
 import { collection, getDocs } from "@firebase/firestore";
-import { selectValue, setOrigin } from "../feature/navSlice";
+import { selectValue, setOrigin, ADD_NEW_ADDRESS } from "../feature/navSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
@@ -33,7 +33,22 @@ const Home = () => {
         return;
       }
       let location = await Location.getCurrentPositionAsync({});
-      console.log(location);
+      // console.log(location);
+      const { coords } = location;
+      if (coords) {
+        const { latitude, longitude } = coords;
+        let addressResponse = await Location.reverseGeocodeAsync({
+          latitude,
+          longitude,
+        });
+        // console.log(addressResponse[0]);
+        dispatch(ADD_NEW_ADDRESS(addressResponse));
+        // for (let item of addressResponse) {
+        //   let address = `${item.name}, ${item.street}, ${item.district}, ${item.city},${item.postalCode},${item.region}  `;
+
+        //   console.log(address);
+        // }
+      }
       dispatch(setOrigin(location.coords));
     })();
   }, []);

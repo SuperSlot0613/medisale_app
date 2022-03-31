@@ -25,15 +25,24 @@ import {
   INCREASE_ITEM_QUANTITY,
   REMOVE_FROM_BASKET,
   selectUserAddress,
+  selectDestination,
+  setOrigin,
+  selectOrigin,
+  selectPrescription
 } from "../feature/navSlice";
 import { Block, theme } from "galio-framework";
 import useAuth from "../Hooks/useAuth";
 import PaymentCard from "../Component/PaymentCard";
+import {db} from "../firebase";
+import { doc, setDoc ,serverTimestamp,} from "firebase/firestore";
 
 const Payment = ({ navigation }) => {
   const { user } = useAuth();
   const basket = useSelector(selectBasket);
+  const sellerDestination = useSelector(selectDestination);
   const userAddress = useSelector(selectUserAddress);
+  const userloaction=useSelector(selectOrigin)
+  const prescription=useSelector(selectPrescription)
   const [total, setTotal] = useState(null);
   const [cardDetails, setCardDetails] = useState();
   const { confirmPayment, loading } = useConfirmPayment();
@@ -41,6 +50,15 @@ const Payment = ({ navigation }) => {
   const [isloading, setisloading] = useState(false);
 
   // console.log("userAddress", userAddress);
+  console.log(sellerDestination);
+  const [addressdata, setaddressdata] = useState("");
+
+  useEffect(() => {
+    for (let item of userAddress) {
+      let address = `${item.name}, ${item.street}, ${item.district}, ${item.city},${item.postalCode},${item.region}`;
+      setaddressdata(address);
+    }
+  }, []);
 
   useEffect(() => {
     getTotal(basket);
@@ -261,11 +279,69 @@ const Payment = ({ navigation }) => {
     );
   };
 
+  const onPaymentSuccess = (paymentIntent, phonenumber) => {
+    setisloading(false);
+    setDoc(doc(db, "sellerInfo",sellerDestination.id,"orders",user.email), {
+      usersInfo:{
+        name:user.displayName,
+        email:user.email,
+        phone:phonenumber,
+        userloaction:userloaction,
+        address:addressdata
+      },
+      basket:basket,
+      payment:{
+        paymentId:paymentIntent.id,
+        amount:paymentIntent.amount/100,
+        clientSecret: paymentIntent.clientSecret
+      },
+      prescription:prescription,
+      timestamp: serverTimestamp(),
+    });
+
+    setDoc(doc(db, "userInfo",user.email,"orders",sellerDestination.id), {
+      sellerInfo:{
+        name:sellerDestination.data.name,
+        email:sellerDestination.data.email,
+        phone:sellerDestination.data.PhoneNumber,
+        userloaction:sellerDestination.data.location,
+      },
+      basket:basket,
+      payment:{
+        paymentId:paymentIntent.id,
+        amount:paymentIntent.amount/100,
+        clientSecret: paymentIntent.clientSecret
+      },
+      prescription:prescription,
+      timestamp: serverTimestamp(),
+    });
+
+    ToastAndroid.show("Items will be Deliverd SOON!", ToastAndroid.SHORT);
+  };
+
+  const onPaymentFailed = () => {
+    Alert.alert(
+      "Payment cancelled",
+      "Payment IS Failed Due to Cancelled By User"
+    );
+    setisloading(false);
+  };
+
+  const onPaymentCancel = () => {
+    Alert.alert(
+      "Payment cancelled",
+      "Payment IS Failed Due to Cancelled By User"
+    );
+    setisloading(false);
+  };
 
   if (isloading) {
     return (
       <PaymentCard
-        amount={total}
+        amount={total + total / 20}
+        onPaymentSuccess={onPaymentSuccess}
+        onPaymentFailed={onPaymentFailed}
+        onPaymentCancel={onPaymentCancel}
       />
     );
   } else {
@@ -418,7 +494,7 @@ const Payment = ({ navigation }) => {
                   marginVertical: 5,
                 }}
               >
-                <Text
+                {/* <Text
                   style={{
                     fontSize: 16,
                     color: "black",
@@ -428,8 +504,8 @@ const Payment = ({ navigation }) => {
                   }}
                 >
                   Payment Method
-                </Text>
-                <View style={styles.container}>
+                </Text> */}
+                {/* <View style={styles.container}>
                   <CardForm
                     style={[{ height: 180 }]}
                     cardStyle={styles.card}
@@ -439,18 +515,7 @@ const Payment = ({ navigation }) => {
                     }}
                     accessibilityLiveRegion="assertive"
                   />
-                  {/* <CardField
-                    postalCodeEnabled={false}
-                    placeholder={{
-                      number: "4242 4242 4242 4242",
-                    }}
-                    cardStyle={styles.card}
-                    style={styles.cardContainer}
-                    onCardChange={(cardDetails) => {
-                      setCardDetails(cardDetails);
-                    }}
-                  /> */}
-                </View>
+                </View> */}
               </View>
               <View
                 style={{
@@ -604,26 +669,3 @@ const Payment = ({ navigation }) => {
 };
 
 export default Payment;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    height: "100%",
-    justifyContent: "space-between",
-  },
-  input: {
-    backgroundColor: "#efefefef",
-
-    borderRadius: 8,
-    fontSize: 20,
-    height: 50,
-    padding: 10,
-  },
-  card: {
-    backgroundColor: "#efefefef",
-    fontSize: 14,
-  },
-  cardContainer: {
-    height: 50,
-  },
-});

@@ -10,27 +10,16 @@ import {
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 
-const PaymentCard = ({ amount }) => {
+const PaymentCard = ({ amount,onPaymentSuccess,onPaymentFailed,onPaymentCancel }) => {
   const [Name, setName] = useState("");
+  const [phonenumber, setphonenumber] = useState('')
+  // console.log(amount)
 
   const { confirmPayment, loading } = useConfirmPayment();
   const navigation=useNavigation()
 
-  const onPaymentSuccess = (paymentIntent) => {
-    console.log("Payment Done");
-    console.log(paymentIntent);
-  };
-
-  const onPaymentFailed = () => {
-    Alert("Payment cancelled", "Payment IS Failed Due to Cancelled By User");
-  };
-
-  const onPaymentCancel = () => {
-    Alert("Payment cancelled", "Payment IS Failed Due to Cancelled By User");
-  };
-
   const initPayment = async () => {
-    const response = await axios.post("http://192.168.1.14:3003/payments", {
+    const response = await axios.post("http://192.168.1.14:3003/create-payment-intent", {
       amount: amount,
       currency: "inr",
       paymentMethod: "card",
@@ -40,6 +29,7 @@ const PaymentCard = ({ amount }) => {
       const clientSecret = response.data.clientSecret;
       const billingDetails = {
         name: Name,
+        phone:phonenumber
       };
       const { error, paymentIntent } = await confirmPayment(clientSecret, {
         type: "Card",
@@ -50,7 +40,7 @@ const PaymentCard = ({ amount }) => {
         onPaymentFailed();
       } else {
         console.log("Payment Successful");
-        onPaymentSuccess(paymentIntent);
+        onPaymentSuccess(paymentIntent,phonenumber);
       }
     } else {
       onPaymentFailed();
@@ -188,13 +178,20 @@ const PaymentCard = ({ amount }) => {
             onChangeText={(text) => setName(text)}
             style={styles.input}
           />
+          <TextInput
+            autoCapitalize="none"
+            placeholder="Phone Number"
+            keyboardType="number-pad"
+            onChangeText={(text) => setphonenumber(text)}
+            style={styles.input}
+          />
           <CardField
             placeholder={{ number: "0000 0000 0000 0000" }}
             onCardChange={(cardDetails) => {
-              console.log(cardDetails);
+              // console.log(cardDetails);
             }}
             onFocus={(focusField) => {
-              console.log("Focus On", focusField);
+              // console.log("Focus On", focusField);
             }}
             style={styles.CardField}
           />
