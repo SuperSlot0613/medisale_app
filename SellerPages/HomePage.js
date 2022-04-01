@@ -73,7 +73,7 @@ const HomePage = () => {
     onSnapshot(
       query(
         collection(db, "sellerInfo", sellerdata[0].email, "orders"),
-        orderBy("timestamp", "desc")
+        orderBy("timestamp", "asc")
       ),
       (snapshot) =>
         setorderdata(
@@ -85,7 +85,7 @@ const HomePage = () => {
     );
   }, []);
 
-  console.log(orderdata.usersInfo);
+  // console.log(orderdata)
 
   return (
     <SafeAreaView>
@@ -150,7 +150,10 @@ const HomePage = () => {
                     mode="contained"
                     style={{ width: 120 }}
                     onPress={() => {
-                      console.log("Hello user");
+                      navigation.navigate("DeliverySell", {
+                        usersInfo: item.usersInfo,
+                        paymentInfo: item.payment
+                      });
                     }}
                   >
                     Dispatch
@@ -160,6 +163,7 @@ const HomePage = () => {
                       navigation.navigate("OrderInfo", {
                         basket: item.basket,
                         usersInfo: item.usersInfo,
+                        prescription:item.prescription
                       });
                     }}
                     mode="contained"

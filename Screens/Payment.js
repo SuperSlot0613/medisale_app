@@ -29,6 +29,7 @@ import {
   setOrigin,
   selectOrigin,
   selectPrescription,
+  EMPTY_BASKET
 } from "../feature/navSlice";
 import { Block, theme } from "galio-framework";
 import useAuth from "../Hooks/useAuth";
@@ -36,8 +37,9 @@ import PaymentCard from "../Component/PaymentCard";
 import { db } from "../firebase";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import generateId from "../Component/generatrId";
+import { useNavigation } from "@react-navigation/native";
 
-const Payment = ({ navigation }) => {
+const Payment = () => {
   const { user } = useAuth();
   const basket = useSelector(selectBasket);
   const sellerDestination = useSelector(selectDestination);
@@ -49,6 +51,7 @@ const Payment = ({ navigation }) => {
   const { confirmPayment, loading } = useConfirmPayment();
   const dispatch = useDispatch();
   const [isloading, setisloading] = useState(false);
+  const navigation=useNavigation()
 
   // console.log("userAddress", userAddress);
   console.log(sellerDestination);
@@ -354,6 +357,8 @@ const Payment = ({ navigation }) => {
       usersMatched: [user.email, sellerDestination.id],
       timestamp: serverTimestamp(),
     });
+    dispatch(EMPTY_BASKET())
+    navigation.navigate("Home")
 
     ToastAndroid.show("Items will be Deliverd SOON!", ToastAndroid.SHORT);
   };

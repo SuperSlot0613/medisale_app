@@ -22,12 +22,14 @@ import { doc, updateDoc } from "firebase/firestore";
 import { AsyncStorage } from "react-native";
 
 const ProfilePage = () => {
-  const [image, setImage] = useState("");
   const sellerInfo = useSelector(selectSellerData);
   const [data, setdata] = useState(sellerInfo[0]);
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const [image, setImage] = useState(data?.userImage);
 
+  console.log("Image",image)
+  
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -76,7 +78,7 @@ const ProfilePage = () => {
           <Avatar
             rounded
             source={{
-              uri: data?.userImage,
+              uri: data.userImage,
             }}
             size="xlarge"
             activeOpacity={0.7}

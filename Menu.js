@@ -53,6 +53,8 @@ import Payment from "./Screens/Payment";
 import ChatScreen from "./Screens/ChatScreen";
 import MessageScreen from "./Screens/MessageScreen";
 import UserOrder from "./SellerPages/UserOrder";
+import Prescription from "./SellerPages/Prescription";
+import DeliverySell from "./SellerPages/DeliverySell";
 // import CardScan from "./src/screens/CardScan";
 
 const { width } = Dimensions.get("screen");
@@ -60,6 +62,42 @@ const { width } = Dimensions.get("screen");
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 const Tab = createBottomTabNavigator();
+
+function HomePageScreen() {
+  return (
+    <Stack.Navigator
+      initialRouteName="HomePage"
+      mode="card"
+      headerMode="screen"
+    >
+      <Stack.Screen
+        name="HomePage"
+        component={HomePage}
+        options={{
+          headerShown: true,
+          headerTitleAlign: "center",
+          headerTitle:"Home"
+        }}
+      />
+       <Stack.Screen
+        name="DeliverySell"
+        component={DeliverySell}
+        options={{
+          headerShown: false,
+          headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
+        name="Prescription"
+        component={Prescription}
+        options={{
+          headerShown: true,
+          headerTitleAlign: "center",
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
 
 function HomeStack(props) {
   const origin = useSelector(selectOrigin);
@@ -290,39 +328,39 @@ function TabNavigaytor() {
         <Tab.Screen
           name="Home"
           options={{
-            headerShown: true,
-            headerTitleAlign: "center"
+            headerShown: false,
+            headerTitleAlign: "center",
           }}
-          component={HomePage}
+          component={HomePageScreen}
         />
         <Tab.Screen
-           options={{
+          options={{
             headerShown: true,
-            headerTitleAlign: "center"
+            headerTitleAlign: "center",
           }}
           name="Profile"
           component={ProfilePage}
         />
         <Tab.Screen
-           options={{
+          options={{
             headerShown: true,
-            headerTitleAlign: "center"
+            headerTitleAlign: "center",
           }}
           name="Chat"
           component={HomePage}
         />
         <Tab.Screen
-           options={{
+          options={{
             headerShown: true,
-            headerTitleAlign: "center"
+            headerTitleAlign: "center",
           }}
           name="Deliver"
           component={HomePage}
         />
         <Tab.Screen
-           options={{
+          options={{
             headerShown: true,
-            headerTitleAlign: "center"
+            headerTitleAlign: "center",
           }}
           name="OrderInfo"
           component={UserOrder}

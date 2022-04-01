@@ -1,5 +1,12 @@
-import { StyleSheet, Text, View, ScrollView, Image,Animated } from "react-native";
-import React, { useEffect, useRef } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Image,
+  Animated,
+} from "react-native";
+import React, { useEffect, useRef, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import { Block, theme } from "galio-framework";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,17 +16,18 @@ import Button from "../src/components/Button";
 import { useNavigation } from "@react-navigation/native";
 import MapViewDirections from "react-native-maps-directions";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import * as ImageManipulator from "expo-image-manipulator";
 
 const UserOrder = () => {
   const route = useRoute();
-  const { basket, usersInfo } = route.params;
+  const { basket, usersInfo, prescription } = route.params;
   const sellerdata = useSelector(selectSellerData);
   const mapRef = useRef();
   const navigation = useNavigation();
-  console.log(usersInfo);
+  // console.log(usersInfo);
 
   useEffect(() => {
-    console.log("Component is call")
+    console.log("Component is call");
     mapRef.current?.fitToSuppliedMarkers(["Origin", "Destination"], {
       edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
     });
@@ -44,7 +52,9 @@ const UserOrder = () => {
           height: 100,
           marginVertical: 6,
           flexDirection: "row",
+          borderRadius: 10,
           alignItems: "center",
+          backgroundColor: "#f2e9e9",
         }}
       >
         <View
@@ -141,6 +151,19 @@ const UserOrder = () => {
             {basket ? basket.map(renderProducts) : null}
           </View>
         </ScrollView>
+        <View style={{ flex: 1, alignItems: "center" }}>
+          <Button
+            mode="contained"
+            style={{ width: "80%" }}
+            onPress={() => {
+              navigation.navigate("Prescription", {
+                Images: prescription,
+              });
+            }}
+          >
+            View Prescription
+          </Button>
+        </View>
       </Block>
       <Block style={{ flex: 0.5 }}>
         <View style={[styles.container, { backgroundColor: "#E0F7FA" }]}>
