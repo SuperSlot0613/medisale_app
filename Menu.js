@@ -52,6 +52,7 @@ import MapViewDirection from "./Screens/MapViewDirection";
 import Payment from "./Screens/Payment";
 import ChatScreen from "./Screens/ChatScreen";
 import MessageScreen from "./Screens/MessageScreen";
+import UserOrder from "./SellerPages/UserOrder";
 // import CardScan from "./src/screens/CardScan";
 
 const { width } = Dimensions.get("screen");
@@ -163,7 +164,7 @@ function HomeStack(props) {
         }}
         component={MapScreen}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="Messages"
         options={{
           headerShown: true,
@@ -263,7 +264,7 @@ function TabNavigaytor() {
         tabBarIcon: ({ color, size }) => {
           if (route.name === "Home") {
             return <Feather name="home" size={24} color={color} />;
-          } else if (route.name === "Orders") {
+          } else if (route.name === "Deliver") {
             return <FontAwesome name="first-order" size={24} color={color} />;
           } else if (route.name === "Chat") {
             return (
@@ -272,6 +273,10 @@ function TabNavigaytor() {
                 size={24}
                 color={color}
               />
+            );
+          } else if (route.name === "OrderInfo") {
+            return (
+              <FontAwesome name="shopping-basket" size={24} color={color} />
             );
           } else if (route.name === "Profile") {
             return <AntDesign name="user" size={24} color={color} />;
@@ -285,48 +290,42 @@ function TabNavigaytor() {
         <Tab.Screen
           name="Home"
           options={{
-            drawer: false,
-            header: ({ navigation, scene }) => (
-              <Header
-                title="Home"
-                search
-                navigation={navigation}
-                scene={scene}
-              />
-            ),
-            cardStyle: { backgroundColor: "#F8F9FE" },
+            headerShown: true,
+            headerTitleAlign: "center"
           }}
           component={HomePage}
         />
         <Tab.Screen
-          options={{
-            header: ({ navigation, scene }) => (
-              <Header title="Profile" navigation={navigation} scene={scene} />
-            ),
-            cardStyle: { backgroundColor: "#F8F9FE" },
+           options={{
+            headerShown: true,
+            headerTitleAlign: "center"
           }}
           name="Profile"
           component={ProfilePage}
         />
         <Tab.Screen
-          options={{
-            header: ({ navigation, scene }) => (
-              <Header title="Chat" navigation={navigation} scene={scene} />
-            ),
-            cardStyle: { backgroundColor: "#F8F9FE" },
+           options={{
+            headerShown: true,
+            headerTitleAlign: "center"
           }}
           name="Chat"
           component={HomePage}
         />
         <Tab.Screen
-          options={{
-            header: ({ navigation, scene }) => (
-              <Header title="Orders" navigation={navigation} scene={scene} />
-            ),
-            cardStyle: { backgroundColor: "#F8F9FE" },
+           options={{
+            headerShown: true,
+            headerTitleAlign: "center"
           }}
-          name="Orders"
+          name="Deliver"
           component={HomePage}
+        />
+        <Tab.Screen
+           options={{
+            headerShown: true,
+            headerTitleAlign: "center"
+          }}
+          name="OrderInfo"
+          component={UserOrder}
         />
       </Tab.Group>
     </Tab.Navigator>

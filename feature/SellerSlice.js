@@ -5,7 +5,7 @@ const initialState = {
   faceImage: "",
   documentImage: "",
   userImage: "",
-  sellerdata: [],
+  sellerdata:[],
   location: [],
 };
 

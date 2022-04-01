@@ -9,7 +9,9 @@
       [
         "@stripe/stripe-react-native",
         {
-          "merchantIdentifier": ["expo.host.medisale"],
+          "merchantIdentifier": [
+            "expo.host.medisale"
+          ],
           "enableGooglePay": true
         }
       ]
