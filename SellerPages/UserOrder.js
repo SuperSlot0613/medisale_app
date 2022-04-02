@@ -20,7 +20,7 @@ import * as ImageManipulator from "expo-image-manipulator";
 
 const UserOrder = () => {
   const route = useRoute();
-  const { basket, usersInfo, prescription } = route.params;
+  const { basket, usersInfo, prescription } = route?.params;
   const sellerdata = useSelector(selectSellerData);
   const mapRef = useRef();
   const navigation = useNavigation();
@@ -35,8 +35,8 @@ const UserOrder = () => {
 
   const initialMapState = {
     region: {
-      latitude: sellerdata[0].location.latitude,
-      longitude: sellerdata[0].location.longitude,
+      latitude: sellerdata[0]?.location.latitude,
+      longitude: sellerdata[0]?.location.longitude,
       latitudeDelta: 0.005,
       longitudeDelta: 0.005,
     },
@@ -148,7 +148,7 @@ const UserOrder = () => {
       <Block style={{ flex: 0.5 }}>
         <ScrollView>
           <View style={{ paddingHorizontal: 16 }}>
-            {basket ? basket.map(renderProducts) : null}
+            {basket ? basket?.map(renderProducts) : null}
           </View>
         </ScrollView>
         <View style={{ flex: 1, alignItems: "center" }}>
@@ -169,15 +169,15 @@ const UserOrder = () => {
         <View style={[styles.container, { backgroundColor: "#E0F7FA" }]}>
           <MapView
             ref={mapRef}
-            initialRegion={initialMapState.region}
+            initialRegion={initialMapState?.region}
             style={styles.container}
             provider={PROVIDER_GOOGLE}
             mapType="standard"
           >
             {usersInfo && sellerdata[0] && (
               <MapViewDirections
-                origin={sellerdata[0].name}
-                destination={usersInfo.name}
+                origin={sellerdata[0]?.name}
+                destination={usersInfo?.name}
                 apiKey={GOOGLE_MAPS_APIKEY}
                 strokeWidth={3}
                 strokeColor="black"
@@ -185,11 +185,11 @@ const UserOrder = () => {
             )}
             {usersInfo && (
               <MapView.Marker
-                title={usersInfo.name}
-                description={usersInfo.email}
+                title={usersInfo?.name}
+                description={usersInfo?.email}
                 coordinate={{
-                  latitude: usersInfo.userloaction.latitude,
-                  longitude: usersInfo.userloaction.longitude,
+                  latitude: usersInfo?.userloaction.latitude,
+                  longitude: usersInfo?.userloaction.longitude,
                 }}
                 identifier="Origin"
               >
@@ -205,17 +205,17 @@ const UserOrder = () => {
 
             {sellerdata[0] && (
               <MapView.Marker
-                title={sellerdata[0].name}
-                description={sellerdata[0].email}
+                title={sellerdata[0]?.name}
+                description={sellerdata[0]?.email}
                 coordinate={{
-                  latitude: sellerdata[0].location.latitude,
-                  longitude: sellerdata[0].location.longitude,
+                  latitude: sellerdata[0]?.location.latitude,
+                  longitude: sellerdata[0]?.location.longitude,
                 }}
                 identifier="Destination"
               >
                 <Animated.View style={[styles.markerWrap]}>
                   <Animated.Image
-                    source={require("../assets/map_marker.png")}
+                    source={require("../assets/vahicale.png")}
                     style={[styles.marker]}
                     resizeMode="cover"
                   />

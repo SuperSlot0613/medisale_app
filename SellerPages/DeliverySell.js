@@ -5,6 +5,8 @@ import {
   ScrollView,
   Image,
   Animated,
+  KeyboardAvoidingView,
+  ToastAndroid,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { useRoute } from "@react-navigation/native";
@@ -18,6 +20,8 @@ import MapViewDirections from "react-native-maps-directions";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import * as ImageManipulator from "expo-image-manipulator";
 import TextInput from "../src/components/TextInput";
+import { auth } from "../firebase";
+import { signInWithPhoneNumber } from "firebase/auth";
 
 const DeliverySell = () => {
   const route = useRoute();
@@ -25,7 +29,34 @@ const DeliverySell = () => {
   const sellerdata = useSelector(selectSellerData);
   const mapRef = useRef();
   const navigation = useNavigation();
-  const [sendOtp, setsendOtp] = useState(true);
+  const [sendOtp, setsendOtp] = useState(false);
+  const [confirm, setconfirm] = useState(null);
+  const [otpcode, setotpcode] = useState("");
+
+  // console.log(usersInfo);
+
+  const otpSender = async () => {
+    const confirmation = await signInWithPhoneNumber(
+      auth,
+      "+91" + usersInfo.phone
+    );
+    console.log("confirmation", confirmation);
+    if (confirmation) {
+      setconfirm(confirmation);
+      ToastAndroid.show("OTP has beem Sended", ToastAndroid.SHORT);
+    }
+  };
+
+  const OtpVerify = async () => {
+    try {
+      let data = await confirm.confirm(number);
+      console.log("data", data);
+      ToastAndroid.show("OTP is Verify", ToastAndroid.SHORT);
+    } catch (error) {
+      console.log("Invalid code.");
+      ToastAndroid.show("Invalid code.", ToastAndroid.SHORT);
+    }
+  };
 
   useEffect(() => {
     console.log("Component is call");
@@ -105,40 +136,70 @@ const DeliverySell = () => {
           </MapView>
         </View>
       </Block>
-      <Block style={{ flex: 0.4 }}>
-        <Block style={{ flex: 1, alignItems: "center", marginTop: 10 }}>
-          <Text style={{ fontSize: 16 }}>{usersInfo.address}</Text>
+      <Block
+        style={{ flex: 0.4, flexDirection: "column", justifyContent: "center" }}
+      >
+        <Block
+          style={{
+            flex: 1,
+            flexDirection: "column",
+            alignItems: "center",
+            marginTop: 10,
+            zIndex: 10,
+          }}
+        >
+          <Text style={{ fontSize: 20, marginBottom: 5 }}>
+            Name : {usersInfo.name}
+          </Text>
+          <Text style={{ fontSize: 16, marginBottom: 5 }}>
+            Phone No : {usersInfo.phone}
+          </Text>
+          <Text style={{ fontSize: 16, marginBottom: 5 }}>
+            {usersInfo.address}
+          </Text>
         </Block>
-        <Block>
+        <Block
+          style={{
+            flex: 1,
+            flexflexDirection: "row",
+            alignItems: "center",
+            zIndex: 10,
+          }}
+        >
           {sendOtp ? (
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <TextInput
-                label="Enter OTP"
-                returnKeyType="next"
-                // value={email.value}
-                // onChangeText={(text) => setEmail({ value: text, error: "" })}
-                keyboardType="number-pad"
-                style={{ width: 100, height: 50 }}
-              />
-              <Button
-                mode="contained"
-                style={{ width: 100, flex: 1 }}
-                // onPress={() => {
-                //   navigation.navigate("DeliverySell", {
-                //     usersInfo: item.usersInfo,
-                //     paymentInfo: item.payment,
-                //   });
-                // }}
+            <KeyboardAvoidingView>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
               >
-                Verify
-              </Button>
-            </View>
+                <Block style={{ margin: 5 }}>
+                  <TextInput
+                    label="Enter OTP"
+                    returnKeyType="next"
+                    style={{ width: 100, height: 45 }}
+                    value={otpcode}
+                    onChangeText={(text) => setotpcode(text)}
+                    autoCapitalize="none"
+                    keyboardType="number-pad"
+                  />
+                </Block>
+                <Block style={{ margin: 5 }}>
+                  <Button
+                    mode="contained"
+                    style={{ width: 120, height: 50 }}
+                    onPress={() => {
+                      OtpVerify();
+                    }}
+                  >
+                    Verify
+                  </Button>
+                </Block>
+              </View>
+            </KeyboardAvoidingView>
           ) : (
             <Block
               style={{
@@ -150,12 +211,10 @@ const DeliverySell = () => {
               <Button
                 mode="contained"
                 style={{ width: 150 }}
-                // onPress={() => {
-                //   navigation.navigate("DeliverySell", {
-                //     usersInfo: item.usersInfo,
-                //     paymentInfo: item.payment,
-                //   });
-                // }}
+                onPress={() => {
+                  setsendOtp(true);
+                  otpSender();
+                }}
               >
                 Send OTP
               </Button>
