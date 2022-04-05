@@ -28,14 +28,14 @@ const DrawerItem = (props) => {
             color={focused ? "white" : argonTheme.COLORS.PRIMARY}
           />
         );
-      case "Recommended":
-        return (
-          <FontAwesome5
-            name="elementor"
-            size={24}
-            color={focused ? "white" : argonTheme.COLORS.ERROR}
-          />
-        );
+      // case "Recommended":
+      //   return (
+      //     <FontAwesome5
+      //       name="elementor"
+      //       size={24}
+      //       color={focused ? "white" : argonTheme.COLORS.ERROR}
+      //     />
+      //   );
       case "Your Account":
         return (
           <AntDesign
@@ -60,14 +60,14 @@ const DrawerItem = (props) => {
             color={focused ? "white" : argonTheme.COLORS.WARNING}
           />
         );
-      case "Buy Again":
-        return (
-          <MaterialCommunityIcons
-            name="purse-outline"
-            size={24}
-            color={focused ? "white" : argonTheme.COLORS.LABEL}
-          />
-        );
+      // case "Buy Again":
+      //   return (
+      //     <MaterialCommunityIcons
+      //       name="purse-outline"
+      //       size={24}
+      //       color={focused ? "white" : argonTheme.COLORS.LABEL}
+      //     />
+      //   );
       case "Register":
         return (
           <AntDesign

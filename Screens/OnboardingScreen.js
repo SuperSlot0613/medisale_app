@@ -3,10 +3,6 @@ import { Button, Image, StyleSheet, Text, View } from "react-native";
 import Onboarding from "react-native-onboarding-swiper";
 import useAuth from "../Hooks/useAuth";
 import { useNavigation } from "@react-navigation/native";
-import onboarding1 from "../assets/Gif/DoctorsOnboarding.gif";
-import onboarding2 from "../assets/Gif/GSKSickDay.gif";
-import onboarding3 from "../assets/Gif/Hospitalmotion.gif";
-import onboarding4 from "../assets/Gif/Webdesign.gif";
 
 const OnboardingScreen = () => {
   const { user, isFirstLaunch, setIsFirstLaunch } = useAuth();
@@ -28,21 +24,47 @@ const OnboardingScreen = () => {
       pages={[
         {
           backgroundColor: "#a6e4d0",
-          image: <Image source={require("../assets/Onboarding1.png")} />,
-          title: "Onboarding 1",
-          subtitle: "Done with React Native Onboarding Swiper",
+          image: (
+            <Image
+              style={{ width: "90%", height: 300, borderRadius: 10 }}
+              source={require("../assets/board1.png")}
+            />
+          ),
+          title: "Trusted Medical Shop",
+          subtitle: "Buy Now",
         },
         {
           backgroundColor: "#fdeb93",
-          image: <Image source={require("../assets/Onboarding2.png")} />,
-          title: "Onboarding 2",
-          subtitle: "Done with React Native Onboarding Swiper",
+          image: (
+            <Image
+              style={{ width: "90%", height: 300, borderRadius: 10 }}
+              source={require("../assets/board2.png")}
+            />
+          ),
+          title: "24/7 Availability",
+          subtitle: "You Can Order Medicine Any Time",
+        },
+        {
+          backgroundColor: "#a6e4d0",
+          image: (
+            <Image
+              style={{ width: "90%", height: 300, borderRadius: 10 }}
+              source={require("../assets/board4.png")}
+            />
+          ),
+          title: "Best Quality Medicine",
+          subtitle: "ISO certify Medicine Brand",
         },
         {
           backgroundColor: "#fff",
-          image: <Image source={require("../assets/Onboarding3.png")} />,
-          title: "Onboarding 3",
-          subtitle: "Done with React Native Onboarding Swiper",
+          image: (
+            <Image
+              style={{ width: "90%", height: 300, borderRadius: 10 }}
+              source={require("../assets/deliveryboy.png")}
+            />
+          ),
+          title: "Fastest Delivery",
+          subtitle: "Get Your Medicine Within 30 Minutes",
         },
       ]}
     />

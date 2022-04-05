@@ -10,26 +10,34 @@ import {
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 
-const PaymentCard = ({ amount,onPaymentSuccess,onPaymentFailed,onPaymentCancel }) => {
+const PaymentCard = ({
+  amount,
+  onPaymentSuccess,
+  onPaymentFailed,
+  onPaymentCancel,
+}) => {
   const [Name, setName] = useState("");
-  const [phonenumber, setphonenumber] = useState('')
+  const [phonenumber, setphonenumber] = useState("");
   // console.log(amount)
 
   const { confirmPayment, loading } = useConfirmPayment();
-  const navigation=useNavigation()
+  const navigation = useNavigation();
 
   const initPayment = async () => {
-    const response = await axios.post("http://192.168.1.14:3003/create-payment-intent", {
-      amount: amount,
-      currency: "inr",
-      paymentMethod: "card",
-    });
+    const response = await axios.post(
+      "https://us-central1-medisale-app.cloudfunctions.net/api/create-payment-intent",
+      {
+        amount: amount,
+        currency: "inr",
+        paymentMethod: "card",
+      }
+    );
     if (response.data) {
       console.log(response.data);
       const clientSecret = response.data.clientSecret;
       const billingDetails = {
         name: Name,
-        phone:phonenumber
+        phone: phonenumber,
       };
       const { error, paymentIntent } = await confirmPayment(clientSecret, {
         type: "Card",
@@ -40,7 +48,7 @@ const PaymentCard = ({ amount,onPaymentSuccess,onPaymentFailed,onPaymentCancel }
         onPaymentFailed();
       } else {
         console.log("Payment Successful");
-        onPaymentSuccess(paymentIntent,phonenumber);
+        onPaymentSuccess(paymentIntent, phonenumber);
       }
     } else {
       onPaymentFailed();
@@ -196,7 +204,7 @@ const PaymentCard = ({ amount,onPaymentSuccess,onPaymentFailed,onPaymentCancel }
             style={styles.CardField}
           />
         </View>
-        <View style={{flex:1,alignItems: "center"}}>
+        <View style={{ flex: 1, alignItems: "center" }}>
           <Button
             onPress={() => onPaymentCancel()}
             disabled={loading}
@@ -242,7 +250,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     padding: 10,
-    width:"95%",
+    width: "95%",
     borderRadius: 20,
     marginTop: 20,
     marginBottom: 50,
@@ -253,7 +261,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 50,
     marginVertical: 30,
-    fontSize:14,
+    fontSize: 14,
   },
   input: {
     height: 44,
@@ -268,6 +276,6 @@ const styles = StyleSheet.create({
     borderColor: "#000",
     borderRadius: 8,
     fontSize: 14,
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
 });

@@ -4,6 +4,7 @@ import numpy as np
 import face_recognition
 import json
 import base64
+import os
 
 app = Flask(__name__)
 
@@ -11,6 +12,9 @@ def data_uri_to_cv2_img(uri):
     nparr = np.frombuffer(base64.b64decode(uri), np.uint8)
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     return img
+
+
+    
 @app.route("/")
 def hello():
     return "Hello World"
@@ -19,7 +23,7 @@ def hello():
 @app.route('/imagechecker', methods = ['POST']) 
 def faceverification(): 
     data = request.get_json() 
-    # print(data)
+    print("Function is running")
 
     document = data['document'] 
     faceimage=data['faceimage']
@@ -56,6 +60,5 @@ def faceverification():
     return json.dumps({"result":"false"})
 
 
-if __name__ == "__main__":
-    app.debug = True
-    app.run(port=5000)
+if __name__ == '__main__':
+    app.run(debug=True,host='0.0.0.0',port=int(os.environ.get('PORT', 8080)))

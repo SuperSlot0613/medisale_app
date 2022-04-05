@@ -35,10 +35,10 @@ function CustomDrawerContent({
   const screens = [
     "Home",
     "Your Account",
-    "Recommended",
+    // "Recommended",
     "Your Orders",
     "Your Wish List",
-    "Buy Again",
+    // "Buy Again",
     "Chat",
     "Log Out",
   ];
@@ -135,9 +135,9 @@ function CustomDrawerContent({
                 borderWidth: StyleSheet.hairlineWidth,
               }}
             />
-            <Text color="#8898AA" style={{ marginTop: 16, marginLeft: 8 }}>
+            {/* <Text color="#8898AA" style={{ marginTop: 16, marginLeft: 8 }}>
               DOCUMENTATION
-            </Text>
+            </Text> */}
           </Block>
           {/* <DrawerCustomItem title="Getting Started" navigation={navigation} /> */}
         </ScrollView>

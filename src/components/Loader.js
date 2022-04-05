@@ -59,7 +59,7 @@ const Loader = () => {
   const verifyMethode = async () => {
     console.log("This is verfy method");
     await axios
-      .post("http://192.168.1.14:3003/facevalidation", jsobject)
+      .post("https://us-central1-medisale-app.cloudfunctions.net/api/facevalidation", jsobject)
       .then((res) => {
         console.log(res.data);
         if (res.data) {
@@ -69,6 +69,7 @@ const Loader = () => {
           );
           navigation.navigate("SellerPages");
         }
+        navigation.navigate("LoginPage")
       });
     console.log("Hello world");
   };

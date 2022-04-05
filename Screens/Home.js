@@ -20,12 +20,15 @@ import { selectValue, setOrigin, ADD_NEW_ADDRESS } from "../feature/navSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
+import useAuth from "../Hooks/useAuth";
 
 const Home = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const { user } = useAuth();
 
   useEffect(async () => {
+    Alert.alert(`Welcome back ${user.displayName}`);
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {

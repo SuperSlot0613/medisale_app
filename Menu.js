@@ -115,7 +115,7 @@ function HomeStack(props) {
               search
               navigation={navigation}
               scene={scene}
-              tabs={tabs.categories}
+              // tabs={tabs.categories}
             />
           ),
           cardStyle: { backgroundColor: "#F8F9FE" },

@@ -5,8 +5,17 @@ import ChatList from "../Component/ChatList";
 
 const ChatScreen = () => {
   return (
-    <SafeAreaView>
-      <ChatList />
+    <SafeAreaView style={{ flex: 1,backgroundColor:"white" }}>
+      {/* <ChatList /> */}
+      <View
+        style={{
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Text style={{ fontSize: 20, fontWeight: "400" }}>Comming Soon</Text>
+      </View>
     </SafeAreaView>
   );
 };
