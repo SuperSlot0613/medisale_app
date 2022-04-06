@@ -55,6 +55,8 @@ import MessageScreen from "./Screens/MessageScreen";
 import UserOrder from "./SellerPages/UserOrder";
 import Prescription from "./SellerPages/Prescription";
 import DeliverySell from "./SellerPages/DeliverySell";
+import ChatForSeller from "./SellerPages/ChatForSeller";
+import DeliveryPageSell from "./SellerPages/DeliveryPageSell";
 // import CardScan from "./src/screens/CardScan";
 
 const { width } = Dimensions.get("screen");
@@ -347,7 +349,7 @@ function TabNavigaytor() {
             headerTitleAlign: "center",
           }}
           name="Chat"
-          component={HomePage}
+          component={ChatForSeller}
         />
         <Tab.Screen
           options={{
@@ -355,7 +357,7 @@ function TabNavigaytor() {
             headerTitleAlign: "center",
           }}
           name="Deliver"
-          component={HomePage}
+          component={DeliveryPageSell}
         />
         <Tab.Screen
           options={{
