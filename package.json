@@ -36,6 +36,7 @@
     "express": "^4.17.3",
     "firebase": "^9.6.5",
     "galio-framework": "^0.8.0",
+    "geolib": "^3.3.3",
     "i": "^0.3.7",
     "nodemon": "^2.0.15",
     "npm": "^8.5.0",

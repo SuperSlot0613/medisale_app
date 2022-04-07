@@ -14,12 +14,12 @@ const OnboardingScreen = () => {
       // NextButtonComponent={Next}
       onSkip={() => {
         setIsFirstLaunch(false);
-        navigation.replace("OptionLogin");
+        // navigation.navigate("OptionLogin");
       }}
       onDone={() => {
         setIsFirstLaunch(false);
         console.log("onbordingScreen", isFirstLaunch);
-        navigation.replace("OptionLogin");
+        // navigation.navigate("OptionLogin");
       }}
       pages={[
         {

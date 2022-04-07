@@ -152,7 +152,7 @@ const MyCart = ({ navigation }) => {
                     name="minus"
                     style={{
                       fontSize: 16,
-                      color:"black",
+                      color: "black",
                     }}
                   />
                 </View>
@@ -391,7 +391,7 @@ const MyCart = ({ navigation }) => {
           }}
         >
           <TouchableOpacity
-            onPress={() => navigation.navigate("MapScreen")}
+            onPress={() => navigation.navigate("LoaderScreen")}
             style={{
               width: "86%",
               height: "90%",

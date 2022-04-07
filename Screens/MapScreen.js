@@ -11,14 +11,14 @@ import {
   Dimensions,
   Platform,
 } from "react-native";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { Circle, PROVIDER_GOOGLE } from "react-native-maps";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import StarRating from "../Component/StarRating";
 
-import { useNavigation, useTheme } from "@react-navigation/native";
+import { useNavigation, useRoute, useTheme } from "@react-navigation/native";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import { useDispatch, useSelector } from "react-redux";
@@ -36,22 +36,25 @@ const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
 const MapScreen = () => {
   const theme = useTheme();
-  const [markers, setmarkers] = useState([]);
+  const route=useRoute()
+  const {distancedata}=route.params;
+  const [markers, setmarkers] = useState(distancedata);
   const userloc = useSelector(selectOrigin);
   const { user } = useAuth();
   const dispatch = useDispatch();
   const navigation = useNavigation();
   // console.log(userloc);
+  console.log(markers)
 
-  useEffect(async () => {
-    const sellerInfo = await getDocs(collection(db, "sellerInfo"));
-    setmarkers(
-      sellerInfo.docs.map((doc) => ({
-        id: doc.id,
-        data: doc.data(),
-      }))
-    );
-  }, []);
+  // useEffect(async () => {
+  //   const sellerInfo = await getDocs(collection(db, "sellerInfo"));
+  //   setmarkers(
+  //     sellerInfo.docs.map((doc) => ({
+  //       id: doc.id,
+  //       data: doc.data(),
+  //     }))
+  //   );
+  // }, []);
 
   const initialMapState = {
     region: {
@@ -177,6 +180,16 @@ const MapScreen = () => {
             />
           </Animated.View>
         </MapView.Marker>
+        <Circle
+          center={{
+            latitude: userloc.latitude,
+            longitude: userloc.longitude,
+          }}
+          radius={600}
+          strokeWidth={1}
+          strokeColor={"#1a66ff"}
+          fillColor={"rgba(230,238,255,0.5)"}
+        />
       </MapView>
       <View style={styles.searchBox}>
         <GooglePlacesAutocomplete
@@ -271,7 +284,7 @@ const MapScreen = () => {
                 {marker.data.name}
               </Text>
               {/* <StarRating ratings={marker.rating} reviews={marker.reviews} /> */}
-              <Block row={true} style={{justifyContent:"space-between"}}>
+              <Block row={true} style={{ justifyContent: "space-between" }}>
                 <Text numberOfLines={1} style={styles.cardDescription}>
                   {marker.data.email}
                 </Text>

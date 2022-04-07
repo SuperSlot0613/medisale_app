@@ -57,6 +57,8 @@ import Prescription from "./SellerPages/Prescription";
 import DeliverySell from "./SellerPages/DeliverySell";
 import ChatForSeller from "./SellerPages/ChatForSeller";
 import DeliveryPageSell from "./SellerPages/DeliveryPageSell";
+import LoaderHelp from "./Component/LoaderHelp";
+import LoaderScreen from "./Screens/LoaderScreen"
 // import CardScan from "./src/screens/CardScan";
 
 const { width } = Dimensions.get("screen");
@@ -78,10 +80,10 @@ function HomePageScreen() {
         options={{
           headerShown: true,
           headerTitleAlign: "center",
-          headerTitle:"Home"
+          headerTitle: "Home",
         }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="DeliverySell"
         component={DeliverySell}
         options={{
@@ -102,11 +104,18 @@ function HomePageScreen() {
 }
 
 function HomeStack(props) {
-  const origin = useSelector(selectOrigin);
-  const destination = useSelector(selectDestination);
-
   return (
-    <Stack.Navigator mode="card" headerMode="screen">
+    <Stack.Navigator
+      initialRouteName="LoaderHelp"
+      mode="card"
+      headerMode="screen"
+    >
+      <Stack.Screen options={{ headerShown: false }} name="LoaderHelp">
+        {(props) => <LoaderHelp {...props} nextScreen={"Home"} />}
+      </Stack.Screen>
+      <Stack.Screen options={{ headerShown: false }} name="LoaderScreen">
+        {(props) => <LoaderScreen {...props} nextScreen={"MapScreen"} />}
+      </Stack.Screen>
       <Stack.Screen
         name="Home"
         component={Home}
@@ -406,7 +415,7 @@ const Menu = () => {
         },
       }}
       initialRouteName={
-        user === null && !isFirstLaunch ? "OnboardingScreen" : "Home"
+        user === null && !isFirstLaunch ? "OnboardingScreen" : "HomeScreen"
       }
     >
       {user !== null ? (
