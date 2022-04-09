@@ -58,8 +58,9 @@ import DeliverySell from "./SellerPages/DeliverySell";
 import ChatForSeller from "./SellerPages/ChatForSeller";
 import DeliveryPageSell from "./SellerPages/DeliveryPageSell";
 import LoaderHelp from "./Component/LoaderHelp";
-import LoaderScreen from "./Screens/LoaderScreen"
+import LoaderScreen from "./Screens/LoaderScreen";
 import Advertisment from "./SellerPages/Advertisment";
+import AdverPayment from "./SellerPages/AdverPayment";
 // import CardScan from "./src/screens/CardScan";
 
 const { width } = Dimensions.get("screen");
@@ -103,6 +104,14 @@ function HomePageScreen() {
       <Stack.Screen
         name="Advertisment"
         component={Advertisment}
+        options={{
+          headerShown: true,
+          headerTitleAlign: "center",
+        }}
+      />
+      <Stack.Screen
+        name="AdverPayment"
+        component={AdverPayment}
         options={{
           headerShown: true,
           headerTitleAlign: "center",

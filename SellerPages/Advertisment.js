@@ -20,24 +20,26 @@ import { useNavigation } from "@react-navigation/native";
 import DatePicker from "react-native-datepicker";
 import argonTheme from "../constants/Theme";
 import * as ImagePicker from "expo-image-picker";
-
 const Advertisment = () => {
+  const navigation = useNavigation();
+  const [shopImage, setshopImage] = useState(null);
+  const [discount, setdiscount] = useState("");
+  const [advdate, setadvdate] = useState("");
+  const [shopname, setshopname] = useState("");
 
-    const [shopImage, setshopImage] = useState(null);
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    console.log(result);
 
-    const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          allowsEditing: true,
-          aspect: [4, 3],
-          quality: 1,
-        });
-        console.log(result);
-    
-        if (!result.cancelled) {
-          setshopImage(result.uri);
-        }
-      };
+    if (!result.cancelled) {
+      setshopImage(result.uri);
+    }
+  };
 
   return (
     <SafeAreaProvider style={{ flex: 1, backgroundColor: "white" }}>
@@ -48,25 +50,19 @@ const Advertisment = () => {
               <TextInput
                 label="Disscount Persentage(in %)"
                 returnKeyType="next"
-                // value={name.value}
-                // onChangeText={(text) => setName({ value: text, error: "" })}
+                value={discount}
+                onChangeText={(text) => setdiscount(text)}
               />
             </Block>
             <Block width={width * 0.8} style={{ marginBottom: 5 }}>
               <TextInput
-                label="Pan Number"
+                label="Shop Name"
                 returnKeyType="next"
-                // onChangeText={(text) =>
-                //   setPanNumber({ value: text, error: "" })
-                // }
-                // value={pannumber.value}
-                autoCapitalize="characters"
-                autoCompleteType="email"
-                textContentType="emailAddress"
-                keyboardType="email-address"
+                onChangeText={(text) => setshopname(text)}
+                value={shopname}
               />
             </Block>
-            <Block width={width * 0.8} style={{ marginBottom: 5 }}>
+            {/* <Block width={width * 0.8} style={{ marginBottom: 5 }}>
               <TextInput
                 label="Email"
                 returnKeyType="next"
@@ -77,27 +73,17 @@ const Advertisment = () => {
                 textContentType="emailAddress"
                 keyboardType="email-address"
               />
-            </Block>
+            </Block> */}
             <Block width={width * 0.8} style={{ marginBottom: 5 }}>
               <TextInput
                 label="Number Of Date"
                 returnKeyType="next"
-                // value={phonenumber.value}
-                // onChangeText={(text) =>
-                //   setphonenumber({ value: text, error: "" })
-                // }
+                value={advdate}
+                onChangeText={(text) => setadvdate(text)}
                 autoCapitalize="none"
                 keyboardType="number-pad"
               />
             </Block>
-            <Block
-              width={width * 0.8}
-              style={{
-                marginBottom: 5,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            ></Block>
             <Block middle>
               <Button
                 style={{ width: 300, marginTop: 30 }}
@@ -111,7 +97,14 @@ const Advertisment = () => {
               <Button
                 style={{ width: 300, marginTop: 30 }}
                 mode="contained"
-                // onPress={() => onSignUpPressed()}
+                onPress={() =>
+                  navigation.navigate("AdverPayment", {
+                    ShopName: shopname,
+                    discount: discount,
+                    advdate: advdate,
+                    shopImage: shopImage,
+                  })
+                }
               >
                 NEXT STEP
               </Button>

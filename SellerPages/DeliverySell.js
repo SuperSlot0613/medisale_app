@@ -7,7 +7,9 @@ import {
   Animated,
   KeyboardAvoidingView,
   ToastAndroid,
+  Dimensions,
 } from "react-native";
+const screen = Dimensions.get("screen");
 import React, { useEffect, useRef, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import { Block, theme } from "galio-framework";
@@ -21,7 +23,8 @@ import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import * as ImageManipulator from "expo-image-manipulator";
 import TextInput from "../src/components/TextInput";
 import { auth } from "../firebase";
-import { signInWithPhoneNumber } from "firebase/auth";
+// import firebase from "firebase";
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import CountDown from "react-native-countdown-component";
 
 const DeliverySell = () => {
@@ -36,10 +39,56 @@ const DeliverySell = () => {
 
   // console.log(usersInfo);
 
+  function configureCaptcha() {
+    screen.recaptchaVerifier =RecaptchaVerifier(
+      "sign-in-button",
+      {
+        size: "invisible",
+        callback: (response) => {
+          // reCAPTCHA solved, allow signInWithPhoneNumber.
+          console.log("Recaptca varified");
+        },
+        defaultCountry: "IN",
+      },
+      auth
+    );
+  }
+
+  function onSignInSubmit() {
+    // configureCaptcha()
+    const phoneNumber = "+91" + usersInfo.phone;
+    console.log(phoneNumber);
+    const appVerifier = screen.recaptchaVerifier;
+    signInWithPhoneNumber(auth, phoneNumber,appVerifier)
+      .then((confirmationResult) => {
+        screen.confirmationResult = confirmationResult;
+        console.log("OTP has been sent");
+      })
+      .catch((error) => {
+        console.log(error.message)
+        console.log("SMS not sent");
+      });
+  }
+
+  function onSubmitOTP() {
+    const code = otpcode;
+    console.log(code);
+    screen.confirmationResult
+      .confirm(code)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        console.log("ERROR OCCURS");
+      });
+  }
+
   const otpSender = async () => {
     const confirmation = await signInWithPhoneNumber(
       auth,
-      "+91" + usersInfo.phone
+      "+91" + usersInfo.phone,
+      
     );
     console.log("confirmation", confirmation);
     if (confirmation) {
@@ -181,7 +230,7 @@ const DeliverySell = () => {
             flexflexDirection: "row",
             alignItems: "center",
             zIndex: 10,
-            marginTop:45
+            marginTop: 45,
           }}
         >
           {sendOtp ? (
@@ -210,7 +259,7 @@ const DeliverySell = () => {
                     mode="contained"
                     style={{ width: 120, height: 50 }}
                     onPress={() => {
-                      OtpVerify();
+                      onSubmitOTP();
                     }}
                   >
                     Verify
