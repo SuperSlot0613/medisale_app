@@ -68,14 +68,6 @@ const DrawerItem = (props) => {
       //       color={focused ? "white" : argonTheme.COLORS.LABEL}
       //     />
       //   );
-      case "Register":
-        return (
-          <AntDesign
-            name="login"
-            size={24}
-            color={focused ? "white" : argonTheme.COLORS.WARNING}
-          />
-        );
       case "Chat":
         return (
           <AntDesign

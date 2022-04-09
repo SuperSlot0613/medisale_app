@@ -22,6 +22,7 @@ import * as ImageManipulator from "expo-image-manipulator";
 import TextInput from "../src/components/TextInput";
 import { auth } from "../firebase";
 import { signInWithPhoneNumber } from "firebase/auth";
+import CountDown from "react-native-countdown-component";
 
 const DeliverySell = () => {
   const route = useRoute();
@@ -157,6 +158,22 @@ const DeliverySell = () => {
           <Text style={{ fontSize: 16, marginBottom: 5 }}>
             {usersInfo.address}
           </Text>
+          <CountDown
+            size={18}
+            until={1800}
+            onFinish={() => alert("Finished")}
+            digitStyle={{
+              backgroundColor: "#FFF",
+              borderWidth: 2,
+              borderColor: "#1CC625",
+            }}
+            digitTxtStyle={{ color: "#1CC625" }}
+            timeLabelStyle={{ color: "red", fontWeight: "bold" }}
+            separatorStyle={{ color: "#1CC625" }}
+            timeToShow={["H", "M", "S"]}
+            timeLabels={{ m: null, s: null }}
+            showSeparator
+          />
         </Block>
         <Block
           style={{
@@ -164,6 +181,7 @@ const DeliverySell = () => {
             flexflexDirection: "row",
             alignItems: "center",
             zIndex: 10,
+            marginTop:45
           }}
         >
           {sendOtp ? (

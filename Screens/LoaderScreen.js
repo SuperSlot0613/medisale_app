@@ -25,7 +25,7 @@ import { selectOrigin } from "../feature/navSlice";
 const LoaderScreen = ({ nextScreen }) => {
   const route = useRoute();
   const [result, setresult] = useState(false);
-  const [markers, setmarkers] = useState([]);
+  const { markers } = route.params;
   const navigation = useNavigation();
   const userloc = useSelector(selectOrigin);
   const [sortestDis, setsortestDis] = useState([]);
@@ -54,18 +54,15 @@ const LoaderScreen = ({ nextScreen }) => {
       }
     });
     console.log(markers);
-    return;
+    const timeout = setTimeout(() => {
+      navigation.navigate("MapScreen", {
+        distancedata: markers,
+      });
+    }, 5000);
   };
 
-  useEffect(async () => {
-    console.log("Function is call");
-    const sellerInfo = await getDocs(collection(db, "sellerInfo"));
-    setmarkers(
-      sellerInfo.docs.map((doc) => ({
-        id: doc.id,
-        data: doc.data(),
-      }))
-    );
+  useEffect(() => {
+    DistanceFind();
   }, []);
 
   return (

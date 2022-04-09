@@ -19,17 +19,30 @@ import {
   REMOVE_FROM_BASKET,
 } from "../feature/navSlice";
 import { Block, theme } from "galio-framework";
+import { collection, getDocs } from "firebase/firestore";
+import { auth, db } from "../firebase";
 
 const MyCart = ({ navigation }) => {
   const basket = useSelector(selectBasket);
   const [total, setTotal] = useState(null);
   const dispatch = useDispatch();
+  const [markers, setmarkers] = useState([]);
 
-  console.log("Basket value", basket);
+  // console.log("Basket value", basket);
 
   useEffect(() => {
     getTotal(basket);
   }, [basket]);
+
+  useEffect(async () => {
+    const sellerInfo = await getDocs(collection(db, "sellerInfo"));
+    setmarkers(
+      sellerInfo.docs.map((doc) => ({
+        id: doc.id,
+        data: doc.data(), 
+      }))
+    );
+  }, []);
 
   const getTotal = (productData) => {
     let total = 0;
@@ -391,7 +404,11 @@ const MyCart = ({ navigation }) => {
           }}
         >
           <TouchableOpacity
-            onPress={() => navigation.navigate("LoaderScreen")}
+            onPress={() =>
+              navigation.navigate("LoaderScreen", {
+                markers: markers,
+              })
+            }
             style={{
               width: "86%",
               height: "90%",

@@ -45,7 +45,7 @@ const DeliveryPage = () => {
         </Text>
         <Block card flex={0.8} style={{ margin: 10, backgroundColor: "white" }}>
           <Block flex style={{ marginTop: 20, marginLeft: 50, width: "80%" }}>
-            <Text style={{ fontSize: 22, color: "gray" }}>RECENTLY USED</Text>
+            <Text style={{ fontSize: 22, color: "gray" }}>YOUR LOCATION </Text>
             <Text style={{ fontSize: 20, fontWeight: "700", marginTop: 5 }}>
               {user.displayName}
             </Text>
@@ -83,12 +83,12 @@ const DeliveryPage = () => {
               >
                 Edit Address
               </Button>
-              <Button
+              {/* <Button
                 style={{ height: 45, width: "100%", borderRadius: 10 }}
                 mode="contained"
               >
                 Add Delivery Instruction
-              </Button>
+              </Button> */}
             </Block>
           </TouchableWithoutFeedback>
         </Block>
@@ -131,7 +131,7 @@ const DeliveryPage = () => {
             </Block>
           </TouchableOpacity>
         </Block>
-        <Block
+        {/* <Block
           row={true}
           card
           flex={0.08}
@@ -165,7 +165,7 @@ const DeliveryPage = () => {
               />
             </Block>
           </TouchableOpacity>
-        </Block>
+        </Block> */}
       </Block>
     </SafeAreaProvider>
   );

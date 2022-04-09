@@ -32,6 +32,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Block, theme } from "galio-framework";
 import Button from "../src/components/Button";
 import { useNavigation } from "@react-navigation/native";
+import moment from "moment";
 
 const HomePage = () => {
   const [location, setLocation] = useState(null);
@@ -85,7 +86,7 @@ const HomePage = () => {
     );
   }, []);
 
-  // console.log(orderdata)
+  console.log(orderdata);
 
   return (
     <SafeAreaView>
@@ -137,6 +138,19 @@ const HomePage = () => {
                       {" "}
                       Amount : {item.payment.amount}
                     </Text>
+                    <Text style={{ fontSize: 14, fontWeight: "400" }}>
+                      {
+                        new Date(
+                          item.timestamp.seconds * 1000 +
+                            item.timestamp.nanoseconds / 1000000
+                        ).toDateString() +
+                          " " +
+                          new Date(
+                            item.timestamp.seconds * 1000 +
+                              item.timestamp.nanoseconds / 1000000
+                          ).toLocaleTimeString()
+                      }
+                    </Text>
                   </View>
                 </Block>
                 <Block
@@ -152,7 +166,7 @@ const HomePage = () => {
                     onPress={() => {
                       navigation.navigate("DeliverySell", {
                         usersInfo: item.usersInfo,
-                        paymentInfo: item.payment
+                        paymentInfo: item.payment,
                       });
                     }}
                   >
@@ -163,7 +177,7 @@ const HomePage = () => {
                       navigation.navigate("OrderInfo", {
                         basket: item.basket,
                         usersInfo: item.usersInfo,
-                        prescription:item.prescription
+                        prescription: item.prescription,
                       });
                     }}
                     mode="contained"

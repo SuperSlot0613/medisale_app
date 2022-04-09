@@ -28,8 +28,8 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
   const [image, setImage] = useState(data?.userImage);
 
-  console.log("Image",image)
-  
+  console.log("Image", image);
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -188,6 +188,13 @@ const ProfilePage = () => {
             onPress={() => signOutPage()}
           >
             LOG OUT
+          </Button>
+          <Button
+            style={{ width: 300, marginTop: 20, marginLeft: 22 }}
+            mode="contained"
+            onPress={() => navigation.navigate("Advertisment")}
+          >
+            Give Advertisement
           </Button>
         </Block>
       </Block>
