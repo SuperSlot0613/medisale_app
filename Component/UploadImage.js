@@ -52,7 +52,7 @@ const UploadImage = () => {
       aspect: [4, 3],
       quality: 1,
     });
-    console.log(result);
+    // console.log(result);
 
     if (!result.cancelled) {
       setImage(result.uri);
@@ -63,7 +63,7 @@ const UploadImage = () => {
 
   const takePhoto = async () => {
     if (cameraRef) {
-      console.log("In take photo");
+      // console.log("In take photo");
       try {
         let photo = await cameraRef.current.takePictureAsync({
           allowsEditing: true,

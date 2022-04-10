@@ -29,7 +29,7 @@ const MapViewDirection = () => {
   // console.log(destination);
   useEffect(() => {
     if (!origin || !destination) return;
-    console.log("Component is call")
+    // console.log("Component is call")
     mapRef.current?.fitToSuppliedMarkers(["Origin", "Destination"], {
       edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
     });

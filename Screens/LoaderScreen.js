@@ -25,17 +25,16 @@ import { selectOrigin } from "../feature/navSlice";
 const LoaderScreen = ({ nextScreen }) => {
   const route = useRoute();
   const [result, setresult] = useState(false);
-  const { markers } = route.params;
+  const { markers, advertisInfo } = route.params;
   const navigation = useNavigation();
   const userloc = useSelector(selectOrigin);
-  const [sortestDis, setsortestDis] = useState([]);
 
   var rad = function (x) {
     return (x * Math.PI) / 180;
   };
 
   const DistanceFind = () => {
-    console.log("This function is call");
+    // console.log("This function is call");
     var R = 6378137;
     markers.map(async (marker, index) => {
       var dLat = rad(marker.data.location.latitude - userloc.latitude);
@@ -48,15 +47,23 @@ const LoaderScreen = ({ nextScreen }) => {
           Math.sin(dLong / 2);
       var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       var d = R * c;
-      console.log("Distance Between", d);
+      // console.log("Distance Between", d);
       if (d > 601) {
+        const index1 = advertisInfo.findIndex(
+          (advertis) => advertis.id === marker.id
+        );
+        if (index1 >= 0) {
+          advertisInfo.splice(index1, 1);
+        }
         markers.splice(index, 1);
       }
     });
-    console.log(markers);
+    // console.log(markers);
+    // console.log("This is advertise", advertisInfo);
     const timeout = setTimeout(() => {
       navigation.navigate("MapScreen", {
         distancedata: markers,
+        advertisInfo: advertisInfo,
       });
     }, 5000);
   };

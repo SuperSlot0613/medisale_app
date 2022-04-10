@@ -24,14 +24,14 @@ const Advertisment = () => {
   const navigation = useNavigation();
   const [shopImage, setshopImage] = useState(null);
   const [discount, setdiscount] = useState("");
-  const [advdate, setadvdate] = useState("");
+  const [advdate, setadvdate] = useState(null);
   const [shopname, setshopname] = useState("");
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [2, 2],
       quality: 1,
     });
     console.log(result);

@@ -33,7 +33,7 @@ const PaymentCard = ({
       }
     );
     if (response.data) {
-      console.log(response.data);
+      // console.log(response.data);
       const clientSecret = response.data.clientSecret;
       const billingDetails = {
         name: Name,

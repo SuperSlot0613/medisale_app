@@ -36,7 +36,7 @@ const AddNewAddress = () => {
   });
 
   const handleData = () => {
-    console.log(userData);
+    // console.log(userData);
     dispatch(ADD_NEW_ADDRESS(userData));
     navigation.goBack();
   };

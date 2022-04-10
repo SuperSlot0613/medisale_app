@@ -40,7 +40,7 @@ const ChatList = () => {
     [user]
   );
 
-  console.log(matches);
+  // console.log(matches);
 
   return matches.length > 0 ? (
     <FlatList

@@ -49,7 +49,7 @@ const Orders = () => {
     );
   }, []);
 
-  console.log(order);
+  // console.log(order);
 
   const renderProducts = (data, index) => {
     return (

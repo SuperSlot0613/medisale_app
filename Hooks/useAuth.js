@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }) => {
               user.photoURL = docSnap.data().photourl;
             }
             setuser(user);
-            console.log("This is user auth function", user);
+            // console.log("This is user auth function", user);
           }
         } else {
           setuser(null);
@@ -89,7 +89,7 @@ export const AuthProvider = ({ children }) => {
     createUserWithEmailAndPassword(auth, email.value, password.value)
       .then((userCredential) => {
         var user = userCredential.user;
-        console.log(user);
+        // console.log(user);
         user.displayName = name.value;
         setuser(user);
         setDoc(doc(db, "userInfo", `${email.value}`), {
@@ -114,14 +114,14 @@ export const AuthProvider = ({ children }) => {
           userinfo.displayName = docSnap.data().name;
           userinfo.photoURL = docSnap.data().photourl;
         }
-        console.log("This login time data", userinfo.displayName);
+        // console.log("This login time data", userinfo.displayName);
         setuser(userinfo);
       })
       .catch((error) => {
         const errorCode = error.code;
-        console.log(errorCode);
+        // console.log(errorCode);
         const errorMessage = error.message;
-        console.log(errorMessage);
+        // console.log(errorMessage);
       });
   };
 

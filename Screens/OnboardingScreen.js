@@ -18,7 +18,7 @@ const OnboardingScreen = () => {
       }}
       onDone={() => {
         setIsFirstLaunch(false);
-        console.log("onbordingScreen", isFirstLaunch);
+        // console.log("onbordingScreen", isFirstLaunch);
         // navigation.navigate("OptionLogin");
       }}
       pages={[

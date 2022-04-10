@@ -24,8 +24,8 @@ const Profile = () => {
   const navigation = useNavigation();
   const { user } = useAuth();
   const address = useSelector(selectUserAddress);
-  console.log(address);
-  console.log(user.photoURL);
+  // console.log(address);
+  // console.log(user.photoURL);
   const [addressdata, setaddressdata] = useState("");
 
   useEffect(() => {

@@ -26,7 +26,7 @@ const Loader = () => {
   const navigation = useNavigation();
 
   const verifyMethode = async () => {
-    console.log("This is verfy method");
+    // console.log("This is verfy method");
     await axios
       .post("http://192.168.1.14:3003/facevalidation", jsobject)
       .then((res) => {

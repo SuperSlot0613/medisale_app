@@ -79,7 +79,7 @@ const Payment = () => {
   };
 
   const checkOut = async () => {
-    console.log(cardDetails);
+    // console.log(cardDetails);
     if (!cardDetails?.complete) {
       Alert.alert("Please enter Complete card details and Email");
       return;
@@ -92,7 +92,7 @@ const Payment = () => {
         userAddress,
         total,
       });
-      console.log("this is response data", response.data.clientSecret);
+      // console.log("this is response data", response.data.clientSecret);
       const clientSecret = await response.data.clientSecret;
 
       const { paymentIntent, error } = await confirmPayment(
@@ -103,11 +103,11 @@ const Payment = () => {
         }
       );
       if (error) {
-        console.log("This is errors", error.message);
+        // console.log("This is errors", error.message);
         Alert(`Payment Confirmation Error ${error.message}`);
       } else if (paymentIntent) {
         Alert("Payment Successful");
-        console.log("Payment successful ", paymentIntent);
+        // console.log("Payment successful ", paymentIntent);
       }
     } catch (e) {
       console.log(e);

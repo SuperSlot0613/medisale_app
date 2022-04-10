@@ -27,6 +27,7 @@ const MyCart = ({ navigation }) => {
   const [total, setTotal] = useState(null);
   const dispatch = useDispatch();
   const [markers, setmarkers] = useState([]);
+  const [advertisment, setadvertisment] = useState([]);
 
   // console.log("Basket value", basket);
 
@@ -39,10 +40,20 @@ const MyCart = ({ navigation }) => {
     setmarkers(
       sellerInfo.docs.map((doc) => ({
         id: doc.id,
-        data: doc.data(), 
+        data: doc.data(),
+      }))
+    );
+
+    const advertisInfo = await getDocs(collection(db, "Advertisment"));
+    setadvertisment(
+      advertisInfo.docs.map((doc) => ({
+        id: doc.id,
+        data: doc.data(),
       }))
     );
   }, []);
+
+  // console.log(advertisment);
 
   const getTotal = (productData) => {
     let total = 0;
@@ -407,6 +418,7 @@ const MyCart = ({ navigation }) => {
             onPress={() =>
               navigation.navigate("LoaderScreen", {
                 markers: markers,
+                advertisInfo: advertisment,
               })
             }
             style={{

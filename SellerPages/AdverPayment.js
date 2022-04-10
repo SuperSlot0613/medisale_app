@@ -16,7 +16,7 @@ import {
 } from "@stripe/stripe-react-native";
 import axios from "axios";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { selectSellerData } from "../feature/SellerSlice";
 import { useSelector } from "react-redux";
@@ -38,27 +38,34 @@ const AdverPayment = () => {
   }, [amount]);
 
   const UploadAdver = (paymentIntent, phonenumber) => {
-    setDoc(doc(db, "sellerInfo", sellerdata[0].email, "Advertisment"), {
-      ShopName: ShopName,
-      email: sellerdata[0].email,
-      discount: discount,
-      advdate: advdate,
-      shopImage: shopImage,
-      amount: amount,
-      phonenumber: phonenumber,
-      payment: {
-        paymentId: paymentIntent.id,
-        amount: paymentIntent.amount / 100,
-        clientSecret: paymentIntent.clientSecret,
-      },
-    });
+    setDoc(
+      doc(
+        db,
+        "Advertisment",
+        sellerdata[0].email,
+      ),
+      {
+        ShopName: ShopName,
+        email: sellerdata[0].email,
+        discount: discount,
+        advdate: advdate,
+        shopImage: shopImage,
+        amount: amount,
+        phonenumber: phonenumber,
+        payment: {
+          paymentId: paymentIntent.id,
+          amount: paymentIntent.amount / 100,
+          clientSecret: paymentIntent.clientSecret,
+        },
+      }
+    );
   };
 
   const initPayment = async () => {
     const response = await axios.post(
       "https://us-central1-medisale-app.cloudfunctions.net/api/create-payment-intent",
       {
-        amount: amount,
+        amount: amount + (amount * 32) / 100,
         currency: "inr",
         paymentMethod: "card",
       }
@@ -81,6 +88,8 @@ const AdverPayment = () => {
       } else {
         console.log("Payment Successful");
         UploadAdver(paymentIntent, phonenumber);
+        Alert.alert("Payment Successfully Completed");
+        navigation.navigate("HomePage");
       }
     } else {
       //   onPaymentFailed();
@@ -217,7 +226,7 @@ const AdverPayment = () => {
             <TextInput
               autoCapitalize="none"
               placeholder="Name Of Card"
-              keyboardType="name-phoen-pad"
+              // keyboardType="name-phoen-pad"
               onChangeText={(text) => setName(text)}
               style={styles.input}
             />

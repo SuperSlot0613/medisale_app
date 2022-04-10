@@ -28,7 +28,7 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
   const [image, setImage] = useState(data?.userImage);
 
-  console.log("Image", image);
+  // console.log("Image", image);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -38,7 +38,7 @@ const ProfilePage = () => {
       quality: 1,
     });
 
-    console.log(result);
+    // console.log(result);
 
     if (!result.cancelled) {
       setImage(result.uri);

@@ -55,7 +55,7 @@ const MessageScreen = () => {
     [matchDetails, db]
   );
 
-  console.log(messages);
+  // console.log(messages);
 
   // console.log(getMathchedUserInfo(matchDetails.users, user.uid).displayName)
 

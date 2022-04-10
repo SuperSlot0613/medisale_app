@@ -28,6 +28,8 @@ import { GOOGLE_MAPS_APIKEY } from "@env";
 import useAuth from "../Hooks/useAuth";
 import Button from "../src/components/Button";
 import { Block } from "galio-framework";
+import { BottomSheet } from "react-native-btr";
+import CountDown from "react-native-countdown-component";
 
 const { width, height } = Dimensions.get("window");
 const CARD_HEIGHT = 230;
@@ -36,15 +38,18 @@ const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
 const MapScreen = () => {
   const theme = useTheme();
-  const route=useRoute()
-  const {distancedata}=route.params;
+  const route = useRoute();
+  const { distancedata, advertisInfo } = route.params;
   const [markers, setmarkers] = useState(distancedata);
+  const [advertisment, setadvertisment] = useState(advertisInfo);
   const userloc = useSelector(selectOrigin);
   const { user } = useAuth();
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [visible, setVisible] = useState(false);
+  // console.log(visible);
   // console.log(userloc);
-  console.log(markers)
+  // console.log(advertisment);
 
   // useEffect(async () => {
   //   const sellerInfo = await getDocs(collection(db, "sellerInfo"));
@@ -55,6 +60,13 @@ const MapScreen = () => {
   //     }))
   //   );
   // }, []);
+  const toggleBottomNavigationView = () => {
+    setVisible(!visible);
+  };
+
+  useEffect(() => {
+    toggleBottomNavigationView();
+  }, []);
 
   const initialMapState = {
     region: {
@@ -211,35 +223,12 @@ const MapScreen = () => {
             },
           }}
           onPress={(data, details = null) => {
-            console.log(data, details);
+            // console.log(data, details);
           }}
           fetchDetails={true}
           debounce={400}
         />
       </View>
-      {/* <ScrollView
-        horizontal
-        scrollEventThrottle={1}
-        showsHorizontalScrollIndicator={false}
-        height={50}
-        style={styles.chipsScrollView}
-        contentInset={{ // iOS only
-          top:0,
-          left:0,
-          bottom:0,
-          right:20
-        }}
-        contentContainerStyle={{
-          paddingRight: Platform.OS === 'android' ? 20 : 0
-        }}
-      >
-        {state.categories.map((category, index) => (
-          <TouchableOpacity key={index} style={styles.chipsItem}>
-            {category.icon}
-            <Text>{category.name}</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView> */}
       <Animated.ScrollView
         ref={_scrollView}
         horizontal
@@ -306,6 +295,55 @@ const MapScreen = () => {
           </View>
         ))}
       </Animated.ScrollView>
+      <BottomSheet
+        visible={visible}
+        // onBackButtonPress={toggleBottomNavigationView}
+        onBackdropPress={toggleBottomNavigationView}
+      >
+        <Block flex={0.6} row={false} style={styles.bottomNavigationView}>
+          <Text style={{ color: "black", fontWeight: "600", fontSize: 20 }}>
+            Advertisment
+          </Text>
+          <CountDown
+            size={14}
+            until={10}
+            onFinish={() => toggleBottomNavigationView()}
+            digitStyle={{
+              backgroundColor: "#FFF",
+              borderWidth: 2,
+              borderColor: "#1CC625",
+            }}
+            digitTxtStyle={{ color: "#1CC625" }}
+            timeLabelStyle={{ color: "red", fontWeight: "bold" }}
+            separatorStyle={{ color: "#1CC625" }}
+            timeToShow={["H", "M", "S"]}
+            timeLabels={{ m: null, s: null }}
+            showSeparator
+          />
+          <Image
+            style={{ width: "95%", height: 250, borderRadius: 10 }}
+            source={{ uri: advertisment[0].data.shopImage }}
+            resizeMode="cover"
+          />
+          <Block row={true}>
+            <Text style={{ fontSize: 18, fontWeight: "400", color: "crimson" }}>
+              Discount Offer=
+            </Text>
+            <Text style={{ fontSize: 18, fontWeight: "400", color: "crimson" }}>
+              {advertisment[0].data.discount}%
+            </Text>
+          </Block>
+          <Block row={true}>
+            <Text style={{ fontSize: 18, fontWeight: "400", color: "crimson" }}>
+              Shop Name =
+            </Text>
+            <Text style={{ fontSize: 18, fontWeight: "400", color: "crimson" }}>
+              {" "}
+              {advertisment[0].data.ShopName}
+            </Text>
+          </Block>
+        </Block>
+      </BottomSheet>
     </View>
   );
 };
@@ -421,5 +459,12 @@ const styles = StyleSheet.create({
   textSign: {
     fontSize: 14,
     fontWeight: "bold",
+  },
+  bottomNavigationView: {
+    backgroundColor: "#fff",
+    width: "100%",
+    height: 250,
+    justifyContent: "space-evenly",
+    alignItems: "center",
   },
 });
