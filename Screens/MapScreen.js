@@ -49,7 +49,7 @@ const MapScreen = () => {
   const [visible, setVisible] = useState(false);
   // console.log(visible);
   // console.log(userloc);
-  // console.log(advertisment);
+  // console.log("Map Screen Advertisment",advertisment);
 
   // useEffect(async () => {
   //   const sellerInfo = await getDocs(collection(db, "sellerInfo"));
@@ -322,7 +322,7 @@ const MapScreen = () => {
           />
           <Image
             style={{ width: "95%", height: 250, borderRadius: 10 }}
-            source={{ uri: advertisment[0].data.shopImage }}
+            source={{ uri: advertisment[0]?.data.shopImage }}
             resizeMode="cover"
           />
           <Block row={true}>
@@ -330,7 +330,7 @@ const MapScreen = () => {
               Discount Offer=
             </Text>
             <Text style={{ fontSize: 18, fontWeight: "400", color: "crimson" }}>
-              {advertisment[0].data.discount}%
+              {advertisment[0]?.data.discount}%
             </Text>
           </Block>
           <Block row={true}>
@@ -339,7 +339,7 @@ const MapScreen = () => {
             </Text>
             <Text style={{ fontSize: 18, fontWeight: "400", color: "crimson" }}>
               {" "}
-              {advertisment[0].data.ShopName}
+              {advertisment[0]?.data.ShopName}
             </Text>
           </Block>
         </Block>

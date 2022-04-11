@@ -37,23 +37,27 @@ const MyCart = ({ navigation }) => {
 
   useEffect(async () => {
     const sellerInfo = await getDocs(collection(db, "sellerInfo"));
-    setmarkers(
-      sellerInfo.docs.map((doc) => ({
-        id: doc.id,
-        data: doc.data(),
-      }))
-    );
+    if (sellerInfo!==null) {
+      setmarkers(
+        sellerInfo.docs.map((doc) => ({
+          id: doc.id,
+          data: doc.data(),
+        }))
+      );
+    }
 
     const advertisInfo = await getDocs(collection(db, "Advertisment"));
-    setadvertisment(
-      advertisInfo.docs.map((doc) => ({
-        id: doc.id,
-        data: doc.data(),
-      }))
-    );
+    if (advertisInfo !==null) {
+      setadvertisment(
+        advertisInfo.docs.map((doc) => ({
+          id: doc.id,
+          data: doc.data(),
+        }))
+      );
+    }
   }, []);
 
-  // console.log(advertisment);
+  console.log(advertisment);
 
   const getTotal = (productData) => {
     let total = 0;

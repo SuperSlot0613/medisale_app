@@ -36,7 +36,7 @@ const LoaderScreen = ({ nextScreen }) => {
   const DistanceFind = () => {
     // console.log("This function is call");
     var R = 6378137;
-    markers.map(async (marker, index) => {
+    markers?.map(async (marker, index) => {
       var dLat = rad(marker.data.location.latitude - userloc.latitude);
       var dLong = rad(marker.data.location.longitude - userloc.longitude);
       var a =
@@ -59,7 +59,7 @@ const LoaderScreen = ({ nextScreen }) => {
       }
     });
     // console.log(markers);
-    // console.log("This is advertise", advertisInfo);
+    console.log("This is advertise", advertisInfo);
     const timeout = setTimeout(() => {
       navigation.navigate("MapScreen", {
         distancedata: markers,
@@ -70,7 +70,7 @@ const LoaderScreen = ({ nextScreen }) => {
 
   useEffect(() => {
     DistanceFind();
-  }, []);
+  }, [advertisInfo,markers]);
 
   return (
     <View style={loaderStyles.mainContainer}>
