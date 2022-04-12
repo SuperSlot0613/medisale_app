@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }) => {
           const docRef = doc(db, "sellerInfo", user.email);
           const docSnap = await getDoc(docRef);
           if (docSnap.exists()) {
-            // console.log("This seller data", docSnap.data());
+            console.log("This seller data", docSnap.data());
             dispatch(ADD_TO_SELLER(docSnap.data()));
             navigation.navigate("SellerPages");
           } else {
@@ -69,8 +69,8 @@ export const AuthProvider = ({ children }) => {
             if (docSnap.exists()) {
               user.displayName = docSnap.data().name;
               user.photoURL = docSnap.data().photourl;
+              setuser(user);
             }
-            setuser(user);
             // console.log("This is user auth function", user);
           }
         } else {

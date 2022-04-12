@@ -6,33 +6,19 @@ import {
   Text,
   View,
   TouchableWithoutFeedback,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
-import { useRoute } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ADD_TO_BASKET,
   REMOVE_FROM_BASKET,
-  selectBasket
+  selectBasket,
 } from "../feature/navSlice";
 
-const WishListCard = ({
-  Meat,
-  Onion,
-  description,
-  extrachess,
-  id,
-  image,
-  itemcount,
-  name,
-  price,
-  veg
-}) => {
-  const route = useRoute();
-  // const { name, price, description, image, veg, count } = route.params;
+const WishListCard = ({ description, id, image, itemcount, name, price }) => {
   const [count, setitemcount] = useState(itemcount);
   const [chess, setextrachess] = useState(0);
   const [onion, setOnion] = useState(0);
@@ -43,7 +29,7 @@ const WishListCard = ({
   return (
     <SafeAreaProvider
       containerStyles={{
-        width: Dimensions.get("window").width
+        width: Dimensions.get("window").width,
       }}
     >
       <Block flex row={false} style={[styles.card, styles.shadow]}>
@@ -51,12 +37,12 @@ const WishListCard = ({
           <Block style={styles.imageContainer}>
             <Image
               source={{
-                uri: image
+                uri: image,
               }}
               style={[
                 styles.horizontalImage,
                 styles.verticalStyles,
-                styles.horizontalStyles
+                styles.horizontalStyles,
               ]}
               resizeMode="stretch"
             />
@@ -84,14 +70,14 @@ const WishListCard = ({
                 row
                 style={[
                   styles.cardDescription,
-                  { justifyContent: "space-between", marginTop: 4 }
+                  { justifyContent: "space-between", marginTop: 4 },
                 ]}
               >
                 <TouchableOpacity
                   style={{
                     marginRight: 10,
                     alignItems: "center",
-                    marginTop: 2
+                    marginTop: 2,
                   }}
                   onPress={() => setitemcount(count - 1)}
                 >
@@ -101,7 +87,7 @@ const WishListCard = ({
                     style={{
                       color: "black",
                       fontWeight: "600",
-                      fontSize: 34
+                      fontSize: 34,
                     }}
                   />
                 </TouchableOpacity>
@@ -113,16 +99,16 @@ const WishListCard = ({
                       backgroundColor: "crimson",
                       alignItems: "center",
                       justifyContent: "center",
-                      borderRadius: 10
+                      borderRadius: 10,
                     },
-                    styles.shadow
+                    styles.shadow,
                   ]}
                 >
                   <Text
                     style={{
                       color: "white",
                       fontWeight: "600",
-                      fontSize: 32
+                      fontSize: 32,
                     }}
                   >
                     {count}
@@ -132,7 +118,7 @@ const WishListCard = ({
                   style={{
                     marginLeft: 10,
                     alignItems: "center",
-                    marginTop: 2
+                    marginTop: 2,
                   }}
                   onPress={() => setitemcount(count + 1)}
                 >
@@ -142,7 +128,7 @@ const WishListCard = ({
                     style={{
                       color: "black",
                       fontWeight: "600",
-                      fontSize: 34
+                      fontSize: 34,
                     }}
                   />
                 </TouchableOpacity>
@@ -165,16 +151,16 @@ const WishListCard = ({
                     alignItems: "center",
                     justifyContent: "center",
                     borderRadius: 10,
-                    marginTop: 4
+                    marginTop: 4,
                   },
-                  styles.shadow
+                  styles.shadow,
                 ]}
               >
                 <Text
                   style={{
                     color: "white",
                     fontWeight: "600",
-                    fontSize: 24
+                    fontSize: 24,
                   }}
                 >
                   Remove
@@ -187,12 +173,12 @@ const WishListCard = ({
               style={{
                 alignItems: "center",
                 justifyContent: "space-between",
-                marginBottom: 5
+                marginBottom: 5,
               }}
             >
               <TouchableOpacity
                 style={{
-                  alignItems: "center"
+                  alignItems: "center",
                 }}
                 onPress={() => setextrachess(chess + 1)}
               >
@@ -205,15 +191,14 @@ const WishListCard = ({
                       alignItems: "center",
                       justifyContent: "center",
                       borderRadius: 10,
-                      margin: 10
+                      margin: 10,
                     },
-                    styles.shadow
+                    styles.shadow,
                   ]}
                 >
                   <Image
                     source={{
-                      uri:
-                        "https://img.icons8.com/external-icongeek26-linear-colour-icongeek26/64/000000/external-cheese-netherlands-icongeek26-linear-colour-icongeek26.png"
+                      uri: "https://img.icons8.com/external-icongeek26-linear-colour-icongeek26/64/000000/external-cheese-netherlands-icongeek26-linear-colour-icongeek26.png",
                     }}
                     style={{ width: 40, height: 40 }}
                     resizeMode="stretch"
@@ -227,7 +212,7 @@ const WishListCard = ({
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
-                  alignItems: "center"
+                  alignItems: "center",
                 }}
                 onPress={() => setOnion(onion + 1)}
               >
@@ -240,15 +225,14 @@ const WishListCard = ({
                       alignItems: "center",
                       justifyContent: "center",
                       borderRadius: 10,
-                      margin: 10
+                      margin: 10,
                     },
-                    styles.shadow
+                    styles.shadow,
                   ]}
                 >
                   <Image
                     source={{
-                      uri:
-                        "https://img.icons8.com/external-soft-fill-juicy-fish/60/000000/external-onion-plant-based-diet-soft-fill-soft-fill-juicy-fish.png"
+                      uri: "https://img.icons8.com/external-soft-fill-juicy-fish/60/000000/external-onion-plant-based-diet-soft-fill-soft-fill-juicy-fish.png",
                     }}
                     style={{ width: 40, height: 40 }}
                     resizeMode="stretch"
@@ -262,7 +246,7 @@ const WishListCard = ({
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
-                  alignItems: "center"
+                  alignItems: "center",
                 }}
                 onPress={() => setMeat(meat + 1)}
               >
@@ -275,15 +259,14 @@ const WishListCard = ({
                       alignItems: "center",
                       justifyContent: "center",
                       borderRadius: 10,
-                      margin: 10
+                      margin: 10,
                     },
-                    styles.shadow
+                    styles.shadow,
                   ]}
                 >
                   <Image
                     source={{
-                      uri:
-                        "https://img.icons8.com/office/80/000000/steak-rare.png"
+                      uri: "https://img.icons8.com/office/80/000000/steak-rare.png",
                     }}
                     style={{ width: 40, height: 40 }}
                     resizeMode="stretch"
@@ -311,45 +294,45 @@ const styles = StyleSheet.create({
     marginVertical: theme.SIZES.BASE,
     borderWidth: 0,
     minHeight: 380,
-    margin: 5
+    margin: 5,
   },
   imageContainer: {
     borderRadius: 3,
     // elevation: 1,
-    overflow: "hidden"
+    overflow: "hidden",
   },
   image: {
-    borderRadius: 3
+    borderRadius: 3,
   },
   horizontalImage: {
     height: 250,
-    width: "auto"
+    width: "auto",
   },
   cardTitle: {
     // flex:1,
     flexWrap: "wrap",
     paddingBottom: 1,
-    fontWeight: "700"
+    fontWeight: "700",
   },
   cardDescription: {
     padding: theme.SIZES.BASE / 2,
-    alignItems: "center"
+    alignItems: "center",
   },
   horizontalStyles: {
     borderTopRightRadius: 3,
     borderBottomRightRadius: 150,
     borderTopLeftRadius: 150,
-    borderBottomLeftRadius: 3
+    borderBottomLeftRadius: 3,
   },
   verticalStyles: {
     borderBottomRightRadius: 190,
-    borderBottomLeftRadius: 210
+    borderBottomLeftRadius: 210,
   },
   shadow: {
     shadowColor: theme.COLORS.BLACK,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 6,
     shadowOpacity: 0.1,
-    elevation: 2
-  }
+    elevation: 2,
+  },
 });

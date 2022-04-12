@@ -23,12 +23,12 @@ import { AsyncStorage } from "react-native";
 
 const ProfilePage = () => {
   const sellerInfo = useSelector(selectSellerData);
-  const [data, setdata] = useState(sellerInfo[0]);
+  const [data, setdata] = useState(sellerInfo);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [image, setImage] = useState(data?.userImage);
 
-  // console.log("Image", image);
+  console.log("Image", sellerInfo);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({

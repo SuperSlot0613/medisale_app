@@ -14,17 +14,11 @@ import {
   heightPercentageToDP,
 } from "react-native-responsive-screen";
 import { useSelector } from "react-redux";
-import { auth, db } from "../firebase";
-
-const loaderGif = "../src/assets/Gif/loaderImage.gif";
 const loader1 = "../assets/Gif/loading2.gif";
-import { collection, getDocs } from "firebase/firestore";
-// import {getDistance} from 'geolib';
 import { selectOrigin } from "../feature/navSlice";
 
-const LoaderScreen = ({ nextScreen }) => {
+const LoaderScreen = () => {
   const route = useRoute();
-  const [result, setresult] = useState(false);
   const { markers, advertisInfo } = route.params;
   const navigation = useNavigation();
   const userloc = useSelector(selectOrigin);
@@ -34,7 +28,6 @@ const LoaderScreen = ({ nextScreen }) => {
   };
 
   const DistanceFind = () => {
-    // console.log("This function is call");
     var R = 6378137;
     markers?.map(async (marker, index) => {
       var dLat = rad(marker.data.location.latitude - userloc.latitude);
@@ -59,7 +52,7 @@ const LoaderScreen = ({ nextScreen }) => {
       }
     });
     // console.log(markers);
-    console.log("This is advertise", advertisInfo);
+    // console.log("This is advertise", advertisInfo);
     const timeout = setTimeout(() => {
       navigation.navigate("MapScreen", {
         distancedata: markers,
@@ -70,7 +63,7 @@ const LoaderScreen = ({ nextScreen }) => {
 
   useEffect(() => {
     DistanceFind();
-  }, [advertisInfo,markers]);
+  }, []);
 
   return (
     <View style={loaderStyles.mainContainer}>

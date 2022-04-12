@@ -22,7 +22,6 @@ import {
 import { auth, db } from "../firebase";
 import { Block, theme } from "galio-framework";
 const { width } = Dimensions.get("screen");
-import moment from "moment";
 
 const Orders = () => {
   const { user } = useAuth();
@@ -39,13 +38,16 @@ const Orders = () => {
         collection(db, "userInfo", user.email, "orders"),
         orderBy("timestamp", "asc")
       ),
-      (snapshot) =>
-        setorderdata(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }))
-        )
+      (snapshot) => {
+        if (snapshot.exists) {
+          setorderdata(
+            snapshot?.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }))
+          );
+        }
+      }
     );
   }, []);
 

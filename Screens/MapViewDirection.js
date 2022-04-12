@@ -37,9 +37,9 @@ const MapViewDirection = () => {
 
   const initialMapState = {
     region: {
-      latitude: origin.latitude,
-      longitude: origin.longitude,
-      altitude: origin.altitude,
+      latitude: origin?.latitude,
+      longitude: origin?.longitude,
+      altitude: origin?.altitude,
       latitudeDelta: 0.005,
       longitudeDelta: 0.005,
     },
@@ -56,8 +56,8 @@ const MapViewDirection = () => {
       >
         {origin && destination && (
           <MapViewDirections
-            origin={user.displayName}
-            destination={destination.name}
+            origin={user?.displayName}
+            destination={destination?.name}
             apiKey={GOOGLE_MAPS_APIKEY}
             strokeWidth={3}
             strokeColor="black"
@@ -65,11 +65,11 @@ const MapViewDirection = () => {
         )}
         {origin && (
           <MapView.Marker
-            title={user.displayName}
-            description={user.email}
+            title={user?.displayName}
+            description={user?.email}
             coordinate={{
-              latitude: origin.latitude,
-              longitude: origin.longitude,
+              latitude: origin?.latitude,
+              longitude: origin?.longitude,
             }}
             identifier="Origin"
           >
@@ -85,11 +85,11 @@ const MapViewDirection = () => {
 
         {destination && (
           <MapView.Marker
-            title={destination.data.name}
-            description={destination.data.email}
+            title={destination?.data.name}
+            description={destination?.data.email}
             coordinate={{
-              latitude: destination.data.location.latitude,
-              longitude: destination.data.location.longitude,
+              latitude: destination?.data.location.latitude,
+              longitude: destination?.data.location.longitude,
             }}
             identifier="Destination"
           >

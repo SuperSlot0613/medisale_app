@@ -8,8 +8,6 @@ import {
   FlatList,
   Dimensions,
 } from "react-native";
-import { db } from "../firebase";
-import { collection, getDocs } from "@firebase/firestore";
 import { Block, theme } from "galio-framework";
 import ProductCard from "../Component/ProductCard";
 import { StatusBar } from "expo-status-bar";

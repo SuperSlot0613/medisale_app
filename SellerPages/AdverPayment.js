@@ -42,11 +42,11 @@ const AdverPayment = () => {
       doc(
         db,
         "Advertisment",
-        sellerdata[0].email,
+        sellerdata.email,
       ),
       {
         ShopName: ShopName,
-        email: sellerdata[0].email,
+        email: sellerdata.email,
         discount: discount,
         advdate: advdate,
         shopImage: shopImage,

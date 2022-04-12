@@ -6,8 +6,6 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { Block, Text, theme } from "galio-framework";
-import PropTypes from "prop-types";
-import argonTheme from "../constants/Theme";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 

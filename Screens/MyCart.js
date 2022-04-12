@@ -17,6 +17,7 @@ import {
   DECREASE_ITEM_QUANTITY,
   INCREASE_ITEM_QUANTITY,
   REMOVE_FROM_BASKET,
+  selectUserAddress,
 } from "../feature/navSlice";
 import { Block, theme } from "galio-framework";
 import { collection, getDocs } from "firebase/firestore";
@@ -28,16 +29,22 @@ const MyCart = ({ navigation }) => {
   const dispatch = useDispatch();
   const [markers, setmarkers] = useState([]);
   const [advertisment, setadvertisment] = useState([]);
+  const [addressdata, setaddressdata] = useState("");
+  const userAddress = useSelector(selectUserAddress);
 
   // console.log("Basket value", basket);
 
   useEffect(() => {
+    for (let item of userAddress) {
+      let address = `${item.name}, ${item.street}, ${item.district}, ${item.city},${item.postalCode},${item.region}`;
+      setaddressdata(address);
+    }
     getTotal(basket);
   }, [basket]);
 
   useEffect(async () => {
     const sellerInfo = await getDocs(collection(db, "sellerInfo"));
-    if (sellerInfo!==null) {
+    if (sellerInfo !== null) {
       setmarkers(
         sellerInfo.docs.map((doc) => ({
           id: doc.id,
@@ -47,7 +54,7 @@ const MyCart = ({ navigation }) => {
     }
 
     const advertisInfo = await getDocs(collection(db, "Advertisment"));
-    if (advertisInfo !==null) {
+    if (advertisInfo !== null) {
       setadvertisment(
         advertisInfo.docs.map((doc) => ({
           id: doc.id,
@@ -57,7 +64,7 @@ const MyCart = ({ navigation }) => {
     }
   }, []);
 
-  console.log(advertisment);
+  // console.log(advertisment);
 
   const getTotal = (productData) => {
     let total = 0;
@@ -73,9 +80,6 @@ const MyCart = ({ navigation }) => {
     return (
       <Block
         key={data.id}
-        // onPress={() =>
-        //   navigation.navigate("ProductInfo", { productID: data.id })
-        // }
         style={{
           width: "100%",
           height: 100,
@@ -301,6 +305,76 @@ const MyCart = ({ navigation }) => {
             <View
               style={{
                 paddingHorizontal: 16,
+                marginVertical: 10,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: "black",
+                  fontWeight: "500",
+                  letterSpacing: 1,
+                  marginBottom: 20,
+                }}
+              >
+                Delivery Location
+              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    width: "80%",
+                    alignItems: "center",
+                  }}
+                >
+                  <View
+                    style={{
+                      color: "blue",
+                      backgroundColor: "#f5f5f5",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: 12,
+                      borderRadius: 10,
+                      marginRight: 18,
+                    }}
+                  >
+                    <MaterialCommunityIcons
+                      name="truck-delivery-outline"
+                      style={{
+                        fontSize: 18,
+                        color: "blue",
+                      }}
+                    />
+                  </View>
+                  <View>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        color: "black",
+                        fontWeight: "500",
+                      }}
+                    >
+                      {addressdata}
+                    </Text>
+                  </View>
+                </View>
+                <MaterialCommunityIcons
+                  name="chevron-right"
+                  style={{ fontSize: 22, color: "black" }}
+                />
+              </View>
+            </View>
+          </View>
+          <View>
+            <View
+              style={{
+                paddingHorizontal: 16,
                 marginTop: 40,
                 marginBottom: 80,
               }}
@@ -419,12 +493,14 @@ const MyCart = ({ navigation }) => {
           }}
         >
           <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("LoaderScreen", {
-                markers: markers,
-                advertisInfo: advertisment,
-              })
-            }
+            onPress={() => {
+              if (basket.length > 0) {
+                navigation.navigate("LoaderScreen", {
+                  markers: markers,
+                  advertisInfo: advertisment,
+                });
+              }
+            }}
             style={{
               width: "86%",
               height: "90%",

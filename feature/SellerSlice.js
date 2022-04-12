@@ -5,7 +5,7 @@ const initialState = {
   faceImage: "",
   documentImage: "",
   userImage: "",
-  sellerdata:[],
+  sellerdata: null,
   location: [],
 };
 
@@ -26,10 +26,7 @@ export const SellerSlice = createSlice({
       state.userImage = action.payload;
     },
     ADD_TO_SELLER: (state, action) => {
-      return {
-        ...state,
-        sellerdata: [...state.sellerdata, action.payload],
-      };
+      state.sellerdata = action.payload;
     },
     EMPTY_SELLER: (state) => {
       return {

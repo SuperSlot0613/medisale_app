@@ -29,7 +29,7 @@ import {
   setOrigin,
   selectOrigin,
   selectPrescription,
-  EMPTY_BASKET
+  EMPTY_BASKET,
 } from "../feature/navSlice";
 import { Block, theme } from "galio-framework";
 import useAuth from "../Hooks/useAuth";
@@ -51,10 +51,10 @@ const Payment = () => {
   const { confirmPayment, loading } = useConfirmPayment();
   const dispatch = useDispatch();
   const [isloading, setisloading] = useState(false);
-  const navigation=useNavigation()
+  const navigation = useNavigation();
 
   // console.log("userAddress", userAddress);
-  console.log(sellerDestination);
+  // console.log(sellerDestination);
   const [addressdata, setaddressdata] = useState("");
 
   useEffect(() => {
@@ -285,80 +285,89 @@ const Payment = () => {
 
   const onPaymentSuccess = (paymentIntent, phonenumber) => {
     setisloading(false);
-    setDoc(doc(db, "sellerInfo", sellerDestination.id, "orders", user.email), {
-      usersInfo: {
-        name: user.displayName,
-        email: user.email,
-        phone: phonenumber,
-        userloaction: userloaction,
-        address: addressdata,
-      },
-      basket: basket,
-      payment: {
-        paymentId: paymentIntent.id,
-        amount: paymentIntent.amount / 100,
-        clientSecret: paymentIntent.clientSecret,
-      },
-      prescription: prescription,
-      timestamp: serverTimestamp(),
-    });
+    setDoc(
+      doc(db, "sellerInfo", sellerDestination?.id, "orders", user?.email),
+      {
+        usersInfo: {
+          name: user?.displayName,
+          email: user?.email,
+          phone: phonenumber,
+          userloaction: userloaction,
+          address: addressdata,
+        },
+        basket: basket,
+        payment: {
+          paymentId: paymentIntent?.id,
+          amount: paymentIntent?.amount / 100,
+          clientSecret: paymentIntent?.clientSecret,
+        },
+        prescription: prescription,
+        timestamp: serverTimestamp(),
+      }
+    );
 
-    setDoc(doc(db, "userInfo", user.email, "orders", sellerDestination.id), {
+    setDoc(doc(db, "userInfo", user?.email, "orders", sellerDestination?.id), {
       sellerInfo: {
-        name: sellerDestination.data.name,
-        email: sellerDestination.data.email,
-        phone: sellerDestination.data.PhoneNumber,
-        userloaction: sellerDestination.data.location,
+        name: sellerDestination?.data.name,
+        email: sellerDestination?.data.email,
+        phone: sellerDestination?.data.PhoneNumber,
+        userloaction: sellerDestination?.data.location,
       },
       basket: basket,
       payment: {
-        paymentId: paymentIntent.id,
-        amount: paymentIntent.amount / 100,
-        clientSecret: paymentIntent.clientSecret,
+        paymentId: paymentIntent?.id,
+        amount: paymentIntent?.amount / 100,
+        clientSecret: paymentIntent?.clientSecret,
       },
       prescription: prescription,
       timestamp: serverTimestamp(),
     });
 
     setDoc(
-      doc(db, "sellerInfo", sellerDestination.id, "chatUser", user.email),
+      doc(db, "sellerInfo", sellerDestination?.id, "chatUser", user?.email),
       {
-        name: user.displayName,
-        email: user.email,
+        name: user?.displayName,
+        email: user?.email,
         phone: phonenumber,
         userloaction: userloaction,
         address: addressdata,
       }
     );
 
-    setDoc(doc(db, "userInfo", user.email, "chatUser", sellerDestination.id), {
-      name: sellerDestination.data.name,
-      email: sellerDestination.data.email,
-      phone: sellerDestination.data.PhoneNumber,
-      userloaction: sellerDestination.data.location,
-    });
+    setDoc(
+      doc(db, "userInfo", user?.email, "chatUser", sellerDestination?.id),
+      {
+        name: sellerDestination?.data.name,
+        email: sellerDestination?.data.email,
+        phone: sellerDestination?.data.PhoneNumber,
+        userloaction: sellerDestination?.data.location,
+      }
+    );
 
-    setDoc(doc(db, "messaging", generateId(user.email, sellerDestination.id)), {
-      users: {
-        [user.email]: {
-          name: user.displayName,
-          email: user.email,
-          phone: phonenumber,
-          userloaction: userloaction,
-          address: addressdata,
+    setDoc(
+      doc(db, "messaging", generateId(user?.email, sellerDestination?.id)),
+      {
+        users: {
+          [user.email]: {
+            name: user?.displayName,
+            email: user?.email,
+            phone: phonenumber,
+            userloaction: userloaction,
+            address: addressdata,
+          },
+          [sellerDestination?.id]: {
+            name: sellerDestination?.data.name,
+            email: sellerDestination?.data.email,
+            phone: sellerDestination?.data.PhoneNumber,
+            userloaction: sellerDestination?.data.location,
+          },
         },
-        [sellerDestination.id]: {
-          name: sellerDestination.data.name,
-          email: sellerDestination.data.email,
-          phone: sellerDestination.data.PhoneNumber,
-          userloaction: sellerDestination.data.location,
-        },
-      },
-      usersMatched: [user.email, sellerDestination.id],
-      timestamp: serverTimestamp(),
-    });
-    dispatch(EMPTY_BASKET())
-    navigation.navigate("Home")
+        usersMatched: [user?.email, sellerDestination?.id],
+        timestamp: serverTimestamp(),
+      }
+    );
+    dispatch(EMPTY_BASKET());
+    navigation.navigate("Home");
 
     ToastAndroid.show("Items will be Deliverd SOON!", ToastAndroid.SHORT);
   };
@@ -509,18 +518,7 @@ const Payment = () => {
                           fontWeight: "500",
                         }}
                       >
-                        2 Petre Melikishvili St.
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          color: "black",
-                          fontWeight: "400",
-                          lineHeight: 20,
-                          opacity: 0.5,
-                        }}
-                      >
-                        0162, Tbilisi
+                        {addressdata}
                       </Text>
                     </View>
                   </View>

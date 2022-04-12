@@ -35,8 +35,8 @@ const UserOrder = () => {
 
   const initialMapState = {
     region: {
-      latitude: sellerdata[0]?.location.latitude,
-      longitude: sellerdata[0]?.location.longitude,
+      latitude: sellerdata?.location.latitude,
+      longitude: sellerdata?.location.longitude,
       latitudeDelta: 0.005,
       longitudeDelta: 0.005,
     },
@@ -174,9 +174,9 @@ const UserOrder = () => {
             provider={PROVIDER_GOOGLE}
             mapType="standard"
           >
-            {usersInfo && sellerdata[0] && (
+            {usersInfo && sellerdata && (
               <MapViewDirections
-                origin={sellerdata[0]?.name}
+                origin={sellerdata?.name}
                 destination={usersInfo?.name}
                 apiKey={GOOGLE_MAPS_APIKEY}
                 strokeWidth={3}
@@ -203,13 +203,13 @@ const UserOrder = () => {
               </MapView.Marker>
             )}
 
-            {sellerdata[0] && (
+            {sellerdata && (
               <MapView.Marker
-                title={sellerdata[0]?.name}
-                description={sellerdata[0]?.email}
+                title={sellerdata?.name}
+                description={sellerdata?.email}
                 coordinate={{
-                  latitude: sellerdata[0]?.location.latitude,
-                  longitude: sellerdata[0]?.location.longitude,
+                  latitude: sellerdata?.location.latitude,
+                  longitude: sellerdata?.location.longitude,
                 }}
                 identifier="Destination"
               >

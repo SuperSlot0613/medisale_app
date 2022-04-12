@@ -1,13 +1,6 @@
 import React from "react";
-import {
-  StyleSheet,
-  Dimensions,
-  Image,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { StyleSheet, Image, TouchableWithoutFeedback } from "react-native";
 import { Block, Text, theme } from "galio-framework";
-import PropTypes from "prop-types";
-import argonTheme from "../constants/Theme";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 
@@ -43,10 +36,10 @@ const Cards = ({
             id: id,
             title: title,
             description: title2,
-            quantity:quantity,
+            quantity: quantity,
             image: image,
             price: price,
-            category:category
+            category: category,
           })
         }
       >

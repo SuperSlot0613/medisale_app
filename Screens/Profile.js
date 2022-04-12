@@ -18,14 +18,17 @@ import useAuth from "../Hooks/useAuth";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserAddress } from "../feature/navSlice";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
 const thumbMeasure = (width - 48 - 32) / 3;
 
 const Profile = () => {
   const navigation = useNavigation();
   const { user } = useAuth();
   const address = useSelector(selectUserAddress);
+  const [photourl, setphotourl] = useState("");
   // console.log(address);
-  // console.log(user.photoURL);
+  // console.log(user);
   const [addressdata, setaddressdata] = useState("");
 
   useEffect(() => {
@@ -33,6 +36,15 @@ const Profile = () => {
       let address = `${item.name}, ${item.street}, ${item.district}, ${item.city},${item.postalCode},${item.region}`;
 
       setaddressdata(address);
+    }
+  }, []);
+
+  useEffect(async () => {
+    const docRef = doc(db, "userInfo", user.email);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      setphotourl(docSnap.data().photourl);
+      console.log(photourl);
     }
   }, []);
 
@@ -51,7 +63,7 @@ const Profile = () => {
             <Block flex style={styles.profileCard}>
               <Block middle style={styles.avatarContainer}>
                 <Image
-                  source={{ uri: user.photoURL }}
+                  source={{ uri: photourl }}
                   style={[styles.avatar]}
                   resizeMode="cover"
                 />

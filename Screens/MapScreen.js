@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Platform,
+  BackHandler,
 } from "react-native";
 import MapView, { Circle, PROVIDER_GOOGLE } from "react-native-maps";
 
@@ -60,6 +61,22 @@ const MapScreen = () => {
   //     }))
   //   );
   // }, []);
+
+  function handleBackButtonClick() {
+    navigation.navigate("YourWishList");
+    return true;
+  }
+
+  useEffect(() => {
+    BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
+    return () => {
+      BackHandler.removeEventListener(
+        "hardwareBackPress",
+        handleBackButtonClick
+      );
+    };
+  }, []);
+
   const toggleBottomNavigationView = () => {
     setVisible(!visible);
   };
@@ -70,9 +87,9 @@ const MapScreen = () => {
 
   const initialMapState = {
     region: {
-      latitude: userloc.latitude,
-      longitude: userloc.longitude,
-      altitude: userloc.altitude,
+      latitude: userloc?.latitude,
+      longitude: userloc?.longitude,
+      altitude: userloc?.altitude,
       latitudeDelta: 0.005,
       longitudeDelta: 0.005,
     },
@@ -102,8 +119,8 @@ const MapScreen = () => {
           // console.log("UseEffect value", location);
           _map.current.animateToRegion(
             {
-              latitude: location.latitude,
-              longitude: location.longitude,
+              latitude: location?.latitude,
+              longitude: location?.longitude,
               latitudeDelta: state.region.latitudeDelta,
               longitudeDelta: state.region.longitudeDelta,
             },
@@ -165,7 +182,7 @@ const MapScreen = () => {
           return (
             <MapView.Marker
               key={index}
-              coordinate={marker.data.location}
+              coordinate={marker?.data.location}
               onPress={(e) => onMarkerPress(e)}
             >
               <Animated.View style={[styles.markerWrap]}>
@@ -179,8 +196,8 @@ const MapScreen = () => {
           );
         })}
         <MapView.Marker
-          title={user.displayName}
-          description={user.email}
+          title={user?.displayName}
+          description={user?.email}
           coordinate={userloc}
           identifier="Origin"
         >
@@ -194,8 +211,8 @@ const MapScreen = () => {
         </MapView.Marker>
         <Circle
           center={{
-            latitude: userloc.latitude,
-            longitude: userloc.longitude,
+            latitude: userloc?.latitude,
+            longitude: userloc?.longitude,
           }}
           radius={600}
           strokeWidth={1}
@@ -261,7 +278,7 @@ const MapScreen = () => {
           { useNativeDriver: true }
         )}
       >
-        {markers.map((marker, index) => (
+        {markers?.map((marker, index) => (
           <View style={styles.card} key={index}>
             <Image
               source={{ uri: marker.data.photourl }}
@@ -296,7 +313,7 @@ const MapScreen = () => {
         ))}
       </Animated.ScrollView>
       <BottomSheet
-        visible={visible}
+        visible={visible && advertisment.length > 0}
         // onBackButtonPress={toggleBottomNavigationView}
         onBackdropPress={toggleBottomNavigationView}
       >

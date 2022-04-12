@@ -72,13 +72,10 @@ const Tab = createBottomTabNavigator();
 function HomePageScreen() {
   return (
     <Stack.Navigator
-      initialRouteName="LoaderHelp"
+      initialRouteName="HomePage"
       mode="card"
       headerMode="screen"
     >
-      <Stack.Screen options={{ headerShown: false }} name="LoaderHelp">
-        {(props) => <LoaderHelp {...props} nextScreen={"HomePage"} />}
-      </Stack.Screen>
       <Stack.Screen
         name="HomePage"
         component={HomePage}

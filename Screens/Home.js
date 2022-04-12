@@ -12,10 +12,7 @@ import {
   Alert,
 } from "react-native";
 import Cards from "../Component/Cards";
-import NormalCard from "../Component/NormalCard";
 const { width } = Dimensions.get("screen");
-import { db } from "../firebase";
-import { collection, getDocs } from "@firebase/firestore";
 import { selectValue, setOrigin, ADD_NEW_ADDRESS } from "../feature/navSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
@@ -36,7 +33,6 @@ const Home = () => {
         return;
       }
       let location = await Location.getCurrentPositionAsync({});
-      // console.log(location);
       const { coords } = location;
       if (coords) {
         const { latitude, longitude } = coords;
@@ -44,13 +40,7 @@ const Home = () => {
           latitude,
           longitude,
         });
-        // console.log(addressResponse[0]);
         dispatch(ADD_NEW_ADDRESS(addressResponse));
-        // for (let item of addressResponse) {
-        //   let address = `${item.name}, ${item.street}, ${item.district}, ${item.city},${item.postalCode},${item.region}  `;
-
-        //   console.log(address);
-        // }
       }
       dispatch(setOrigin(location.coords));
     })();
