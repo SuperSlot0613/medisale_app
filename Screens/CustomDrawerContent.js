@@ -38,7 +38,7 @@ function CustomDrawerContent({
     // "Recommended",
     "Your Orders",
     "Your Wish List",
-    // "Buy Again",
+    "Buy Again",
     "Chat",
     "Log Out",
   ];

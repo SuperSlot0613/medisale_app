@@ -7,15 +7,11 @@ import {
   Alert,
   Image,
 } from "react-native";
-import Device from "expo-device";
 import { Camera } from "expo-camera";
-import { ScreenStackHeaderBackButtonImage } from "react-native-screens";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import * as FaceDetector from "expo-face-detector";
 import { MaterialIcons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { storage } from "../../firebase";
-import Cardscan from "react-native-cardscan";
 import Button from "../components/Button";
 import { Block } from "galio-framework";
 import argonTheme from "../../constants/Theme";

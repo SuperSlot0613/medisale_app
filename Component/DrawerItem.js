@@ -60,14 +60,14 @@ const DrawerItem = (props) => {
             color={focused ? "white" : argonTheme.COLORS.WARNING}
           />
         );
-      // case "Buy Again":
-      //   return (
-      //     <MaterialCommunityIcons
-      //       name="purse-outline"
-      //       size={24}
-      //       color={focused ? "white" : argonTheme.COLORS.LABEL}
-      //     />
-      //   );
+      case "Buy Again":
+        return (
+          <MaterialCommunityIcons
+            name="purse-outline"
+            size={24}
+            color={focused ? "white" : argonTheme.COLORS.LABEL}
+          />
+        );
       case "Chat":
         return (
           <AntDesign

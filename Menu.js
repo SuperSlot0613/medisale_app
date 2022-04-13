@@ -61,6 +61,7 @@ import LoaderHelp from "./Component/LoaderHelp";
 import LoaderScreen from "./Screens/LoaderScreen";
 import Advertisment from "./SellerPages/Advertisment";
 import AdverPayment from "./SellerPages/AdverPayment";
+import ChatScreenSell from "./SellerPages/ChatScreenSell";
 // import CardScan from "./src/screens/CardScan";
 
 const { width } = Dimensions.get("screen");
@@ -120,6 +121,27 @@ function HomePageScreen() {
     </Stack.Navigator>
   );
 }
+
+const MessageStackSell = ({ navigation }) => (
+  <Stack.Navigator>
+    <Stack.Screen
+      options={{
+        headerShown: true,
+        headerTitleAlign: "center",
+      }}
+      name="Messages"
+      component={ChatForSeller}
+    />
+    <Stack.Screen
+      name="SellerChat"
+      component={ChatScreenSell}
+      options={({ route }) => ({
+        title: route.params.userName,
+        headerBackTitleVisible: false,
+      })}
+    />
+  </Stack.Navigator>
+);
 
 function HomeStack(props) {
   return (
@@ -372,11 +394,11 @@ function TabNavigaytor() {
         />
         <Tab.Screen
           options={{
-            headerShown: true,
+            headerShown: false,
             headerTitleAlign: "center",
           }}
           name="Chat"
-          component={ChatForSeller}
+          component={MessageStackSell}
         />
         <Tab.Screen
           options={{
