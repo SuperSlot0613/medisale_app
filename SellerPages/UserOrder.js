@@ -20,9 +20,8 @@ import * as ImageManipulator from "expo-image-manipulator";
 
 const UserOrder = () => {
   const route = useRoute();
-  if (route.params !== null) {
-    const { basket, usersInfo, prescription } = route?.params;
-  }
+
+  const { basket, usersInfo, prescription } = route?.params;
   const sellerdata = useSelector(selectSellerData);
   const mapRef = useRef();
   const navigation = useNavigation();

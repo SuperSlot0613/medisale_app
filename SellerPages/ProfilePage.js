@@ -52,7 +52,6 @@ const ProfilePage = () => {
   const signOutPage = async () => {
     signOut(auth)
       .then(() => {
-        dispatch(EMPTY_SELLER());
         navigation.replace("OptionLogin");
       })
       .catch((error) => {

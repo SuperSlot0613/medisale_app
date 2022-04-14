@@ -104,7 +104,7 @@ const ChatForSeller = () => {
 
   return (
     <SafeAreaProvider style={{ flex: 1, backgroundColor: "white" }}>
-      <FlatList
+      {/* <FlatList
         data={Messages}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
@@ -132,7 +132,17 @@ const ChatForSeller = () => {
             </View>
           </TouchableOpacity>
         )}
-      />
+      /> */}
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "white",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ fontSize: 18, fontWeight: "400" }}>Comming Soon</Text>
+      </View>
     </SafeAreaProvider>
   );
 };

@@ -42,7 +42,7 @@ const HomePage = () => {
   const document = useSelector(selectDocumentImage);
   const faceImage = useSelector(selectUserImage);
   const navigation = useNavigation();
-  console.log(sellerdata);
+  // console.log(sellerdata);
   // console.log(faceImage);
   const [orderdata, setorderdata] = useState([]);
 
@@ -91,7 +91,7 @@ const HomePage = () => {
     );
   }, []);
 
-  // console.log(orderdata);
+  console.log(orderdata);
 
   return (
     <SafeAreaView>
@@ -185,7 +185,7 @@ const HomePage = () => {
                     <Button
                       onPress={() => {
                         navigation.navigate("OrderInfo", {
-                          basket: item.basket,
+                          basket: item?.basket,
                           usersInfo: item?.usersInfo,
                           prescription: item?.prescription,
                         });

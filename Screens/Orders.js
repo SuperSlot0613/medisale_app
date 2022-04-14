@@ -39,7 +39,7 @@ const Orders = () => {
         orderBy("timestamp", "asc")
       ),
       (snapshot) => {
-        if (snapshot.exists) {
+        if (snapshot) {
           setorderdata(
             snapshot?.docs.map((doc) => ({
               id: doc.id,
