@@ -18,11 +18,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
 import useAuth from "../Hooks/useAuth";
+import { auth, db } from "../firebase";
+import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 
 const Home = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const { user } = useAuth();
+
+  const [medicineData, setmedicineData] = useState();
 
   useEffect(async () => {
     Alert.alert(`Welcome back ${user.displayName}`);
@@ -44,6 +48,22 @@ const Home = () => {
       }
       dispatch(setOrigin(location.coords));
     })();
+  }, []);
+
+  useEffect(async () => {
+    const docRef = doc(db, "medicienlist", "6xhA6bwuqMB6Py2UBbav");
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      // console.log("This seller data", docSnap.data());
+      setmedicineData(docSnap.data().default);
+      // dispatch(ADD_TO_SELLER(docSnap.data()));
+      // navigation.navigate("SellerPages");
+    }
+
+    return () => {
+      console.log("Item finish");
+    };
   }, []);
 
   const data = [
@@ -133,26 +153,28 @@ const Home = () => {
           category="Antimalaria"
           horizontal={true}
         />
-        {/* <FlatList
+        <FlatList
           ItemSeparatorComponent={
             Platform.OS !== "android" &&
-            (({ highlighted }) =>
+            (({ highlighted }) => (
               <View
-                style={[style.separator, highlighted && { marginLeft: 0 }]}
-              />)
+                style={[styles.separator, highlighted && { marginLeft: 0 }]}
+              />
+            ))
           }
-          data={foodItem}
-          renderItem={({ item, index }) =>
+          data={medicineData}
+          renderItem={({ item, index }) => (
             <Cards
-              Key={index}
+              Key={item.defId}
               title={item.name}
               title2={item.description}
               image={item.image}
               price={item.price}
               id={item?.id}
               horizontal={true}
-            />}
-        /> */}
+            />
+          )}
+        />
       </Block>
     </ScrollView>
   );
