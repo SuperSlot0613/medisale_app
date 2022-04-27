@@ -70,34 +70,34 @@ app.post("/create-payment-intent", async (req, res) => {
   });
 });
 
-app.post("/facevalidation", async (req, res) => {
-  console.log("API IS CALL");
-  var imageSchema = await req.body;
-  var data = {
-    document: imageSchema.documentImage,
-    faceimage: imageSchema.faceimage,
-  };
+// app.post("/facevalidation", async (req, res) => {
+//   console.log("API IS CALL");
+//   var imageSchema = await req.body;
+//   var data = {
+//     document: imageSchema.documentImage,
+//     faceimage: imageSchema.faceimage,
+//   };
 
-  var options = {
-    method: "POST",
-    uri: "http://127.0.0.1:5000/imagechecker",
-    body: data,
-    json: true,
-  };
+//   var options = {
+//     method: "POST",
+//     uri: "http://127.0.0.1:5000/imagechecker",
+//     body: data,
+//     json: true,
+//   };
 
-  var sendrequest = await request(options)
-    .then(function (parsedBody) {
-      // console.log(parsedBody);
-      console.log("API IS CALL");
-      let result;
-      result = parsedBody["result"];
-      console.log("The face verification Code is running", result);
-      res.send(result);
-    })
-    .catch(function (err) {
-      console.log(err);
-    });
-});
+//   var sendrequest = await request(options)
+//     .then(function (parsedBody) {
+//       // console.log(parsedBody);
+//       console.log("API IS CALL");
+//       let result;
+//       result = parsedBody["result"];
+//       console.log("The face verification Code is running", result);
+//       res.send(result);
+//     })
+//     .catch(function (err) {
+//       console.log(err);
+//     });
+// });
 
 app.listen(port, () => {
   console.log(`Listen on port ${port}`);
