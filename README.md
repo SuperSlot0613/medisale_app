@@ -3,9 +3,9 @@
 
 
 <img style="border-radius:10px,margin:10px" src="medisale Image/image1.jpg" width="240" height="640"><img style="border-radius:10px" src="medisale Image/image2.jpg" width="240" height="640"><img style="border-radius:10px" src="medisale Image/image3.jpg" width="240" height="640">
-<img src="image3.jpg" width="360" height="720"> <img src="image4.jpg" width="360" height="720">
-<img src="image5.jpg" width="360" height="720"> <img src="image6.jpg" width="360" height="720">
-<img src="image7.jpg" width="360" height="720"> 
+<img style="border-radius:10px,margin:10px" src="medisale Image/image4.jpg" width="240" height="640"><img style="border-radius:10px" src="medisale Image/image5.jpg" width="240" height="640"><img style="border-radius:10px" src="medisale Image/image6.jpg" width="240" height="640">
+<img style="border-radius:10px,margin:10px" src="medisale Image/image7.jpg" width="240" height="640"><img style="border-radius:10px" src="medisale Image/image8.jpg" width="240" height="640"><img style="border-radius:10px" src="medisale Image/image9.jpg" width="240" height="640">
+<img style="border-radius:10px,margin:10px" src="medisale Image/image10.jpg" width="240" height="640"><img style="border-radius:10px" src="medisale Image/image11.jpg" width="240" height="640"><img style="border-radius:10px" src="medisale Image/image12.jpg" width="240" height="640">
 
 #Watch the video
 
