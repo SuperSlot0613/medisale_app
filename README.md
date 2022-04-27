@@ -15,7 +15,7 @@
 
 ## To Run The App On Your Phone Screen
 
-First Download expo go App on your phone than copay the link ![(https://expo.dev/@saurabh0613/medisale)] and peast
+First Download expo go App on your phone than copy the link ![(https://expo.dev/@saurabh0613/medisale)] and peast
 on expo go app Url section.
 
 
