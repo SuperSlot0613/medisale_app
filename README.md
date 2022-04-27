@@ -2,7 +2,7 @@
 # SuperSlot React Native Project
 
 
-<img style="border-radius:10px" src="medisale Image/image1.jpg" width="240" height="640"><img style="border-radius:10px" src="medisale Image/image2.jpg" width="240" height="640"><img style="border-radius:10px" src="medisale Image/image2.jpg" width="240" height="640">
+<img style="border-radius:10px,margin:10px" src="medisale Image/image1.jpg" width="240" height="640"><img style="border-radius:10px" src="medisale Image/image2.jpg" width="240" height="640"><img style="border-radius:10px" src="medisale Image/image3.jpg" width="240" height="640">
 <img src="image3.jpg" width="360" height="720"> <img src="image4.jpg" width="360" height="720">
 <img src="image5.jpg" width="360" height="720"> <img src="image6.jpg" width="360" height="720">
 <img src="image7.jpg" width="360" height="720"> 
