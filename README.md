@@ -2,7 +2,7 @@
 # SuperSlot React Native Project
 
 
-<img src="image1.jpg" width="360" height="720"> <img src="image2.jpg" width="360" height="720">
+<img src="medisale Image/image1.jpg" width="360" height="720"> <img src="image2.jpg" width="360" height="720">
 <img src="image3.jpg" width="360" height="720"> <img src="image4.jpg" width="360" height="720">
 <img src="image5.jpg" width="360" height="720"> <img src="image6.jpg" width="360" height="720">
 <img src="image7.jpg" width="360" height="720"> 
