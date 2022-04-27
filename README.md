@@ -23,6 +23,11 @@ on expo go app Url section.
 
 Online medicine purchase is popular due to convenience purpose. Purchasing medicines online offers better pricing than offline stores, lower product costs, and convenience for consumers. All companies follow high standards for the safety of processing payments on their applications. The main objective of the Project on Online Medical Store is to manage the details of Customer, Medicine Company, Medicine, Medicine Stock, Order. It manages all the information about Customer, Payment, Order, Customer. The purpose of the project is to build an application program to reduce the manual work for managing the Customer, Medicine Company, Payment Medicine. It tracks all the details about the Medicine, Medicine Stock, Order. By adding face detection in the medicine sale application, it will be more secure. In the application, there are two logins one for sellers and another one for users. If the seller is logged in their face will be verified with the documents uploaded. Users have to upload their prescriptions to order medicines. In the application, users can use the chat section for direct contact with the medical shop owner. Face recognition is added for medical shop owners for verification. The Map section is also available in the application for live tracking of your order.
 
+## Connection With Firebase
+Make sure you have created app on Firebase after go to project setting and copy the config code then paste on firebase.js file to make connection between your account
+
+
+
 ## 1. Make sure you have NODE installed!
 
 Firstly, you will need to download the latest version of Node by <a href="https://nodejs.org/en/download/">CLICKING HERE</a>
