@@ -33,7 +33,7 @@
     "expo-location": "^14.0.2",
     "expo-notifications": "^0.14.1",
     "expo-status-bar": "~1.2.0",
-    "expo-updates": "~0.11.6",
+    "expo-updates": "~0.11.7",
     "express": "^4.17.3",
     "firebase": "^9.6.5",
     "galio-framework": "^0.8.0",

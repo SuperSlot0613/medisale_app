@@ -12,7 +12,7 @@ const shortid = require("shortid");
 const Stripe = require("stripe");
 app.use(cors());
 
-const port = 3003;
+const port = process.env.PORT || 3003;
 const PUBLISHABLE_KEY =
   "pk_test_51J1XdTSDeAiXyTkgBNUMtGq6tvOz0yxAUMjoYKr0CXfSmzZjrUm1eA77irtXUpldQcor1V6k39PCVcj0hMJdU2IJ00mmMY9knC";
 const SECRET_KEY =
